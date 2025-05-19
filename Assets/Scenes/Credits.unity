@@ -962,20 +962,23 @@ MonoBehaviour:
 
     - Road System by Maxi Barmetler
 
-    - Camp Nou
-    Stadium by farhad.Guli
+    - Simple
+    Low poly Coconut Tree by Jewel John
 
     Textures
 
-    - PSX texture super kit by Pizza Doggy
+    - PSX texture super kit
+    by Pizza Doggy
+
+    - Skybox Series Free by Avionx
 
     sounds
 
-    -
-    Engine-Loop Heavy vehicle/tank by Nayckron and Qubodup
+    - Engine-Loop
+    Heavy vehicle/tank by Nayckron and Qubodup
 
-    - RainbowRush and
-    IABO_Title by Yubatake
+    - RainbowRush and IABO_Title
+    by Yubatake
 
     ui
 
@@ -1338,10 +1341,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 200
-    m_Right: 200
-    m_Top: 586
-    m_Bottom: 50
+    m_Left: 254
+    m_Right: 254
+    m_Top: 601
+    m_Bottom: 42
   m_ChildAlignment: 7
   m_Spacing: 100
   m_ChildForceExpandWidth: 1

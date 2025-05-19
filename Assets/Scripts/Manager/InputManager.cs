@@ -33,6 +33,12 @@ public class InputManager : MonoBehaviour
 
     public void OnPause(InputAction.CallbackContext context)
     {
+#if UNITY_WEBGL
+        if(context.control.name == "escape")
+        {
+            return;
+        }
+#endif
         if (context.started)
         {
             onPause?.Invoke();
