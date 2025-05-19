@@ -26,6 +26,9 @@ public class UICrontrolsMenu: MonoBehaviour
 
     private void OnExitButtonClick()
     {
+#if UNITY_WEBGL
+        return;
+#endif
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
