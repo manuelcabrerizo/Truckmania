@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CameraData
   m_EditorClassIdentifier: 
   distance: 8
-  height: 0.25
+  height: 0.35
   speed: 6

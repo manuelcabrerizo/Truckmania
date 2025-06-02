@@ -5,17 +5,20 @@ public class PlayerOnHit : MonoBehaviour
 {
     public static event Action<bool> onOnShowResetText;
 
+    private CameraMovement cameraMovement;
     private float upsideDownRatio = 1.0f;
     private bool isResettable = false;
 
     private void Awake()
     {
         InputManager.onResetCar += OnResetCar;
+        CameraMovement.onCameraCreated += OnCameraCreated;
     }
 
     private void OnDestroy()
     {
         InputManager.onResetCar -= OnResetCar;
+        CameraMovement.onCameraCreated -= OnCameraCreated;
     }
 
     private void Update()
@@ -26,7 +29,7 @@ public class PlayerOnHit : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         IPickable pickable = null;
-        if(other.gameObject.TryGetComponent<IPickable>(out pickable))
+        if (other.gameObject.TryGetComponent<IPickable>(out pickable))
         {
             pickable.PickUp();
         }
@@ -37,6 +40,7 @@ public class PlayerOnHit : MonoBehaviour
         if (upsideDownRatio < 0.25f)
         {
             onOnShowResetText?.Invoke(true);
+            isResettable = true;
         }
     }
 
@@ -46,17 +50,20 @@ public class PlayerOnHit : MonoBehaviour
         isResettable = false;
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        isResettable = (upsideDownRatio < 0.25f);
-    }
-
     private void OnResetCar()
     {
         if (isResettable)
         {
             transform.position += Vector3.up * 2.0f;
-            transform.rotation = Quaternion.identity;
+            Vector3 forward = cameraMovement.transform.forward;
+            forward.y = 0f;
+            forward.Normalize();
+            transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
         }
     }
+
+    private void OnCameraCreated(CameraMovement cameraMovement)
+    { 
+        this.cameraMovement = cameraMovement;
+    } 
 }

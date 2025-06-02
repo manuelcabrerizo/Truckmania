@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -222,5 +223,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public Vector3 GetLocalVelocity()
+    {
+        return localVelocity;
+    }
     
 }
