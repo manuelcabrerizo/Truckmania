@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static event Action<PlayerMovement> onPlayerCreated;
+
     private static Vector3 startPosition;
     private static Quaternion startRotation;
 
@@ -46,6 +48,10 @@ public class PlayerMovement : MonoBehaviour
         isEnable = true;
     }
 
+    private void Start()
+    {
+        onPlayerCreated?.Invoke(this);
+    }
     private void OnDestroy()
     {
         InputManager.onAccelerate -= OnAccelerate;

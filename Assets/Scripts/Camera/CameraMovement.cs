@@ -43,14 +43,14 @@ public class CameraMovement : MonoBehaviour
     {
         if (target.IsGrounded())
         {
-            if (target.GetLocalVelocity().z >= 0.0f)
-            {
+            //if (target.GetLocalVelocity().z >= 0.0f)
+            //{
                 back = -target.transform.forward;
-            }
-            else
-            {
-                back = target.transform.forward;
-            }
+            //}
+            //else
+            //{
+            //    back = target.transform.forward;
+            //}
             back.Normalize();
         }
         
