@@ -1,6 +1,6 @@
 using System;
 
-class WinState : State
+class WinState : GameState
 {
     public static event Action onWinStateEnter;
     public static event Action onWinSateExit;

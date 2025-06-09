@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-class CountDownState : State
+class CountDownState : GameState
 {
     public static event Action<bool> onShowCountDownUI;
     public static event Action<float> onCountDownChange;

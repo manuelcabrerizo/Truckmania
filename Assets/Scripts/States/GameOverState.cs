@@ -1,6 +1,6 @@
 using System;
 
-class GameOverState : State
+class GameOverState : GameState
 {
     public static event Action onGameOverStateEnter;
     public static event Action onGameOverSateExit;

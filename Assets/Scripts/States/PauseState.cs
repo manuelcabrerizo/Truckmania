@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class PauseState : State
+public class PauseState : GameState
 {
     public static event Action onPauseStateEnter;
     public static event Action onPauseSateExit;

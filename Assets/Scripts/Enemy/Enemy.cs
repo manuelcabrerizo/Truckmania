@@ -1,14 +1,25 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IPooleable
+public class Enemy : MonoBehaviour
 {
-    public virtual void OnGet()
+    [SerializeField] protected float life;
+
+    private void Awake()
     {
-        gameObject.SetActive(true);
+        OnAwaken();
     }
 
-    public virtual void OnRelease()
+    private void OnDestroy()
     {
-        gameObject.SetActive(false);
+        OnDestroyed();
+    }
+
+    protected virtual void OnAwaken() { }
+
+    protected virtual void OnDestroyed() { }
+
+    public void Attack()
+    { 
+    
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-class PlayingState : State
+class PlayingState : GameState
 {
     public static event Action<bool> onShowPlayingUI;
     public static event Action<int, int> onUpdateCoinPickText;

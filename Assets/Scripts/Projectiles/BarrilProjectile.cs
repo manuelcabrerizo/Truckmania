@@ -15,7 +15,7 @@ public class BarrilProjectile : Projectile
         StopAllCoroutines();
     }
 
-    public void Lunch(Vector3 startPosition, Vector3 targetPosition, Vector3 targetVelocity)
+    public void Lunch(Vector3 startPosition, Vector3 targetPosition, float timeToTarget)
     {
         StartCoroutine(Lifetime());
 
@@ -30,7 +30,7 @@ public class BarrilProjectile : Projectile
         right.y = 0.0f;
         right.Normalize();
 
-        float t = 3.0f;
+        float t = timeToTarget;
         float x0 = 0.0f;
         float y0 = 0.0f;
         float x = Vector3.Dot(relPosition, right);
