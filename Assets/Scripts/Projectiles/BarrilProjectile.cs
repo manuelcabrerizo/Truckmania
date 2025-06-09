@@ -40,6 +40,12 @@ public class BarrilProjectile : Projectile
 
     public void Lunch(Vector3 startPosition, Vector3 targetPosition, float timeToTarget)
     {
+        if (body.isKinematic)
+        {
+            SendReleaseEvent();
+            return;
+        }
+
         StartCoroutine(SendReleaseaEventAfterSeconds(20.0f));
 
         body.position = startPosition;
@@ -77,5 +83,4 @@ public class BarrilProjectile : Projectile
         yield return new WaitForSeconds(seconds);
         SendReleaseEvent();
     }
-
 }
