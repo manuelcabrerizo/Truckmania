@@ -1,6 +1,11 @@
 using UnityEngine;
 public class Utils
 {
+    static public bool CheckCollisionLayer(GameObject gameObject, LayerMask layer)
+    {
+        return ((1 << gameObject.layer) & layer.value) > 0;
+    }
+
     public static float AdjustAngle(float angle)
     {
         while(angle >  Mathf.PI) angle -= Mathf.PI*2.0f;

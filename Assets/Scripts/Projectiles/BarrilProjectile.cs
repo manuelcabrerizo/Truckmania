@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class BarrilProjectile : Projectile
 {
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private ParticleSystem explosionParticleSystem;
+    [SerializeField] private MeshRenderer barrilRenderer;
+
     private Rigidbody body;
+    private Collider collision;
 
     private void Awake()
     {
         body = GetComponent<Rigidbody>();
+        collision = GetComponent<Collider>();
     }
 
     private void OnDestroy()
@@ -15,11 +21,27 @@ public class BarrilProjectile : Projectile
         StopAllCoroutines();
     }
 
+    public override void OnGet()
+    {
+        base.OnGet();
+        barrilRenderer.enabled = true;
+        collision.enabled = true;
+        body.isKinematic = false;
+        explosionParticleSystem.Stop();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Utils.CheckCollisionLayer(collision.gameObject, playerMask))
+        {
+            Explote();
+        }
+    }
+
     public void Lunch(Vector3 startPosition, Vector3 targetPosition, float timeToTarget)
     {
-        StartCoroutine(Lifetime());
+        StartCoroutine(SendReleaseaEventAfterSeconds(20.0f));
 
-        //Vector3 randomUpForce = (Vector3.up + new Vector3(offset.x, 0.0f, offset.y) * 0.25f).normalized * 15.0f;
         body.position = startPosition;
         body.velocity = Vector3.zero;
 
@@ -41,9 +63,19 @@ public class BarrilProjectile : Projectile
         body.velocity = right * v0x + up * v0y; ;
     }
 
-    private IEnumerator Lifetime()
+    private void Explote()
     {
-        yield return new WaitForSeconds(20.0f);
+        explosionParticleSystem.Play();
+        barrilRenderer.enabled = false;
+        collision.enabled = false;
+        body.isKinematic = true;
+        StartCoroutine(SendReleaseaEventAfterSeconds(explosionParticleSystem.main.duration));
+    }
+
+    private IEnumerator SendReleaseaEventAfterSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
         SendReleaseEvent();
     }
+
 }

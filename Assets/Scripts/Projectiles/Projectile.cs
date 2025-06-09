@@ -5,12 +5,12 @@ public class Projectile : MonoBehaviour, IPooleable
 {
     public static event Action<Projectile> onProjectileRelease;
 
-    public void OnGet()
+    public virtual void OnGet()
     {
         gameObject.SetActive(true);
     }
 
-    public void OnRelease()
+    public virtual void OnRelease()
     {
         gameObject.SetActive(false);
     }

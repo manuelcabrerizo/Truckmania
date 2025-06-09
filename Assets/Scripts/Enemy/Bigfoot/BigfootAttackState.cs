@@ -61,6 +61,7 @@ public class BigfootAttackState : BigfootState
         float distance = (bigfoot.Target.position - bigfoot.transform.position).magnitude;
         float attackRadioRatio = Mathf.Min(distance / bigfoot.AttackRadio, 1.0f);
         float timeToTarget = 2.0f - (2.0f * (1.0f - attackRadioRatio));
+        Debug.Log(timeToTarget);
         holdingBarril.Lunch(holdingBarril.transform.position, bigfoot.Target.position, timeToTarget);
         holdingBarril = null;
     }

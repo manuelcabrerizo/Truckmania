@@ -50,7 +50,7 @@ MonoBehaviour:
   life: 30
   hand: {fileID: 8065333624301119655}
   target: {fileID: 0}
-  attackRadio: 4
+  attackRadio: 164
 --- !u!136 &7435065898350266538
 CapsuleCollider:
   m_ObjectHideFlags: 0
