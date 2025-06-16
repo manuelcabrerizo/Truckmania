@@ -10,8 +10,10 @@ public class PlayerData : ScriptableObject
     public float dragCoefficient = 3.0f;
     public float restLength = 1.0f;
     public AnimationCurve turnCurve;
+    public AnimationCurve dragCurve;
     public float maxVelocity = 35.0f;
-    public float rotVelcoity = 12.0f;
+    public float rotVelcoity = 8.0f;
+    public float airRotVelocity = 12.0f;
     public float speedForce = 16.0f;
     public float breakFroce = 16.0f;
 }

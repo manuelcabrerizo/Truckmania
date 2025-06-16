@@ -9,11 +9,10 @@ public class PlayerMovement : MonoBehaviour
     private static Quaternion startRotation;
 
     [SerializeField] private PlayerData playerData;
-    [SerializeField] private Transform CG;
-    [SerializeField] private Transform[] wheels;
 
     [SerializeField] private LayerMask drivableLayer;
     [SerializeField] private Transform[] hitPoints;
+    [SerializeField] private Transform[] wheels;
     [SerializeField] private Transform[] wheelsVisuals;
 
     private Vector3 localVelocity;
@@ -33,10 +32,6 @@ public class PlayerMovement : MonoBehaviour
     private float currentPitch = 0.0f;
 
     private bool isEnable = true;
-
-    [SerializeField] private float cDrag;
-    [SerializeField] private float cRR;
-
 
     private void Awake()
     {
@@ -140,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessLocalVelocity()
     {
-        if(isGrounded)
+        if (isGrounded)
         {
             localVelocity = transform.InverseTransformDirection(body.velocity);
             velocityRatio = localVelocity.z / playerData.maxVelocity;
@@ -149,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessMovement()
     {
-        if(isGrounded)
+        if (isGrounded)
         {
             ProcessGroundMovement();
         }
@@ -161,12 +156,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessGroundMovement()
     {
-        float dragCoefficient = Mathf.Lerp(playerData.dragCoefficient, 1.0f, breaking);
-        body.AddTorque(steer * body.transform.up * playerData.rotVelcoity *
-                playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio),
-             ForceMode.Acceleration);
+        // we need to slow come back from braking base on the velocity
+        float dragCoefficient = Mathf.Lerp(playerData.dragCurve.Evaluate(Mathf.Abs(velocityRatio)), 1.5f, breaking);
+        
+        float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, 12.0f, breaking);
+
+        body.AddTorque(steer * body.transform.up * rotVelocity * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio), ForceMode.Acceleration);
 
         body.AddForce(body.transform.forward * accel * playerData.speedForce, ForceMode.Acceleration);
+        if (localVelocity.z > 0)
+        {
+            body.AddForce(-body.transform.forward * breaking * playerData.breakFroce, ForceMode.Acceleration);
+        }
 
         float sidewaySpeed = localVelocity.x;
         float dragMagnitude = -sidewaySpeed * dragCoefficient;
@@ -183,22 +184,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessAirMovement()
     {
-        body.AddTorque(steer * body.transform.up * playerData.rotVelcoity, ForceMode.Acceleration);
-        body.AddTorque(flip * body.transform.right * playerData.rotVelcoity, ForceMode.Acceleration);
+        body.AddTorque(steer * body.transform.up * playerData.airRotVelocity, ForceMode.Acceleration);
+        body.AddTorque(flip * body.transform.right * playerData.airRotVelocity, ForceMode.Acceleration);
     }
 
     private void Suspension()
     {
         isGrounded = false;
         int i = 0;
-        foreach(Transform hitRay in hitPoints)
+        foreach (Transform hitRay in hitPoints)
         {
             Vector3 newPosition = wheels[i].position;
 
             Ray ray = new Ray(hitRay.position, -hitRay.up);
             RaycastHit hit;
             float maxLength = playerData.restLength + playerData.springTravel;
-            if(Physics.Raycast(ray, out hit, maxLength + playerData.wheelsRadius, drivableLayer))
+            if (Physics.Raycast(ray, out hit, maxLength + playerData.wheelsRadius, drivableLayer))
             {
                 isGrounded = true;
                 float springLegth = hit.distance - playerData.wheelsRadius;
@@ -214,8 +215,8 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                Vector3 targetPosition = hitRay.position -  hitRay.up * maxLength;
-                newPosition = Vector3.Lerp(wheels[i].position, targetPosition, 10.0f*Time.deltaTime);
+                Vector3 targetPosition = hitRay.position - hitRay.up * maxLength;
+                newPosition = Vector3.Lerp(wheels[i].position, targetPosition, 10.0f * Time.deltaTime);
             }
 
             wheels[i].position = newPosition;
@@ -232,21 +233,38 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateWheelRotation()
     {
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             float steeringAngle = 30.0f * steer;
-            wheels[i].localEulerAngles = new Vector3(wheels[i].localEulerAngles.x, steeringAngle, wheels[i].localEulerAngles.z);                
+            wheels[i].localEulerAngles = new Vector3(wheels[i].localEulerAngles.x, steeringAngle, wheels[i].localEulerAngles.z);
         }
 
-        for(int i = 0; i < 4; ++i)
+        for (int i = 0; i < 4; ++i)
         {
-            wheelsVisuals[i].Rotate(Vector3.right, velocityRatio * 1200.0f * Time.deltaTime, Space.Self);
+            if (i >= 2)
+            {
+                if (Mathf.Abs(accel) > 0.001f)
+                {
+                    wheelsVisuals[i].Rotate(Vector3.right, (1.0f - breaking) * accel * 1200.0f * Time.deltaTime, Space.Self);
+                }
+                else
+                {
+                    wheelsVisuals[i].Rotate(Vector3.right, (1.0f - breaking) * velocityRatio * 1200.0f * Time.deltaTime, Space.Self);
+                }
+            }
+            else
+            {
+                wheelsVisuals[i].Rotate(Vector3.right, velocityRatio * 1200.0f * Time.deltaTime, Space.Self);
+            }
         }
+
+
+      
     }
 
     public Vector3 GetLocalVelocity()
     {
         return localVelocity;
     }
-    
+
 }
