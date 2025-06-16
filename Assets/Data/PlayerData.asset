@@ -16,7 +16,7 @@ MonoBehaviour:
   springTravel: 0.125
   springConstant: 120
   damperCoefficient: 75
-  dragCoefficient: 3
+  dragCoefficient: 5
   restLength: 1
   turnCurve:
     serializedVersion: 2

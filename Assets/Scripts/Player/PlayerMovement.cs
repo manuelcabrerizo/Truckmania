@@ -9,9 +9,11 @@ public class PlayerMovement : MonoBehaviour
     private static Quaternion startRotation;
 
     [SerializeField] private PlayerData playerData;
+    [SerializeField] private Transform CG;
+    [SerializeField] private Transform[] wheels;
+
     [SerializeField] private LayerMask drivableLayer;
     [SerializeField] private Transform[] hitPoints;
-    [SerializeField] private Transform[] wheels;
     [SerializeField] private Transform[] wheelsVisuals;
 
     private Vector3 localVelocity;
@@ -31,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
     private float currentPitch = 0.0f;
 
     private bool isEnable = true;
+
+    [SerializeField] private float cDrag;
+    [SerializeField] private float cRR;
+
 
     private void Awake()
     {
@@ -145,31 +151,40 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isGrounded)
         {
-            body.AddTorque(steer * body.transform.up * playerData.rotVelcoity *
-                playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio),
-             ForceMode.Acceleration);
-
-            body.AddForce(body.transform.forward * accel * playerData.speedForce, ForceMode.Acceleration);
-            if(localVelocity.z > 0)
-            {
-                body.AddForce(-body.transform.forward * breaking * playerData.breakFroce, ForceMode.Acceleration);
-            }
-           
-            float sidewaySpeed = localVelocity.x;
-            float dragMagnitude = -sidewaySpeed * playerData.dragCoefficient;
-            Vector3 dragForce = transform.right * dragMagnitude;
-            body.AddForceAtPosition(dragForce, body.worldCenterOfMass, ForceMode.Acceleration);   
-
-            if(body.velocity.magnitude > playerData.maxVelocity)
-            {
-                body.velocity = body.velocity.normalized * playerData.maxVelocity; 
-            }
+            ProcessGroundMovement();
         }
         else
         {
-            body.AddTorque(steer * body.transform.up * playerData.rotVelcoity, ForceMode.Acceleration);
-            body.AddTorque(flip * body.transform.right * playerData.rotVelcoity, ForceMode.Acceleration);
+            ProcessAirMovement();
         }
+    }
+
+    private void ProcessGroundMovement()
+    {
+        float dragCoefficient = Mathf.Lerp(playerData.dragCoefficient, 1.0f, breaking);
+        body.AddTorque(steer * body.transform.up * playerData.rotVelcoity *
+                playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio),
+             ForceMode.Acceleration);
+
+        body.AddForce(body.transform.forward * accel * playerData.speedForce, ForceMode.Acceleration);
+
+        float sidewaySpeed = localVelocity.x;
+        float dragMagnitude = -sidewaySpeed * dragCoefficient;
+        Vector3 dragForce = transform.right * dragMagnitude;
+        body.AddForceAtPosition(dragForce, body.worldCenterOfMass, ForceMode.Acceleration);
+
+        Vector3 velocity = body.velocity;
+        if (velocity.magnitude > playerData.maxVelocity)
+        {
+            velocity = velocity.normalized * playerData.maxVelocity;
+        }
+        body.velocity = velocity;
+    }
+
+    private void ProcessAirMovement()
+    {
+        body.AddTorque(steer * body.transform.up * playerData.rotVelcoity, ForceMode.Acceleration);
+        body.AddTorque(flip * body.transform.right * playerData.rotVelcoity, ForceMode.Acceleration);
     }
 
     private void Suspension()
