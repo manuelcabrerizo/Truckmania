@@ -177,31 +177,42 @@ public class PlayerMovement : MonoBehaviour
         Plane zxPlane = new Plane(transform.up, 0.0f);
         Vector3 forwardVel = zxPlane.ClosestPointOnPlane(body.velocity);
         forwardVel.Normalize();
-        float sliptAngle = Vector3.Angle(transform.forward * accel/Mathf.Abs(accel), forwardVel);
+
+        float sliptAngle = 0.0f;
+        if (localVelocity.z >= 0.0f)
+        {
+            sliptAngle = Vector3.Angle(transform.forward, forwardVel);
+        }
+        else
+        {
+            sliptAngle = Vector3.Angle(-transform.forward, forwardVel);
+        }
+
         float sign = Vector3.Dot(transform.right, forwardVel);
-        sign = sign / Mathf.Abs(sign);
-        Debug.Log(dragCoefficient);
-        if (!isDrifting && sliptAngle >= 10.0f &&
-            body.velocity.sqrMagnitude > 0.001f &&
-            dragCoefficient <= 2.5f)
+        if (sign > 0.0f)
+        {
+            sign = sign / Mathf.Abs(sign);
+        }
+
+        if (!isDrifting && breaking >= 0.001f)
         {
             isDrifting = true;
         }
-        if (isDrifting && sliptAngle <= 10.0f)
+
+        if (isDrifting && sliptAngle <= playerData.driftAngle)
         {
             isDrifting = false;
         }
 
-        float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, 12.0f, breaking);
+        float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, playerData.breakingRotVelocity, breaking);
         if (isDrifting)
         {
-            dragCoefficient = 1.125f;
-            rotVelocity *= 1.5f;
+            dragCoefficient = playerData.driftDragCoefficient;
+            rotVelocity *= playerData.driftRotVelocityMul;
         }
         else
         {
-            dragCoefficient = Mathf.Lerp(Mathf.Lerp(5.0f, playerData.dragCurve.Evaluate(Mathf.Abs(velocityRatio)), accel), 1.25f, breaking);
-
+            dragCoefficient = playerData.dragCoefficient;
         }
 
         body.AddTorque(steer * body.transform.up * rotVelocity * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio), ForceMode.Acceleration);

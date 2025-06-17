@@ -88,4 +88,4 @@ MonoBehaviour:
   rotVelcoity: 8
   airRotVelocity: 12
   speedForce: 16
-  breakFroce: 16
+  breakFroce: 10
