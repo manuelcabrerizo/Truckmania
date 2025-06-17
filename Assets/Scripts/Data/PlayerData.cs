@@ -17,7 +17,7 @@ public class PlayerData : ScriptableObject
     public float breakFroce = 16.0f;
 
     public float breakingRotVelocity = 12.0f;
-    public float driftAngle = 10.0f;
+    public float driftAngle = 5.0f;
     public float driftRotVelocityMul = 1.5f;
     public float driftDragCoefficient = 1.125f;
 }

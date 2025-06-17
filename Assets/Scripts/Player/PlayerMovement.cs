@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody body;
 
     private bool isDrifting;
-    private float dragCoefficient;
 
     // Input data
     private float accel;
@@ -174,8 +173,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessGroundMovement()
     {
-        Plane zxPlane = new Plane(transform.up, 0.0f);
-        Vector3 forwardVel = zxPlane.ClosestPointOnPlane(body.velocity);
+        Plane xzPlane = new Plane(transform.up, 0.0f);
+        Vector3 forwardVel = xzPlane.ClosestPointOnPlane(body.velocity);
         forwardVel.Normalize();
 
         float sliptAngle = 0.0f;
@@ -188,32 +187,25 @@ public class PlayerMovement : MonoBehaviour
             sliptAngle = Vector3.Angle(-transform.forward, forwardVel);
         }
 
-        float sign = Vector3.Dot(transform.right, forwardVel);
-        if (sign > 0.0f)
-        {
-            sign = sign / Mathf.Abs(sign);
-        }
-
         if (!isDrifting && breaking >= 0.001f)
         {
             isDrifting = true;
         }
 
-        if (isDrifting && sliptAngle <= playerData.driftAngle)
+        // TODO: test this Animation curve
+        if (isDrifting && sliptAngle * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) <= playerData.driftAngle)
         {
             isDrifting = false;
         }
-
+        Debug.Log(sliptAngle + " " + isDrifting);
+        float dragCoefficient = playerData.dragCoefficient;
         float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, playerData.breakingRotVelocity, breaking);
         if (isDrifting)
         {
             dragCoefficient = playerData.driftDragCoefficient;
             rotVelocity *= playerData.driftRotVelocityMul;
         }
-        else
-        {
-            dragCoefficient = playerData.dragCoefficient;
-        }
+
 
         body.AddTorque(steer * body.transform.up * rotVelocity * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio), ForceMode.Acceleration);
         body.AddForce(body.transform.forward * accel * playerData.speedForce, ForceMode.Acceleration);

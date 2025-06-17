@@ -60,32 +60,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  dragCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.0000002719462
-      value: 1.4998635
-      inSlope: 0.7572879
-      outSlope: 0.7572879
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.55018085
-    - serializedVersion: 3
-      time: 1.0000964
-      value: 4.9999914
-      inSlope: 7.201447
-      outSlope: 7.201447
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.047256194
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   maxVelocity: 35
   rotVelcoity: 8
   airRotVelocity: 12
   speedForce: 16
-  breakFroce: 10
+  breakFroce: 16
+  breakingRotVelocity: 12
+  driftAngle: 10
+  driftRotVelocityMul: 1.5
+  driftDragCoefficient: 1.125
