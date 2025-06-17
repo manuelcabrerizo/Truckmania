@@ -15,11 +15,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform[] wheels;
     [SerializeField] private Transform[] wheelsVisuals;
 
+    [SerializeField] private ParticleSystem dirtLeft;
+    [SerializeField] private ParticleSystem dirtRight;
+
     private Vector3 localVelocity;
     private float velocityRatio;
     private bool isGrounded;
     private bool wasGrounded;
     private Rigidbody body;
+
+    private bool isDrifting;
+    private float dragCoefficient;
 
     // Input data
     private float accel;
@@ -47,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = false;
         wasGrounded = isGrounded;
         isEnable = true;
+        isDrifting = false;
     }
 
     private void Start()
@@ -144,6 +151,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessMovement()
     {
+        if (isGrounded && isDrifting)
+        {
+            dirtLeft.Play();
+            dirtRight.Play();
+        }
+        else
+        {
+            dirtLeft.Stop();
+            dirtRight.Stop();
+        }
+
         if (isGrounded)
         {
             ProcessGroundMovement();
@@ -156,13 +174,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessGroundMovement()
     {
-        // we need to slow come back from braking base on the velocity
-        float dragCoefficient = Mathf.Lerp(playerData.dragCurve.Evaluate(Mathf.Abs(velocityRatio)), 1.5f, breaking);
-        
+        Plane zxPlane = new Plane(transform.up, 0.0f);
+        Vector3 forwardVel = zxPlane.ClosestPointOnPlane(body.velocity);
+        forwardVel.Normalize();
+        float sliptAngle = Vector3.Angle(transform.forward * accel/Mathf.Abs(accel), forwardVel);
+        float sign = Vector3.Dot(transform.right, forwardVel);
+        sign = sign / Mathf.Abs(sign);
+        Debug.Log(dragCoefficient);
+        if (!isDrifting && sliptAngle >= 10.0f &&
+            body.velocity.sqrMagnitude > 0.001f &&
+            dragCoefficient <= 2.5f)
+        {
+            isDrifting = true;
+        }
+        if (isDrifting && sliptAngle <= 10.0f)
+        {
+            isDrifting = false;
+        }
+
         float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, 12.0f, breaking);
+        if (isDrifting)
+        {
+            dragCoefficient = 1.125f;
+            rotVelocity *= 1.5f;
+        }
+        else
+        {
+            dragCoefficient = Mathf.Lerp(Mathf.Lerp(5.0f, playerData.dragCurve.Evaluate(Mathf.Abs(velocityRatio)), accel), 1.25f, breaking);
+
+        }
 
         body.AddTorque(steer * body.transform.up * rotVelocity * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio), ForceMode.Acceleration);
-
         body.AddForce(body.transform.forward * accel * playerData.speedForce, ForceMode.Acceleration);
         if (localVelocity.z > 0)
         {
