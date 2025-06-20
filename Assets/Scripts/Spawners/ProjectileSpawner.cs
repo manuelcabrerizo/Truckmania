@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
 {
-    [SerializeField] private BarrilProjectile barrilPrefab;
+    [SerializeField] private ExplosiveBarrilProjectile explosiveBarrilPrefab;
+    [SerializeField] private ToxicBarrilProjectile toxicBarrilProjectile;
+   
     [SerializeField] private int initialBarrilCount = 20;
     
     protected override void OnAwaken()
     {
-        PoolManager.Instance.InitPool(barrilPrefab, transform, initialBarrilCount);
+        PoolManager.Instance.InitPool(explosiveBarrilPrefab, transform, initialBarrilCount);
+        PoolManager.Instance.InitPool(toxicBarrilProjectile, transform, initialBarrilCount);
+
         Projectile.onProjectileRelease += OnProjectileRelease;
     }
 
@@ -19,9 +23,13 @@ public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
     private void OnProjectileRelease(Projectile projectile)
     {
         Projectile test = null;
-        if (test = projectile as BarrilProjectile)
+        if (test = projectile as ExplosiveBarrilProjectile)
         {
-            PoolManager.Instance.Release((BarrilProjectile)projectile);
+            PoolManager.Instance.Release((ExplosiveBarrilProjectile)projectile);
+        }
+        else if (test = projectile as ToxicBarrilProjectile)
+        {
+            PoolManager.Instance.Release((ToxicBarrilProjectile)projectile);
         }
     }
 }

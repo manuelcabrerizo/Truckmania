@@ -3,12 +3,9 @@ using UnityEngine;
 
 public class BarrilProjectile : Projectile
 {
-    [SerializeField] private LayerMask playerMask;
-    [SerializeField] private ParticleSystem explosionParticleSystem;
-    [SerializeField] private MeshRenderer barrilRenderer;
-
-    private Rigidbody body;
-    private Collider collision;
+    [SerializeField] protected MeshRenderer barrilRenderer;
+    protected Rigidbody body;
+    protected Collider collision;
 
     private void Awake()
     {
@@ -27,15 +24,6 @@ public class BarrilProjectile : Projectile
         barrilRenderer.enabled = true;
         collision.enabled = true;
         body.isKinematic = false;
-        explosionParticleSystem.Stop();
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (Utils.CheckCollisionLayer(collision.gameObject, playerMask))
-        {
-            Explote();
-        }
     }
 
     public void Lunch(Vector3 startPosition, Vector3 targetPosition, float timeToTarget)
@@ -69,25 +57,7 @@ public class BarrilProjectile : Projectile
         body.velocity = right * v0x + up * v0y; ;
     }
 
-    private void Explote()
-    {
-        explosionParticleSystem.Play();
-        barrilRenderer.enabled = false;
-        collision.enabled = false;
-        body.isKinematic = true;
-
-        Collider[] colliders = Physics.OverlapSphere(body.position, 50.0f, playerMask);
-        if (colliders.Length > 0)
-        {
-            Rigidbody playerBody = colliders[0].GetComponent<Rigidbody>();
-            playerBody.AddExplosionForce(100, body.position, 75.0f, 75.0f, ForceMode.Impulse);
-        }
-            
-
-        StartCoroutine(SendReleaseaEventAfterSeconds(explosionParticleSystem.main.duration));
-    }
-
-    private IEnumerator SendReleaseaEventAfterSeconds(float seconds)
+    protected IEnumerator SendReleaseaEventAfterSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         SendReleaseEvent();

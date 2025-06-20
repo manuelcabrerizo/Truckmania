@@ -187,16 +187,16 @@ public class PlayerMovement : MonoBehaviour
             sliptAngle = Vector3.Angle(-transform.forward, forwardVel);
         }
 
+        // TODO: test this Animation curve
         if (!isDrifting && breaking >= 0.001f)
         {
             isDrifting = true;
         }
-
-        // TODO: test this Animation curve
         if (isDrifting && sliptAngle * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) <= playerData.driftAngle)
         {
             isDrifting = false;
         }
+
         Debug.Log(sliptAngle + " " + isDrifting);
         float dragCoefficient = playerData.dragCoefficient;
         float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, playerData.breakingRotVelocity, breaking);
@@ -205,7 +205,6 @@ public class PlayerMovement : MonoBehaviour
             dragCoefficient = playerData.driftDragCoefficient;
             rotVelocity *= playerData.driftRotVelocityMul;
         }
-
 
         body.AddTorque(steer * body.transform.up * rotVelocity * playerData.turnCurve.Evaluate(Mathf.Abs(velocityRatio)) * Mathf.Sign(velocityRatio), ForceMode.Acceleration);
         body.AddForce(body.transform.forward * accel * playerData.speedForce, ForceMode.Acceleration);
@@ -302,9 +301,6 @@ public class PlayerMovement : MonoBehaviour
                 wheelsVisuals[i].Rotate(Vector3.right, velocityRatio * 1200.0f * Time.deltaTime, Space.Self);
             }
         }
-
-
-      
     }
 
     public Vector3 GetLocalVelocity()

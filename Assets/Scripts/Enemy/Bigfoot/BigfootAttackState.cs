@@ -2,7 +2,7 @@
 
 public class BigfootAttackState : BigfootState
 {
-    private BarrilProjectile holdingBarril = null;
+    private ExplosiveBarrilProjectile holdingBarril = null;
 
     public BigfootAttackState(Bigfoot bigfoot)
         : base(bigfoot) { }
@@ -10,6 +10,14 @@ public class BigfootAttackState : BigfootState
     public override void OnEnter()
     {
         bigfoot.Animator.SetBool("IsAttaking", true);
+    }
+
+    public override void OnExit()
+    {
+        if (holdingBarril)
+        {
+            holdingBarril.SendReleaseEvent();
+        }
     }
 
     public override void OnUpdate()
@@ -51,7 +59,7 @@ public class BigfootAttackState : BigfootState
 
     public void SpawnCrate()
     {
-        holdingBarril = ProjectileSpawner.Instance.Spawn<BarrilProjectile>();
+        holdingBarril = ProjectileSpawner.Instance.Spawn<ExplosiveBarrilProjectile>();
         holdingBarril.transform.position = bigfoot.Hand.position;
         holdingBarril.transform.rotation = bigfoot.Hand.rotation;
     }
