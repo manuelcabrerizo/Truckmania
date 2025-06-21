@@ -14,7 +14,7 @@ public class BigfootAttackState : BigfootState
 
     public override void OnExit()
     {
-        if (holdingBarril)
+        if (holdingBarril != null)
         {
             holdingBarril.SendReleaseEvent();
             holdingBarril = null;
@@ -67,11 +67,14 @@ public class BigfootAttackState : BigfootState
 
     public void LunchCrate()
     {
-        float distance = (bigfoot.Target.position - bigfoot.transform.position).magnitude;
-        float attackRadioRatio = Mathf.Min(distance / bigfoot.AttackRadio, 1.0f);
-        float timeToTarget = 2.0f - (2.0f * (1.0f - attackRadioRatio));
-        holdingBarril.Lunch(holdingBarril.transform.position, bigfoot.Target.position, timeToTarget);
-        holdingBarril = null;
+        if (holdingBarril != null)
+        {
+            float distance = (bigfoot.Target.position - bigfoot.transform.position).magnitude;
+            float attackRadioRatio = Mathf.Min(distance / bigfoot.AttackRadio, 1.0f);
+            float timeToTarget = 2.0f - (2.0f * (1.0f - attackRadioRatio));
+            holdingBarril.Lunch(holdingBarril.transform.position, bigfoot.Target.position, timeToTarget);
+            holdingBarril = null;
+        }
     }
 }
  

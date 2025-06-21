@@ -5,6 +5,9 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
 {
     public static event Action<ToxicBarrilProjectile> onBarrilPickUp;
 
+    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private ParticleSystem toxicParticleSystem;
+
     public override void OnGet()
     {
         base.OnGet();
@@ -37,5 +40,22 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
         collision.isTrigger = false;
         body.isKinematic = false;
         body.useGravity = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Utils.CheckCollisionLayer(collision.gameObject, enemyMask))
+        {
+            Explote();
+        }
+    }
+
+    private void Explote()
+    {
+        toxicParticleSystem.Play();
+        barrilRenderer.enabled = false;
+        collision.enabled = false;
+        body.isKinematic = true;
+        StartCoroutine(SendReleaseaEventAfterSeconds(toxicParticleSystem.main.duration));
     }
 }
