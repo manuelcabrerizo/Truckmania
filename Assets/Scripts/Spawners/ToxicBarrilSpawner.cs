@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ToxicBarrilSpawner : MonoBehaviour
 {
+    [SerializeField] private GameObject vfx;
     private float timeToSpawn = 5.0f;
     private float timer = 0.0f;
     private ToxicBarrilProjectile spawnedBarril = null;
@@ -26,6 +27,7 @@ public class ToxicBarrilSpawner : MonoBehaviour
                 ToxicBarrilProjectile barril = ProjectileSpawner.Instance.Spawn<ToxicBarrilProjectile>();
                 barril.transform.position = transform.position + Vector3.up * 2;
                 spawnedBarril = barril;
+                vfx.SetActive(true);
             }
         }
     }
@@ -36,6 +38,7 @@ public class ToxicBarrilSpawner : MonoBehaviour
         {
             spawnedBarril = null;
             timer = timeToSpawn;
+            vfx.SetActive(false);
         }
     }
 }
