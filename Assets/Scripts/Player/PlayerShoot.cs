@@ -1,7 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
+    [SerializeField] private LayerMask enemyMask;
     [SerializeField] private Transform barrilTransform;
     private ToxicBarrilProjectile barril = null;
 
@@ -22,6 +24,7 @@ public class PlayerShoot : MonoBehaviour
             this.barril.SendReleaseEvent();
         }
         this.barril = barril;
+        barril.gameObject.layer = LayerMask.NameToLayer("ToxicBarril");
     }
 
     private void Update()
@@ -32,9 +35,30 @@ public class PlayerShoot : MonoBehaviour
             barril.transform.rotation = barrilTransform.rotation;
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                barril.PrepareForLunch();
-                barril.Lunch(barril.transform.position, transform.position + transform.forward * 100, 1.0f);
-                barril = null;
+                Collider[] colliders = Physics.OverlapSphere(transform.position, 200.0f, enemyMask);
+                if (colliders.Length > 0)
+                {
+                    int minIndex = -1;
+                    float minDistSq = float.MaxValue;
+                    for(int i = 0; i < colliders.Length; ++i)
+                    {
+                        float distSq = (transform.position - colliders[i].transform.position).sqrMagnitude;
+                        if (distSq < minDistSq)
+                        {
+                            minDistSq = distSq;
+                            minIndex = i;
+                        }
+                    }
+
+                    if (minIndex >= 0)
+                    {
+                        barril.PrepareForLunch();
+                        float attackRadioRatio = Mathf.Min(Mathf.Sqrt(minDistSq) / 200.0f, 1.0f);
+                        float timeToTarget = 3.0f - (3.0f * (1.0f - attackRadioRatio));
+                        barril.Lunch(barril.transform.position, colliders[minIndex].transform.position, timeToTarget);
+                        barril = null;
+                    }
+                }
             }
         }
     }

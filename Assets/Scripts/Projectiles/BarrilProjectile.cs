@@ -54,7 +54,7 @@ public class BarrilProjectile : Projectile
         float v0x = (x - x0) / t;
         float v0y = (y - y0 - (0.5f * Physics.gravity.y * t * t)) / t;
 
-        body.velocity = right * v0x + up * v0y; ;
+        body.velocity = right * v0x + up * v0y;
     }
 
     protected IEnumerator SendReleaseaEventAfterSeconds(float seconds)

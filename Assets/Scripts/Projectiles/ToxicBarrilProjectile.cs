@@ -8,6 +8,7 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
     public override void OnGet()
     {
         base.OnGet();
+        gameObject.layer = 0;
         transform.rotation = Quaternion.identity;
         barrilRenderer.enabled = true;
         collision.enabled = true;

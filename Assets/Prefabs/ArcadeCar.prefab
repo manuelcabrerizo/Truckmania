@@ -5517,6 +5517,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231820a4ee3226f4c9fdd55a49957f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
+  toxicBarrilLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   barrilTransform: {fileID: 1931263113962479405}
 --- !u!54 &697911458418622276
 Rigidbody:

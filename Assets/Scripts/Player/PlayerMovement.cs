@@ -197,7 +197,6 @@ public class PlayerMovement : MonoBehaviour
             isDrifting = false;
         }
 
-        Debug.Log(sliptAngle + " " + isDrifting);
         float dragCoefficient = playerData.dragCoefficient;
         float rotVelocity = Mathf.Lerp(playerData.rotVelcoity, playerData.breakingRotVelocity, breaking);
         if (isDrifting)

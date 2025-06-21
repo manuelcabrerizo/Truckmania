@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -6289260622655909237}
   - component: {fileID: 5660465822720603599}
   - component: {fileID: 7655116480766530766}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ToxicBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
