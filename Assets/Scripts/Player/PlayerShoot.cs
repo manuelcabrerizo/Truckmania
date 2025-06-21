@@ -55,7 +55,8 @@ public class PlayerShoot : MonoBehaviour
                         barril.PrepareForLunch();
                         float attackRadioRatio = Mathf.Min(Mathf.Sqrt(minDistSq) / 200.0f, 1.0f);
                         float timeToTarget = 3.0f - (3.0f * (1.0f - attackRadioRatio));
-                        barril.Lunch(barril.transform.position, colliders[minIndex].transform.position, timeToTarget);
+                        Vector3 shootPos = colliders[minIndex].transform.position + Vector3.up * 5.0f;
+                        barril.Lunch(barril.transform.position, shootPos, timeToTarget);
                         barril = null;
                     }
                 }

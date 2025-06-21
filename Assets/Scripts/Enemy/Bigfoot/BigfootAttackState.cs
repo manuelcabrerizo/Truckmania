@@ -17,6 +17,7 @@ public class BigfootAttackState : BigfootState
         if (holdingBarril)
         {
             holdingBarril.SendReleaseEvent();
+            holdingBarril = null;
         }
     }
 
