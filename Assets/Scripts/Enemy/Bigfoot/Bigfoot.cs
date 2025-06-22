@@ -12,6 +12,7 @@ public class Bigfoot : Enemy
 
     public Transform Hand => hand;
     public Transform Target => target;
+    public Rigidbody TargetBody { get; private set; }
     public float AttackRadio => attackRadio;
     public StateMachine StateMachine => stateMachine;
     public BigfootIdleState IdleState => idleState;
@@ -21,6 +22,7 @@ public class Bigfoot : Enemy
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        TargetBody = target.GetComponent<Rigidbody>();
         stateMachine = new StateMachine();
         idleState = new BigfootIdleState(this);
         attackState = new BigfootAttackState(this);

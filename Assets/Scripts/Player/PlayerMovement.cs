@@ -148,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
             // zeron velocity in the up direction
             Vector3 downVelocity = Vector3.Dot(-transform.up, body.velocity) * transform.up;
             body.velocity -= downVelocity;
-            body.AddForce(transform.up * 100.0f, ForceMode.Impulse);
+            body.AddForce(transform.up * 200.0f, ForceMode.Impulse);
         }
     }
 
