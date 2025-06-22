@@ -22,6 +22,11 @@ public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
 
     private void OnProjectileRelease(Projectile projectile)
     {
+        if (projectile == null)
+        {
+            int StopHere = 0;
+        }
+
         Projectile test = null;
         if (test = projectile as ExplosiveBarrilProjectile)
         {

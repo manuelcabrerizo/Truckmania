@@ -21,6 +21,12 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
         body.useGravity = true;
     }
 
+    public override void OnRelease()
+    {
+        base.OnRelease();
+        barrilRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+    }
+
     public void PickUp()
     {
         if (collision.isTrigger == true)

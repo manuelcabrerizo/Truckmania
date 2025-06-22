@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         InputManager.onBreak += OnBreak;
         InputManager.onSteer += OnSteer;
         InputManager.onFlip += OnFlip;
+        InputManager.onJump += OnJump;
 
         startPosition = transform.position;
         startRotation = transform.rotation;
@@ -65,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         InputManager.onBreak -= OnBreak;
         InputManager.onSteer -= OnSteer;
         InputManager.onFlip -= OnFlip;
+        InputManager.onJump -= OnJump;
     }
 
     private void Update()
@@ -137,6 +139,17 @@ public class PlayerMovement : MonoBehaviour
     public void OnFlip(float flip)
     {
         this.flip = flip;
+    }
+
+    public void OnJump()
+    {
+        if (isGrounded)
+        {
+            // zeron velocity in the up direction
+            Vector3 downVelocity = Vector3.Dot(-transform.up, body.velocity) * transform.up;
+            body.velocity -= downVelocity;
+            body.AddForce(transform.up * 100.0f, ForceMode.Impulse);
+        }
     }
 
     private void ProcessLocalVelocity()
@@ -227,7 +240,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessAirMovement()
     {
-        body.AddTorque(steer * body.transform.up * playerData.airRotVelocity, ForceMode.Acceleration);
+        if (breaking > 0.0f)
+        {
+            body.AddTorque(-steer * body.transform.forward * playerData.airRotVelocity*1.5f, ForceMode.Acceleration);
+        }
+        else
+        {
+            body.AddTorque(steer * body.transform.up * playerData.airRotVelocity, ForceMode.Acceleration);
+        }
         body.AddTorque(flip * body.transform.right * playerData.airRotVelocity, ForceMode.Acceleration);
     }
 
