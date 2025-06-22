@@ -24,7 +24,7 @@ public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
     {
         if (projectile == null)
         {
-            int StopHere = 0;
+            return;
         }
 
         Projectile test = null;

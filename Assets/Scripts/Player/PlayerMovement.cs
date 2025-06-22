@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private float steer;
     private float breaking;
     private float flip;
+    private float sideFlip;
 
     [SerializeField] private AudioSource engineSound;
     [SerializeField] private AudioSource hitSound;
@@ -45,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
         InputManager.onSteer += OnSteer;
         InputManager.onFlip += OnFlip;
         InputManager.onJump += OnJump;
+        InputManager.onSideFlip += OnSideFlip;
 
         startPosition = transform.position;
         startRotation = transform.rotation;
@@ -67,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
         InputManager.onSteer -= OnSteer;
         InputManager.onFlip -= OnFlip;
         InputManager.onJump -= OnJump;
+        InputManager.onSideFlip -= OnSideFlip;
     }
 
     private void Update()
@@ -116,6 +119,11 @@ public class PlayerMovement : MonoBehaviour
         return isGrounded;
     }
 
+    public bool WasGrounded()
+    {
+        return wasGrounded;
+    }
+
     public float GetVelocityRatio()
     {
         return velocityRatio;
@@ -141,6 +149,11 @@ public class PlayerMovement : MonoBehaviour
         this.flip = flip;
     }
 
+    public void OnSideFlip(float sideFlip)
+    { 
+        this.sideFlip = sideFlip;
+    }
+
     public void OnJump()
     {
         if (isGrounded)
@@ -148,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
             // zeron velocity in the up direction
             Vector3 downVelocity = Vector3.Dot(-transform.up, body.velocity) * transform.up;
             body.velocity -= downVelocity;
-            body.AddForce(transform.up * 200.0f, ForceMode.Impulse);
+            body.AddForce(transform.up * 400.0f, ForceMode.Impulse);
         }
     }
 
@@ -240,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessAirMovement()
     {
-        if (breaking > 0.0f)
+        if (sideFlip > 0.0f)
         {
             body.AddTorque(-steer * body.transform.forward * playerData.airRotVelocity*1.5f, ForceMode.Acceleration);
         }

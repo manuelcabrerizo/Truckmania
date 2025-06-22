@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
     public static event Action<float> onBreak;
     public static event Action<float> onSteer;
     public static event Action<float> onFlip;
+    public static event Action<float> onSideFlip;
     public static event Action onJump;
     public static event Action onShoot;
     public static event Action onPause;
@@ -78,5 +79,10 @@ public class InputManager : MonoBehaviour
         { 
             onLockCamera?.Invoke();
         }
+    }
+
+    public void OnSideFlip(InputAction.CallbackContext context)
+    {
+        onSideFlip?.Invoke(context.ReadValue<float>());
     }
 }
