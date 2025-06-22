@@ -109,6 +109,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 30526772740415456}
     m_Modifications:
+    - target: {fileID: 431008452971462029, guid: 2ff5f545904214c4eaab29cddded9b60, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 431008452971462029, guid: 2ff5f545904214c4eaab29cddded9b60, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 2262093509505460194, guid: 2ff5f545904214c4eaab29cddded9b60, type: 3}
       propertyPath: m_Name
       value: Explosion

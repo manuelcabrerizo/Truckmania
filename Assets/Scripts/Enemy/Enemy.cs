@@ -1,8 +1,12 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected float life;
+    public static event Action<GameObject> onEnemyKill;
+
+    [SerializeField] protected int life;
+    [SerializeField] protected LayerMask damagableLayer;
 
     private void Awake()
     {
@@ -18,8 +22,16 @@ public class Enemy : MonoBehaviour
 
     protected virtual void OnDestroyed() { }
 
-    public void Attack()
-    { 
-    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Utils.CheckCollisionLayer(collision.gameObject, damagableLayer))
+        {
+            life--;
+            if (life <= 0)
+            {
+                onEnemyKill?.Invoke(this.gameObject);
+                gameObject.SetActive(false);
+            }
+        }
     }
 }
