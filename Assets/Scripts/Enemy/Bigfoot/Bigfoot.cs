@@ -8,7 +8,9 @@ public class Bigfoot : Enemy
     private StateMachine stateMachine = null;
     private BigfootIdleState idleState = null;
     private BigfootAttackState attackState = null;
+    private BigfootDeadState deadState = null;
     private Animator animator;
+    private Collider collision;
 
     public Transform Hand => hand;
     public Transform Target => target;
@@ -17,23 +19,26 @@ public class Bigfoot : Enemy
     public StateMachine StateMachine => stateMachine;
     public BigfootIdleState IdleState => idleState;
     public BigfootAttackState AttackState => attackState;
+    public BigfootDeadState DeadState => deadState;
     public Animator Animator => animator;
 
-    private void Awake()
+    protected override void OnAwaken()
     {
+        collision = GetComponent<Collider>();
         animator = GetComponent<Animator>();
         TargetBody = target.GetComponent<Rigidbody>();
         stateMachine = new StateMachine();
         idleState = new BigfootIdleState(this);
         attackState = new BigfootAttackState(this);
+        deadState = new BigfootDeadState(this);
     }
 
-    private void Start()
+    protected override void OnStart()
     {
         stateMachine.PushState(idleState);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroyed()
     {
         stateMachine.Clear();
     }
@@ -41,6 +46,32 @@ public class Bigfoot : Enemy
     private void Update()
     {
         stateMachine.Update();
+    }
+
+    protected override void OnTakeDamage(GameObject attacker)
+    {
+        if (Utils.CheckCollisionLayer(attacker, damagableLayer))
+        {
+            life--;
+            if (life <= 0)
+            {
+                stateMachine.ChangeState(deadState);
+            }
+        }
+    }
+
+    public override void Restart()
+    {
+        base.Restart();
+        collision.enabled = true;
+        animator.enabled = true;
+        stateMachine.ChangeState(idleState);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, attackRadio);
     }
 
     // Methods call from the animator
@@ -54,10 +85,10 @@ public class Bigfoot : Enemy
         attackState.LunchCrate();
     }
 
-    private void OnDrawGizmos()
+    public void Kill()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, attackRadio);
+        collision.enabled = false;
+        animator.enabled = false;
+        SendEnemyKillEvent();
     }
-
 }

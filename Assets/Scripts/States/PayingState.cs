@@ -13,21 +13,26 @@ class PlayingState : GameState
     private float timer;
 
     private List<Coin> coins;
+    private List<Enemy> enemies;
     private int coinsCollectedCount = 0;
+    private int enemiesKillCount = 0;
 
-    public PlayingState(GameManager gameManager, int roundTime, List<Coin> coins)
+    public PlayingState(GameManager gameManager, int roundTime, List<Coin> coins, List<Enemy> enemies)
     : base(gameManager)
     {
         this.roundTime = roundTime;
         this.coins = coins;
+        this.enemies = enemies;
     }
     
     public override void OnEnter()
     {        
         Coin.onCoinPick += OnCoinPick;
+        Enemy.onEnemyKill += OnEnemyKill;
 
         seconds = roundTime;
         coinsCollectedCount = 0;
+        enemiesKillCount = 0;
 
         onShowPlayingUI?.Invoke(true);
         onUpdateTimeText?.Invoke(seconds);
@@ -37,12 +42,18 @@ class PlayingState : GameState
         {
             coin.Restart();
         }
+
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.Restart();
+        }
     }
 
     public override void OnExit()
     {
         onShowPlayingUI?.Invoke(false);
         Coin.onCoinPick -= OnCoinPick;
+        Enemy.onEnemyKill -= OnEnemyKill;
     }
 
     public override void OnUpdate()
@@ -72,5 +83,10 @@ class PlayingState : GameState
     {
         coinsCollectedCount++;
         onUpdateCoinPickText?.Invoke(coinsCollectedCount, coins.Count);
+    }
+
+    private void OnEnemyKill(Enemy enemy)
+    {
+        enemiesKillCount++;
     }
 }

@@ -1,6 +1,6 @@
 Shader "Custom/ToxicShader"
 {
-Properties
+	Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
 		_NoiseTex ("Noise", 2D) = "black" {}

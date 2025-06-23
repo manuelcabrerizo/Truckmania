@@ -3,13 +3,17 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public static event Action<GameObject> onEnemyKill;
+    public static event Action<Enemy> onEnemySpawn;
+    public static event Action<Enemy> onEnemyKill;
 
-    [SerializeField] protected int life;
+    [SerializeField] protected int maxLife;
     [SerializeField] protected LayerMask damagableLayer;
+
+    protected int life;
 
     private void Awake()
     {
+        life = maxLife;
         OnAwaken();
     }
 
@@ -18,20 +22,32 @@ public class Enemy : MonoBehaviour
         OnDestroyed();
     }
 
-    protected virtual void OnAwaken() { }
-
-    protected virtual void OnDestroyed() { }
+    private void Start()
+    {
+        onEnemySpawn?.Invoke(this);
+        OnStart();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (Utils.CheckCollisionLayer(collision.gameObject, damagableLayer))
-        {
-            life--;
-            if (life <= 0)
-            {
-                onEnemyKill?.Invoke(this.gameObject);
-                gameObject.SetActive(false);
-            }
-        }
+        OnTakeDamage(collision.gameObject);
+    }
+
+    protected virtual void OnAwaken() { }
+
+    protected virtual void OnStart() { }
+
+    protected virtual void OnDestroyed() { }
+
+    protected virtual void OnTakeDamage(GameObject attacker) { }
+
+    public virtual void Restart()
+    {
+        life = maxLife;
+    }
+
+    public void SendEnemyKillEvent()
+    {
+        onEnemyKill?.Invoke(this);
     }
 }

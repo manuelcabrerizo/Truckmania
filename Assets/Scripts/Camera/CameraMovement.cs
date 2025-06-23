@@ -21,7 +21,7 @@ public class CameraMovement : MonoBehaviour
     private void Awake()
     {
         InputManager.onLockCamera += OnLockCamera;
-        Enemy.onEnemyKill += OnLockTargetLost;
+        Enemy.onEnemyKill += OnEnemyKill;
 
         back = -target.transform.forward;
         back.y = 0.0f;
@@ -35,7 +35,7 @@ public class CameraMovement : MonoBehaviour
     private void OnDestroy()
     {
         InputManager.onLockCamera -= OnLockCamera;
-        Enemy.onEnemyKill -= OnLockTargetLost;
+        Enemy.onEnemyKill -= OnEnemyKill;
     }
 
     private void Start()
@@ -69,7 +69,6 @@ public class CameraMovement : MonoBehaviour
         {
             if (lockT > 0.0f && lockTarget != null)
             {
-                Debug.Log(lockT);
                 Transition(lockT);
             }
             else
@@ -207,12 +206,17 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    private void OnLockTargetLost(GameObject lockTarget)
+    private void LockTargetLost(GameObject lockTarget)
     {
         if (this.lockTarget == lockTarget)
         {
             this.lockTarget = null;
             isLock = false;
         }
+    }
+
+    private void OnEnemyKill(Enemy enemy)
+    {
+        LockTargetLost(enemy.gameObject);
     }
 }

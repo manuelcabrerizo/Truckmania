@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private State winState;
 
     private List<Coin> coins = new List<Coin>();
+    private List<Enemy> enemies = new List<Enemy>();
 
     private void Awake()
     {
@@ -23,10 +24,11 @@ public class GameManager : MonoBehaviour
 
         InputManager.onPause += PauseGame;
         Coin.onCoinSpawn += OnCoinSpawn;
+        Enemy.onEnemySpawn += OnEnemySpawn;
 
         fsm = new StateMachine();
         countDownState = new CountDownState(this);
-        playingState = new PlayingState(this, playStateData.roundTime, coins);
+        playingState = new PlayingState(this, playStateData.roundTime, coins, enemies);
         pauseState = new PauseState(this);
         gameOverState = new GameOverState(this);
         winState = new WinState(this);
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
         fsm.Clear();
         InputManager.onPause -= PauseGame;
         Coin.onCoinSpawn -= OnCoinSpawn;
+        Enemy.onEnemySpawn -= OnEnemySpawn;
     }
 
     private void Update()
@@ -105,6 +108,11 @@ public class GameManager : MonoBehaviour
     {
 
         coins.Add(coin);
+    }
+
+    private void OnEnemySpawn(Enemy enemy)
+    { 
+        enemies.Add(enemy);
     }
 
 }

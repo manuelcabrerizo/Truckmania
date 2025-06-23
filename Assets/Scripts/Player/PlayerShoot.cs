@@ -69,4 +69,13 @@ public class PlayerShoot : MonoBehaviour
             }
         }
     }
+
+    public void Restart()
+    {
+        if (barril != null)
+        {
+            barril.SendReleaseEvent();
+            barril = null;
+        }
+    }
 }

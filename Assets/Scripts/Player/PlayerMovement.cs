@@ -39,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isEnable = true;
 
+    private PlayerShoot playerShoot;
+
     private void Awake()
     {
         InputManager.onAccelerate += OnAccelerate;
@@ -56,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
         wasGrounded = isGrounded;
         isEnable = true;
         isDrifting = false;
+
+        playerShoot = GetComponent<PlayerShoot>();
     }
 
     private void Start()
@@ -110,6 +114,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            playerShoot.Restart();
             engineSound.Stop();
         }
     }
