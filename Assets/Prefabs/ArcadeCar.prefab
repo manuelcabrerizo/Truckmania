@@ -5534,6 +5534,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2f5ebeae4466f49afff6abbee68141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 256
+  materials:
+  - {fileID: 2100000, guid: 887aa1ab0983c584c97fbf4a2185394e, type: 2}
+  - {fileID: 2100000, guid: 483f53345e05d3a45aa40d3428d23d6e, type: 2}
+  - {fileID: 2100000, guid: ec364b386c83f934bbc3ff86eff56a91, type: 2}
+  - {fileID: 2100000, guid: 725534a0f05f27c4b95005ab437c413c, type: 2}
+  - {fileID: 2100000, guid: 59b5699c4f5aabc4fa56ffd34c713d90, type: 2}
+  - {fileID: 2100000, guid: 6551da06dd133334ba8e9169aad06e2d, type: 2}
+  - {fileID: 2100000, guid: c88fc66046d28514c8319f101df9a3d2, type: 2}
 --- !u!54 &697911458418622276
 Rigidbody:
   m_ObjectHideFlags: 0
