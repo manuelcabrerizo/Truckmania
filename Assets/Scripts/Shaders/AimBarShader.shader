@@ -21,13 +21,11 @@ Shader "Custom/AimBarShader"
 
     SubShader
     {
-        Tags { "RenderType"="Transparent" "QUEUE"="Transparent" }
+        Tags { "RenderType"="Opaque"}
         LOD 100
 
         Pass
         {
-			Blend SrcAlpha OneMinusSrcAlpha
-
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -148,6 +146,10 @@ Shader "Custom/AimBarShader"
 				finalColor += borderColor * borderMask;
 				finalColor += barColor * barMask;
 				float alpha = saturate(markerMask + borderMask + barMask);
+				if(alpha < 0.5f)
+				{
+					discard;	
+				}
                 return float4(finalColor, alpha);
             }
             ENDCG

@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BorderTex:
-        m_Texture: {fileID: 2800000, guid: ff8e8d69fa546aa489aec55182f23493, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6c891c4a5cf42794eb06592a6c52ebb9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -75,7 +75,7 @@ Material:
     m_Floats:
     - _BarSmoothMax: 1
     - _BarSmoothMin: 0
-    - _BorderTexScale: 5.45
+    - _BorderTexScale: 2.7
     - _BorderThickness: 0.19
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -86,7 +86,7 @@ Material:
     - _GlossyReflections: 1
     - _HorizontalScale: 10
     - _MarkerHeight: 1.8
-    - _MarkerPosition: -1.82
+    - _MarkerPosition: 0
     - _MarkerTexScale: 8.79
     - _MarkerThickness: 0.25
     - _MarkerWidth: 1.8

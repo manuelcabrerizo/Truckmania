@@ -4,6 +4,9 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     public static event Action<CameraMovement> onCameraCreated;
+    public static event Action onTargetLock;
+    public static event Action onTargetUnlock;
+
 
     [SerializeField] private CameraData cameraData;
     [SerializeField] private PlayerMovement target;
@@ -196,12 +199,15 @@ public class CameraMovement : MonoBehaviour
                     lockTarget = colliders[minIndex].gameObject;
                     isLock = true;
                     lockTimer = 0.0f;
+                    onTargetLock?.Invoke();
+
                 }
             }
         }
         else
         {
             isLock = false;
+            onTargetUnlock?.Invoke();
         }
 
     }
