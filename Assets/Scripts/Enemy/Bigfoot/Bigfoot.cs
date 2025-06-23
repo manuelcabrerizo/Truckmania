@@ -5,10 +5,13 @@ public class Bigfoot : Enemy
     [SerializeField] private Transform hand = null;
     [SerializeField] private Transform target = null;
     [SerializeField] private float attackRadio = 4.0f;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer = null;
+
     private StateMachine stateMachine = null;
     private BigfootIdleState idleState = null;
     private BigfootAttackState attackState = null;
     private BigfootDeadState deadState = null;
+    private BigfootHitState hitState = null;
     private Animator animator;
     private Collider collision;
 
@@ -20,7 +23,9 @@ public class Bigfoot : Enemy
     public BigfootIdleState IdleState => idleState;
     public BigfootAttackState AttackState => attackState;
     public BigfootDeadState DeadState => deadState;
+    public BigfootHitState HitState => hitState;
     public Animator Animator => animator;
+    public SkinnedMeshRenderer SkinnedMeshRenderer => skinnedMeshRenderer;
 
     protected override void OnAwaken()
     {
@@ -31,6 +36,7 @@ public class Bigfoot : Enemy
         idleState = new BigfootIdleState(this);
         attackState = new BigfootAttackState(this);
         deadState = new BigfootDeadState(this);
+        hitState = new BigfootHitState(this);
     }
 
     protected override void OnStart()
@@ -56,6 +62,10 @@ public class Bigfoot : Enemy
             if (life <= 0)
             {
                 stateMachine.ChangeState(deadState);
+            }
+            else
+            {
+                stateMachine.ChangeState(hitState);
             }
         }
     }
@@ -89,6 +99,12 @@ public class Bigfoot : Enemy
     {
         collision.enabled = false;
         animator.enabled = false;
+        deadState.SetDead();
         SendEnemyKillEvent();
+    }
+
+    public void HitAnimationEnd()
+    {
+        stateMachine.ChangeState(idleState);
     }
 }
