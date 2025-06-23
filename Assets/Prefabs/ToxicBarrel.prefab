@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 30526772740415456}
   - component: {fileID: -6289260622655909237}
-  - component: {fileID: 5660465822720603599}
   - component: {fileID: 7655116480766530766}
+  - component: {fileID: 4607233274256872931}
   m_Layer: 10
   m_Name: ToxicBarrel
   m_TagString: Untagged
@@ -53,27 +53,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   toxicParticleSystem: {fileID: 5957705469950913872}
---- !u!65 &5660465822720603599
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853891044979086430}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.5, y: 3.13665, z: 1.5}
-  m_Center: {x: 0, y: 0.4619093, z: 0}
 --- !u!54 &7655116480766530766
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -101,6 +80,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &4607233274256872931
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853891044979086430}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.36, z: 0}
 --- !u!1001 &6293000275932123357
 PrefabInstance:
   m_ObjectHideFlags: 0

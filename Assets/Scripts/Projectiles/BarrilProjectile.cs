@@ -9,14 +9,19 @@ public class BarrilProjectile : Projectile
 
     private void Awake()
     {
+        OnAwaken();
         body = GetComponent<Rigidbody>();
         collision = GetComponent<Collider>();
     }
 
     private void OnDestroy()
     {
+        OnDestroyed();
         StopAllCoroutines();
     }
+
+    protected virtual void OnAwaken() { }
+    protected virtual void OnDestroyed() { }
 
     public override void OnGet()
     {

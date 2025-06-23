@@ -8,6 +8,14 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private ParticleSystem toxicParticleSystem;
 
+    private CapsuleCollider capsuleCollider;
+    private float triggerRadius = 4.5f;
+
+    protected override void OnAwaken()
+    {
+        capsuleCollider = GetComponent<CapsuleCollider>();
+    }
+
     public override void OnGet()
     {
         base.OnGet();
@@ -16,6 +24,7 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
         barrilRenderer.enabled = true;
         collision.enabled = true;
         collision.isTrigger = true;
+        capsuleCollider.radius = triggerRadius;
         body.velocity = Vector3.zero;
         body.isKinematic = true;
         body.useGravity = true;
@@ -25,6 +34,8 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
     {
         base.OnRelease();
         barrilRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        capsuleCollider.radius = 1.0f;
+
     }
 
     public void PickUp()
@@ -33,6 +44,7 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
         {
             barrilRenderer.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             collision.enabled = false;
+            capsuleCollider.radius = 1.0f;
             body.useGravity = false;
 
             onBarrilPickUp?.Invoke(this);
