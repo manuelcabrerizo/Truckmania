@@ -63,8 +63,7 @@ Shader "Custom/AimBarShader"
 
 			float IntersectRect(float2 p, float2 min, float2 max)
 			{
-				if (p.x >= min.x && p.x <= max.x &&
-					p.y >= min.y && p.y <= max.y)	
+				if(p.x >= min.x && p.x <= max.x && p.y >= min.y && p.y <= max.y)	
 				{
 					return 1.0f;
 				}
@@ -136,7 +135,7 @@ Shader "Custom/AimBarShader"
 				float colorMask = step(0.5f, distToCenter);
 				float3 greenToYellowColor = lerp(greenColor, yellowColor, distToCenter*2.0f);
 				float3 yellowToRedColor = lerp(yellowColor, redColor, (distToCenter - 0.5f) * 2.0f);
-				float3 barColor = lerp(greenToYellowColor, yellowToRedColor, colorMask);
+				float3 barColor = lerp(greenToYellowColor, yellowToRedColor, colorMask) * (borderColor * 2.0f);
 
 				float barMask = saturate(IntersectRect(worldUv, float2(-5.0f, -0.75f), float2(5.0f, 0.75f)) - markerMask);
 				barMask = saturate(barMask - borderMask);

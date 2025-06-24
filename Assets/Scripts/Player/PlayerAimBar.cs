@@ -26,6 +26,7 @@ public class PlayerAimBar : MonoBehaviour
         if (aimBar.activeSelf)
         {
             timer += Time.deltaTime * 2;
+            // TODO: make this work using local scale
             meshRenderer.material.SetFloat("_MarkerPosition", Mathf.Lerp(-4.1f, 4.1f, Mathf.Sin(timer) * 0.5f + 0.5f));
             aimBar.transform.position = transform.position + offset;
             aimBar.transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);

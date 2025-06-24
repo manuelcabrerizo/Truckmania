@@ -218,6 +218,7 @@ public class CameraMovement : MonoBehaviour
         {
             this.lockTarget = null;
             isLock = false;
+            onTargetUnlock?.Invoke();
         }
     }
 
