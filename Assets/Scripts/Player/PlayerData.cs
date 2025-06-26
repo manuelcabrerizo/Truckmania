@@ -1,5 +1,4 @@
 ﻿using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -26,6 +25,7 @@ public class PlayerData
     public float sliptAngle;
     public float upsideDownRatio;
     public ToxicBarrilProjectile barril = null;
+    public bool trickDone = false;
 
     [Header("Input State")]
     public float accel;
@@ -37,26 +37,28 @@ public class PlayerData
     [Header("Components")]
     public Rigidbody body;
     public PlayerAimBar aimBar;
+    public CameraMovement cameraMovement;
 
     public void Initialize()
     {
         ToxicBarrilProjectile.onBarrilPickUp += OnBarrilPickUp;
+        CameraMovement.onCameraCreated += OnCameraCreated;
         InputManager.onAccelerate += OnAccelerate;
         InputManager.onBreak += OnBreak;
         InputManager.onSteer += OnSteer;
         InputManager.onFlip += OnFlip;
         InputManager.onSideFlip += OnSideFlip;
-
     }
 
     public void Destroy()
     {
         ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
-        InputManager.onAccelerate += OnAccelerate;
-        InputManager.onBreak += OnBreak;
-        InputManager.onSteer += OnSteer;
-        InputManager.onFlip += OnFlip;
-        InputManager.onSideFlip += OnSideFlip;
+        CameraMovement.onCameraCreated -= OnCameraCreated;
+        InputManager.onAccelerate -= OnAccelerate;
+        InputManager.onBreak -= OnBreak;
+        InputManager.onSteer -= OnSteer;
+        InputManager.onFlip -= OnFlip;
+        InputManager.onSideFlip -= OnSideFlip;
     }
 
     public void Update(Player player)
@@ -150,6 +152,10 @@ public class PlayerData
         }
         this.barril = barril;
         this.barril.gameObject.layer = LayerMask.NameToLayer("ToxicBarril");
+    }
+    private void OnCameraCreated(CameraMovement cameraMovement)
+    {
+        this.cameraMovement = cameraMovement;
     }
     private void OnAccelerate(float accel)
     {

@@ -64,7 +64,6 @@ public class Player : MonoBehaviour, IDamagable
         IPickable pickable = null;
         if (other.gameObject.TryGetComponent<IPickable>(out pickable))
         {
-            //StartCoroutine(PlayColorAnimation(Color.white, 0.5f));
             pickable.PickUp();
         }
     }
@@ -79,20 +78,25 @@ public class Player : MonoBehaviour, IDamagable
                             Data.isGrounded == false; });
         State<Player> fallState = new PlayerFallState(this,
             () => { return !Data.isGrounded; },
-            () => { return Data.isGrounded || Data.body.velocity.magnitude <= 0.01f; });
+            () => { return Data.isGrounded || Data.body.velocity.magnitude <= 0.01f || Mathf.Abs(Data.flip) > 0.01f; });
         State<Player> restartState = new PlayerRestartState(this,
             () => { return Data.upsideDownRatio < 0.25f && Data.body.velocity.magnitude <= 0.01f; },
             () => { return Data.upsideDownRatio >= 0.25f; });
         State<Player> barrilState = new PlayerBarrilState(this, () => { return Data.barril != null; });
+        State<Player> flipState = new PlayerFlipState(this,
+            () => { return Mathf.Abs(Data.flip) > 0.01f && !Data.trickDone; },
+            () => { return Data.isGrounded || Data.trickDone; });
 
         StateGraph<Player> stateGraph = new StateGraph<Player>();
         stateGraph.AddStateTransitions(driveState, new List<State<Player>> { driftState, fallState, barrilState, restartState });
         stateGraph.AddStateTransitions(driftState, new List<State<Player>> { driveState, fallState, barrilState, restartState });
-        stateGraph.AddStateTransitions(fallState, new List<State<Player>> { driveState, driftState, barrilState, restartState });
+        stateGraph.AddStateTransitions(fallState, new List<State<Player>> { driveState, driftState, barrilState, restartState, flipState });
         stateGraph.AddStateTransitions(barrilState, new List<State<Player>> { driveState, driftState, fallState, restartState });
         stateGraph.AddStateTransitions(restartState, new List<State<Player>> { driveState, fallState, barrilState });
+        stateGraph.AddStateTransitions(flipState, new List<State<Player>> { fallState, driveState, driftState, restartState, barrilState });
+        
 
-        List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState };
+        List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState, flipState };
         List<State<Player>> additiveStates = new List<State<Player>> { barrilState };
 
         this.basicStates = basicStates;
