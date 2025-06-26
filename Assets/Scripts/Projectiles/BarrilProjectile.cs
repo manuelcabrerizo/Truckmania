@@ -1,8 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class BarrilProjectile : Projectile
 {
+    public static event Action<BarrilProjectile> onBarrilExplote;
+    public static event Action<BarrilProjectile> onBarrilExploteEnd;
+
+    [SerializeField] protected ParticleSystem particles;
     [SerializeField] protected MeshRenderer barrilRenderer;
     protected Rigidbody body;
     protected Collider collision;
@@ -45,7 +50,7 @@ public class BarrilProjectile : Projectile
         body.velocity = Vector3.zero;
 
         Vector3 relPosition = targetPosition - startPosition;
-        
+
         Vector3 up = Vector3.up;
         Vector3 right = relPosition;
         right.y = 0.0f;
@@ -62,9 +67,20 @@ public class BarrilProjectile : Projectile
         body.velocity = right * v0x + up * v0y;
     }
 
+    public virtual void Explote()
+    {
+        particles.Play();
+        barrilRenderer.enabled = false;
+        collision.enabled = false;
+        body.isKinematic = true;
+        StartCoroutine(SendReleaseaEventAfterSeconds(particles.main.duration));
+        onBarrilExplote?.Invoke(this);
+    }
+
     protected IEnumerator SendReleaseaEventAfterSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         SendReleaseEvent();
+        onBarrilExploteEnd?.Invoke(this);
     }
 }

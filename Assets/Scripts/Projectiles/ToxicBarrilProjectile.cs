@@ -6,7 +6,6 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
     public static event Action<ToxicBarrilProjectile> onBarrilPickUp;
 
     [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private ParticleSystem toxicParticleSystem;
 
     private CapsuleCollider capsuleCollider;
     private float triggerRadius = 4.5f;
@@ -66,14 +65,5 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
         {
             Explote();
         }
-    }
-
-    private void Explote()
-    {
-        toxicParticleSystem.Play();
-        barrilRenderer.enabled = false;
-        collision.enabled = false;
-        body.isKinematic = true;
-        StartCoroutine(SendReleaseaEventAfterSeconds(toxicParticleSystem.main.duration));
     }
 }

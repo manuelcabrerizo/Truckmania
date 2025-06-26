@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //[SerializeField] private Player player;
+    //[SerializeField] private CameraMovement cameraMovement;
+
     [SerializeField] private PlayStateData playStateData;
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private CameraMovement cameraMovement;
     [SerializeField] private AudioSource music;
 
     private StateMachine fsm;
-    private State countDownState;
-    private State playingState;
-    private State pauseState;
-    private State gameOverState;
-    private State winState;
+    private State<int> countDownState;
+    private State<int> playingState;
+    private State<int> pauseState;
+    private State<int> gameOverState;
+    private State<int> winState;
 
     private List<Coin> coins = new List<Coin>();
     private List<Enemy> enemies = new List<Enemy>();
@@ -55,32 +56,32 @@ public class GameManager : MonoBehaviour
     public void SetPlayingState()
     {
         music.Play();
-        playerMovement.SetEnable(true);
-        cameraMovement.SetEnable(true);
+        //playerMovement.SetEnable(true);
+        //cameraMovement.SetEnable(true);
         fsm.ChangeState(playingState);
     }
 
     public void SetCountDownState()
     {
         music.Stop();
-        playerMovement.SetEnable(false);
-        cameraMovement.SetEnable(false);
+        //playerMovement.SetEnable(false);
+        //cameraMovement.SetEnable(false);
         fsm.ChangeState(countDownState);
     }
 
     public void SetGameOverState()
     {
         music.Stop();
-        playerMovement.SetEnable(false);
-        cameraMovement.SetEnable(false);
+        //playerMovement.SetEnable(false);
+        //cameraMovement.SetEnable(false);
         fsm.ChangeState(gameOverState);
     }
 
     public void SetWinState()
     {
         music.Stop();
-        playerMovement.SetEnable(false);
-        cameraMovement.SetEnable(false);
+        //playerMovement.SetEnable(false);
+        //cameraMovement.SetEnable(false);
         fsm.ChangeState(winState);
     }
 

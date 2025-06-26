@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class BigfootState : State
+// TODO: remove this and use State<Bigfoot>
+public class BigfootState : State<int>
 {
     protected Bigfoot bigfoot;
 

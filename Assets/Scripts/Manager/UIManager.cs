@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
         PlayingState.onShowPlayingUI += OnShowPlayingUI;
         PlayingState.onUpdateCoinPickText += OnUpdateCoinPickText;
         PlayingState.onUpdateTimeText += OnUpdateTimeText;
-        PlayerOnHit.onOnShowResetText += OnShowResetText;
+        PlayerRestartState.onOnShowResetText += OnShowResetText;
         CountDownState.onShowCountDownUI += OnShowCountDownUI;
         CountDownState.onCountDownChange += OnCountDownChange;
 
@@ -71,7 +71,7 @@ public class UIManager : MonoBehaviour
         PlayingState.onShowPlayingUI -= OnShowPlayingUI;
         PlayingState.onUpdateCoinPickText -= OnUpdateCoinPickText;
         PlayingState.onUpdateTimeText -= OnUpdateTimeText;
-        PlayerOnHit.onOnShowResetText -= OnShowResetText;
+        PlayerRestartState.onOnShowResetText -= OnShowResetText;
         CountDownState.onShowCountDownUI -= OnShowCountDownUI;
         CountDownState.onCountDownChange -= OnCountDownChange;
 

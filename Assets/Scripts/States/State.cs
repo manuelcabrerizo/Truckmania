@@ -1,5 +1,35 @@
-﻿public class State : IState
+﻿using System;
+
+public class State<Type> : IState
 {
+    private Func<bool> enterCondition;
+    private Func<bool> exitCondition;
+    protected Type owner;
+
+    public Func<bool> EnterCondition => enterCondition;
+    public Func<bool> ExitCondition => exitCondition;
+
+    // TODO: remove this
+    public State()
+    { 
+    }
+
+    public State(Type owner, Func<bool> enterCondition)
+    {
+        this.enterCondition = enterCondition;
+        this.exitCondition = () => { return true; };
+        this.owner = owner;
+    }
+
+    public State(Type owner, Func<bool> enterCondition, Func<bool> exitCondition)
+    {
+        this.enterCondition = enterCondition;
+        this.exitCondition = exitCondition;
+        this.owner = owner;
+    }
+
+    
+
     public virtual void OnEnter()
     {
     }
@@ -9,6 +39,10 @@
     }
 
     public virtual void OnUpdate()
+    {
+    }
+
+    public virtual void OnFixedUpdate()
     {
     }
 }

@@ -9,7 +9,7 @@ public class CameraMovement : MonoBehaviour
 
 
     [SerializeField] private CameraData cameraData;
-    [SerializeField] private PlayerMovement target;
+    [SerializeField] private Player target;
     [SerializeField] private LayerMask enemyMask;
     private GameObject lockTarget = null;
 
@@ -103,12 +103,12 @@ public class CameraMovement : MonoBehaviour
 
     private void AlignToTarget()
     {
-        if (target.IsGrounded())
+        if (target.Data.isGrounded)
         {
             back = -target.transform.forward;
             back.Normalize();
         }
-        if (!target.IsGrounded() || !isEnable)
+        if (!target.Data.isGrounded || !isEnable)
         {
             back.y = 0.0f;
             back.Normalize();
@@ -147,12 +147,12 @@ public class CameraMovement : MonoBehaviour
 
     private void Transition(float t)
     {
-        if (target.IsGrounded())
+        if (target.Data.isGrounded)
         {
             back = -target.transform.forward;
             back.Normalize();
         }
-        if (!target.IsGrounded() || !isEnable)
+        if (!target.Data.isGrounded || !isEnable)
         {
             back.y = 0.0f;
             back.Normalize();

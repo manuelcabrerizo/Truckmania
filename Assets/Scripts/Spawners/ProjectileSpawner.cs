@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
 {
@@ -30,10 +31,16 @@ public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
         Projectile test = null;
         if (test = projectile as ExplosiveBarrilProjectile)
         {
+            Assert.IsNotNull(test);
+            Assert.IsNotNull(projectile);
+            Assert.IsNotNull(PoolManager.Instance);
             PoolManager.Instance.Release((ExplosiveBarrilProjectile)projectile);
         }
         else if (test = projectile as ToxicBarrilProjectile)
         {
+            Assert.IsNotNull(test);
+            Assert.IsNotNull(projectile);
+            Assert.IsNotNull(PoolManager.Instance);
             PoolManager.Instance.Release((ToxicBarrilProjectile)projectile);
         }
     }

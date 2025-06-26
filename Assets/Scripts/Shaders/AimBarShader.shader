@@ -11,21 +11,26 @@ Shader "Custom/AimBarShader"
 		_MarkerThickness ("MarkerThickness", Float) = 0.25
 		_MarkerTex ("MarkerTex", 2D) = "white" {}
 		_MarkerTexScale ("MarkerTexScale", Float) = 1.0
+		_MarkerTint ("MarkerTint", Color) = (0,0,0,0)
 
 		_BorderThickness ("BorderThickness", Float) = 0.25
 		_BorderTex ("BorderTex", 2D) = "white" {}
 		_BorderTexScale ("BorderTexScale", Float) = 1.0
 
 		_NoiseTex ("Noise", 2D) = "black" {}
+		
     }
 
     SubShader
     {
-        Tags { "RenderType"="Opaque"}
+		Tags { "RenderType"="Opaqaue" "Queue"="Overlay" }
         LOD 100
 
         Pass
         {
+			ZTest Always
+			ZWrite Off
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -57,6 +62,8 @@ Shader "Custom/AimBarShader"
 			float _BorderThickness;
 			sampler2D _BorderTex; 
 			float _BorderTexScale;
+
+			float3 _MarkerTint;
 
 			sampler2D _NoiseTex;
 
@@ -102,22 +109,25 @@ Shader "Custom/AimBarShader"
 				float2 markerInnerMin = markerMin + float2(_MarkerThickness, _MarkerThickness);
 				float2 markerInnerMax = markerMax - float2(_MarkerThickness, _MarkerThickness);
 				
+				float position = _MarkerPosition * (_HorizontalScale*0.5f - _MarkerWidth*0.5f);
+
+
 				// Apply translation
-				markerMin.x += _MarkerPosition;
-				markerMax.x += _MarkerPosition;
-				markerInnerMin.x += _MarkerPosition;
-				markerInnerMax.x += _MarkerPosition;
+				markerMin.x += position;
+				markerMax.x += position;
+				markerInnerMin.x += position;
+				markerInnerMax.x += position;
 
 				float markerInnerMask = IntersectRect(worldUv, markerInnerMin, markerInnerMax);
 				float markerMask = saturate(IntersectRect(worldUv, markerMin, markerMax) - markerInnerMask);
 				
 				float2 noiseUv = i.uv;
-				noiseUv.x -= _MarkerPosition / _HorizontalScale;
+				noiseUv.x -= position / _HorizontalScale;
 				noiseUv.y += _Time.x;
 				float4 noise = tex2D(_NoiseTex, noiseUv*0.125);
 
 				float2 markerUv = i.uv + noise.xy;
-				markerUv.x -= _MarkerPosition / _HorizontalScale;
+				markerUv.x -= position / _HorizontalScale;
 				float3 markerColor = tex2D(_MarkerTex, markerUv * _MarkerTexScale).xyz * 4.0f;
 
 				float2 borderMin = float2(-5.0f, -0.75f);
@@ -141,7 +151,7 @@ Shader "Custom/AimBarShader"
 				barMask = saturate(barMask - borderMask);
 
 				float3 finalColor = float3(0.0f, 0.0f, 0.0f);
-				finalColor += markerColor * markerMask;
+				finalColor += (markerColor + _MarkerTint) * markerMask;
 				finalColor += borderColor * borderMask;
 				finalColor += barColor * barMask;
 				float alpha = saturate(markerMask + borderMask + barMask);
