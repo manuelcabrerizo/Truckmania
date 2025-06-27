@@ -8,13 +8,11 @@ public class PlayerBarrilState : State<Player>
 
     public override void OnEnter()
     {
-        Debug.Log("BarrilState OnEnter");
         InputManager.onShoot += OnShoot;
     }
 
     public override void OnExit() 
     {
-        Debug.Log("BarrilState OnExit");
         InputManager.onShoot -= OnShoot;
     }
 

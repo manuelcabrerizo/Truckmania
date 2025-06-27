@@ -25,7 +25,8 @@ public class PlayerData
     public float sliptAngle;
     public float upsideDownRatio;
     public ToxicBarrilProjectile barril = null;
-    public bool trickDone = false;
+    public bool wasDrifting = false;
+    public bool keepDrifting = false;
 
     [Header("Input State")]
     public float accel;
@@ -114,15 +115,6 @@ public class PlayerData
 
             wheels[i].position = newPosition;
             i++;
-        }
-
-        if (wasGrounded == false && isGrounded == true)
-        {
-            trickDone = true;
-        }
-        else if (isGrounded == false && wasGrounded == true)
-        {
-            trickDone = false;
         }
         wasGrounded = isGrounded;
     }

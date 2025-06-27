@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerDriftState : State<Player>
 {
@@ -9,18 +8,20 @@ public class PlayerDriftState : State<Player>
 
     public override void OnEnter()
     {
-        Debug.Log("Drift State OnEnter");
+        Debug.Log("Drift OnEnter");
         PlayerData data = owner.Data;
         data.dirtLeft.Play();
         data.dirtRight.Play();
+        data.keepDrifting = false;
     }
 
     public override void OnExit()
     {
-        Debug.Log("Drift State OnExit");
+        Debug.Log("Drift OnExit");
         PlayerData data = owner.Data;
         data.dirtLeft.Stop();
         data.dirtRight.Stop();
+        data.wasDrifting = true;
     }
 
 

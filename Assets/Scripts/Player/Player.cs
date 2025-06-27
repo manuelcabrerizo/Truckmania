@@ -19,6 +19,8 @@ public class Player : MonoBehaviour, IDamagable
 
     private void Awake()
     {
+        InputManager.onJump += OnJump;
+
         Data.Initialize();
 
         startPosition = transform.position;
@@ -35,6 +37,8 @@ public class Player : MonoBehaviour, IDamagable
 
     private void OnDestroy()
     {
+        InputManager.onJump -= OnJump;
+
         Data.Destroy();
     }
 
@@ -70,42 +74,32 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (Utils.CheckCollisionLayer(collision.gameObject, Data.drivableLayer))
-        {
-            Data.trickDone = true;
-        }
-    }
-
     private void InitializeStates()
     {
         State<Player> driveState = new PlayerDriveState(this,
-            () => { return Data.breaking <= 0.01f; });
+            () => { return Data.breaking <= 0.01f &&
+                           !Data.keepDrifting &&
+                           (Data.sliptAngle <= Data.playerData.driftAngle); });
         State<Player> driftState = new PlayerDriftState(this,
-            () => { return Data.breaking > 0.01f; },
-            () => { return (Data.sliptAngle * Data.playerData.turnCurve.Evaluate(Mathf.Abs(Data.velocityRatio)) <= Data.playerData.driftAngle) ||
+            () => { return Data.breaking > 0.01f || Data.keepDrifting; },
+            () => { return (Data.sliptAngle <= Data.playerData.driftAngle) ||
                             Data.isGrounded == false; });
         State<Player> fallState = new PlayerFallState(this,
             () => { return !Data.isGrounded; },
-            () => { return Data.isGrounded || Data.body.velocity.magnitude <= 0.01f || Mathf.Abs(Data.flip) > 0.01f; });
+            () => { return Data.isGrounded || Data.body.velocity.magnitude <= 0.01f; });
         State<Player> restartState = new PlayerRestartState(this,
             () => { return Data.upsideDownRatio < 0.25f && Data.body.velocity.magnitude <= 0.01f; },
             () => { return Data.upsideDownRatio >= 0.25f; });
         State<Player> barrilState = new PlayerBarrilState(this, () => { return Data.barril != null; });
-        State<Player> flipState = new PlayerFlipState(this,
-            () => { return Mathf.Abs(Data.flip) > 0.01f && !Data.trickDone; },
-            () => { return Data.isGrounded || Data.trickDone; });
 
         StateGraph<Player> stateGraph = new StateGraph<Player>();
         stateGraph.AddStateTransitions(driveState, new List<State<Player>> { driftState, fallState, barrilState, restartState });
         stateGraph.AddStateTransitions(driftState, new List<State<Player>> { driveState, fallState, barrilState, restartState });
-        stateGraph.AddStateTransitions(fallState, new List<State<Player>> { driveState, driftState, barrilState, restartState, flipState });
+        stateGraph.AddStateTransitions(fallState, new List<State<Player>> { driveState, driftState, barrilState, restartState });
         stateGraph.AddStateTransitions(barrilState, new List<State<Player>> { driveState, driftState, fallState, restartState });
         stateGraph.AddStateTransitions(restartState, new List<State<Player>> { driveState, fallState, barrilState });
-        stateGraph.AddStateTransitions(flipState, new List<State<Player>> { fallState, driveState, driftState, restartState, barrilState });
         
-        List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState, flipState };
+        List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState };
         List<State<Player>> additiveStates = new List<State<Player>> { barrilState };
 
         this.basicStates = basicStates;
@@ -159,5 +153,16 @@ public class Player : MonoBehaviour, IDamagable
     public void TakeDamage(int amount)
     {
         onPlayerHit?.Invoke();
+    }
+
+    public void OnJump()
+    {
+        if (Data.isGrounded)
+        {
+            // zeron velocity in the up direction
+            Vector3 downVelocity = Vector3.Dot(-transform.up, Data.body.velocity) * transform.up;
+            Data.body.velocity -= downVelocity;
+            Data.body.AddForce(transform.up * 200.0f, ForceMode.Impulse);
+        }
     }
 }

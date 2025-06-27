@@ -6,15 +6,26 @@ public class PlayerDriveState : State<Player>
     public PlayerDriveState(Player owner, Func<bool> condition)
     : base(owner, condition) { }
 
-
     public override void OnEnter()
     {
-        Debug.Log("Drive State OnEnter");
+        Debug.Log("Drive OnEnter");
+        PlayerData data = owner.Data;
+        if (data.keepDrifting == true)
+        {
+            Debug.Log("keepDrifting = true");
+        }
+        else
+        {
+            Debug.Log("keepDrifting = false");
+        }
     }
 
     public override void OnExit()
     {
-        Debug.Log("Drive State OnExit");
+        Debug.Log("Drive OnExit");
+
+        PlayerData data = owner.Data;
+        data.wasDrifting = false;
     }
 
     public override void OnFixedUpdate()

@@ -12,16 +12,18 @@ public class PlayerRestartState : State<Player>
 
     public override void OnEnter()
     {
-        Debug.Log("Restart OnEnter");
         InputManager.onResetCar += OnResetCar;
         onOnShowResetText?.Invoke(true);
     }
 
     public override void OnExit()
     {
-        Debug.Log("Restart OnExit");
         InputManager.onResetCar -= OnResetCar;
         onOnShowResetText?.Invoke(false);
+
+        PlayerData data = owner.Data;
+        data.wasDrifting = false;
+
     }
 
     private void OnResetCar()
