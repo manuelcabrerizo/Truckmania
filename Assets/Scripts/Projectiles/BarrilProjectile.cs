@@ -25,6 +25,16 @@ public class BarrilProjectile : Projectile
         StopAllCoroutines();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        IDamagable damagable = null;
+        if (collision.gameObject.TryGetComponent<IDamagable>(out damagable))
+        {
+            Explote();
+            damagable.TakeDamage(1);
+        }
+    }
+
     protected virtual void OnAwaken() { }
     protected virtual void OnDestroyed() { }
 

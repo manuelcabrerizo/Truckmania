@@ -11,6 +11,11 @@ public class PlayerFallState : State<Player>
         PlayerData data = owner.Data;
         data.body.AddTorque(data.steer * data.body.transform.up * data.playerData.airRotVelocity, ForceMode.Acceleration);
 
+        if (data.upsideDownRatio < 0.01f)
+        {
+            return;
+        }
+
         Ray groundRay = new Ray(owner.transform.position, -Vector3.up);
         RaycastHit hit;
 
@@ -30,6 +35,6 @@ public class PlayerFallState : State<Player>
             forward.Normalize();
             target = Quaternion.LookRotation(forward);
         }
-        owner.transform.rotation = Quaternion.Slerp(current, target, Time.deltaTime * 2.0f);
+        owner.transform.rotation = Quaternion.Slerp(current, target, Time.deltaTime*2.0f);
     }
 }

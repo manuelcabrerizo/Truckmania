@@ -115,6 +115,15 @@ public class PlayerData
             wheels[i].position = newPosition;
             i++;
         }
+
+        if (wasGrounded == false && isGrounded == true)
+        {
+            trickDone = true;
+        }
+        else if (isGrounded == false && wasGrounded == true)
+        {
+            trickDone = false;
+        }
         wasGrounded = isGrounded;
     }
     private void UpdateWheelRotation()

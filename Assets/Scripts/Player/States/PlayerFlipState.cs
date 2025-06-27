@@ -12,7 +12,7 @@ public class PlayerFlipState : State<Player>
     {
         PlayerData data = owner.Data;
         sign = Mathf.Sign(owner.Data.flip);
-        owner.StartCoroutine(PlayFlipAnimation(1.5f));
+        owner.StartCoroutine(PlayFlipAnimation(2.0f));
     }
 
     public override void OnExit() 
@@ -21,11 +21,18 @@ public class PlayerFlipState : State<Player>
         owner.Data.trickDone = false;
     }
 
+    public override void OnFixedUpdate()
+    {
+        PlayerData data = owner.Data;
+        data.body.AddTorque(Vector3.up * (data.steer * data.playerData.airRotVelocity), ForceMode.Acceleration);
+    }
+
     IEnumerator PlayFlipAnimation(float duration)
     {
         float time = 0;
-        while (time < duration)
+        while (time < duration && owner.Data.trickDone == false)
         {
+            Debug.Log("Flip");
             time += Time.deltaTime;
             float inc = 360.0f / (duration * Application.targetFrameRate);
             owner.transform.Rotate(Vector3.right * sign, inc);

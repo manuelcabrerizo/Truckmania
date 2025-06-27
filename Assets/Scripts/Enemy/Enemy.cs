@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamagable
 {
     public static event Action<Enemy> onEnemySpawn;
     public static event Action<Enemy> onEnemyKill;
@@ -28,18 +28,11 @@ public class Enemy : MonoBehaviour
         OnStart();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        OnTakeDamage(collision.gameObject);
-    }
-
     protected virtual void OnAwaken() { }
 
     protected virtual void OnStart() { }
 
     protected virtual void OnDestroyed() { }
-
-    protected virtual void OnTakeDamage(GameObject attacker) { }
 
     public virtual void Restart()
     {
@@ -49,5 +42,10 @@ public class Enemy : MonoBehaviour
     public void SendEnemyKillEvent()
     {
         onEnemyKill?.Invoke(this);
+    }
+
+    public virtual void TakeDamage(int amount)
+    {
+        life = Mathf.Max(life - amount, 0);
     }
 }

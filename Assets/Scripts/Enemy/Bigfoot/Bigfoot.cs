@@ -54,19 +54,16 @@ public class Bigfoot : Enemy
         stateMachine.Update();
     }
 
-    protected override void OnTakeDamage(GameObject attacker)
+    public override void TakeDamage(int amount)
     {
-        if (Utils.CheckCollisionLayer(attacker, damagableLayer))
+        base.TakeDamage(amount);
+        if (life == 0)
         {
-            life--;
-            if (life <= 0)
-            {
-                stateMachine.ChangeState(deadState);
-            }
-            else
-            {
-                stateMachine.ChangeState(hitState);
-            }
+            stateMachine.ChangeState(deadState);
+        }
+        else
+        {
+            stateMachine.ChangeState(hitState);
         }
     }
 

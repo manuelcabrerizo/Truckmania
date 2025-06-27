@@ -62,7 +62,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxVelocity: 35
   rotVelcoity: 8
-  airRotVelocity: 12
+  airRotVelocity: 14
   speedForce: 16
   breakFroce: 16
   breakingRotVelocity: 12

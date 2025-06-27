@@ -14,6 +14,13 @@ public class State<Type> : IState
     { 
     }
 
+    public State(Type owner)
+    {
+        this.enterCondition = null;
+        this.exitCondition = null;
+        this.owner = owner;
+    }
+
     public State(Type owner, Func<bool> enterCondition)
     {
         this.enterCondition = enterCondition;

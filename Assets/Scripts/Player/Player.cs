@@ -68,6 +68,14 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Utils.CheckCollisionLayer(collision.gameObject, Data.drivableLayer))
+        {
+            Data.trickDone = true;
+        }
+    }
+
     private void InitializeStates()
     {
         State<Player> driveState = new PlayerDriveState(this,
@@ -95,7 +103,6 @@ public class Player : MonoBehaviour, IDamagable
         stateGraph.AddStateTransitions(restartState, new List<State<Player>> { driveState, fallState, barrilState });
         stateGraph.AddStateTransitions(flipState, new List<State<Player>> { fallState, driveState, driftState, restartState, barrilState });
         
-
         List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState, flipState };
         List<State<Player>> additiveStates = new List<State<Player>> { barrilState };
 
@@ -147,7 +154,7 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
     }
 }

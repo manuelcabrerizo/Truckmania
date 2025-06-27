@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BigfootDeadState : BigfootState
+public class BigfootDeadState : State<Bigfoot>
 {
     private float time = 0.0f;
     private bool isDead = false;
@@ -11,27 +11,27 @@ public class BigfootDeadState : BigfootState
     public override void OnEnter()
     {
         isDead = false;
-        bigfoot.Animator.SetBool("IsDead", true);
+        owner.Animator.SetBool("IsDead", true);
     }
 
     public override void OnUpdate()
     {
         if (!isDead)
         {
-            bigfoot.SkinnedMeshRenderer.material.color = Color.Lerp(Color.white, Color.red, Mathf.Sin(time * 40));
+            owner.SkinnedMeshRenderer.material.color = Color.Lerp(Color.white, Color.red, Mathf.Sin(time * 40));
             time += Time.deltaTime;
         }
     }
 
     public override void OnExit()
     {
-        bigfoot.SkinnedMeshRenderer.material.color = Color.white;
-        bigfoot.Animator.SetBool("IsDead", false);
+        owner.SkinnedMeshRenderer.material.color = Color.white;
+        owner.Animator.SetBool("IsDead", false);
     }
     public void SetDead()
     {
         isDead = true;
-        bigfoot.SkinnedMeshRenderer.material.color = Color.white;
+        owner.SkinnedMeshRenderer.material.color = Color.white;
 
     }
 }
