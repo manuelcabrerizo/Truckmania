@@ -1,6 +1,6 @@
 using System;
 
-class GameOverState : GameState
+class GameOverState : State<GameManager>
 {
     public static event Action onGameOverStateEnter;
     public static event Action onGameOverSateExit;
@@ -22,6 +22,6 @@ class GameOverState : GameState
 
     private void OnResetButtonClick()
     {
-        gameManager.SetCountDownState();
+        owner.SetCountDownState();
     }
 }

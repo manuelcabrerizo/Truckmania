@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-class CountDownState : GameState
+class CountDownState : State<GameManager>
 {
     public static event Action<bool> onShowCountDownUI;
     public static event Action<float> onCountDownChange;
@@ -40,7 +40,7 @@ class CountDownState : GameState
 
         if(secondCount == timeToWait)
         {
-            gameManager.SetPlayingState();
+            owner.SetPlayingState();
         }
     }
 }

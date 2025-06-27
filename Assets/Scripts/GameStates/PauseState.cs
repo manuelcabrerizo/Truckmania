@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class PauseState : GameState
+public class PauseState : State<GameManager>
 {
     public static event Action onPauseStateEnter;
     public static event Action onPauseSateExit;
@@ -27,13 +27,13 @@ public class PauseState : GameState
 
     private void OnResumeButtonClick()
     {
-        gameManager.ResumeGame();
+        owner.ResumeGame();
     }
 
     private void OnResetButtonClick()
     {
-        gameManager.ResumeGame();
-        gameManager.SetCountDownState();
+        owner.ResumeGame();
+        owner.SetCountDownState();
     }
 }
 

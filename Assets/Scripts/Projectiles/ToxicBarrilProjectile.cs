@@ -32,7 +32,6 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
         base.OnRelease();
         barrilRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         capsuleCollider.radius = 1.0f;
-
     }
 
     public void PickUp()

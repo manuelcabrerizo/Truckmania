@@ -10,11 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource music;
 
     private StateMachine fsm;
-    private State<int> countDownState;
-    private State<int> playingState;
-    private State<int> pauseState;
-    private State<int> gameOverState;
-    private State<int> winState;
+    private State<GameManager> countDownState;
+    private State<GameManager> playingState;
+    private State<GameManager> pauseState;
+    private State<GameManager> gameOverState;
+    private State<GameManager> winState;
 
     private List<Coin> coins = new List<Coin>();
     private List<Enemy> enemies = new List<Enemy>();

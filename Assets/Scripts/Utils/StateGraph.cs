@@ -29,5 +29,4 @@ public class StateGraph<Type>
         }
         return false;
     }
-
 }

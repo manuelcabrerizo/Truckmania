@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-class PlayingState : GameState
+class PlayingState : State<GameManager>
 {
     public static event Action<bool> onShowPlayingUI;
     public static event Action<int, int> onUpdateCoinPickText;
@@ -29,6 +29,7 @@ class PlayingState : GameState
     {        
         Coin.onCoinPick += OnCoinPick;
         Enemy.onEnemyKill += OnEnemyKill;
+        Player.onPlayerHit += OnPlayerHit;
 
         seconds = roundTime;
         coinsCollectedCount = 0;
@@ -54,6 +55,7 @@ class PlayingState : GameState
         onShowPlayingUI?.Invoke(false);
         Coin.onCoinPick -= OnCoinPick;
         Enemy.onEnemyKill -= OnEnemyKill;
+        Player.onPlayerHit -= OnPlayerHit;
     }
 
     public override void OnUpdate()
@@ -70,13 +72,20 @@ class PlayingState : GameState
         {
             if (coinsCollectedCount == coins.Count)
             {
-                gameManager.SetWinState();
+                owner.SetWinState();
             }
             else
             {
-                gameManager.SetGameOverState();
+                owner.SetGameOverState();
             }
         }
+    }
+
+    private void OnPlayerHit()
+    {
+        seconds = Math.Max(seconds - 20, 0);
+        timer = 0;
+        onUpdateTimeText?.Invoke(seconds);
     }
 
     private void OnCoinPick(Coin coin)

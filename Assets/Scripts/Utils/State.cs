@@ -9,11 +9,6 @@ public class State<Type> : IState
     public Func<bool> EnterCondition => enterCondition;
     public Func<bool> ExitCondition => exitCondition;
 
-    // TODO: remove this
-    public State()
-    { 
-    }
-
     public State(Type owner)
     {
         this.enterCondition = null;
@@ -35,22 +30,9 @@ public class State<Type> : IState
         this.owner = owner;
     }
 
-    
-
-    public virtual void OnEnter()
-    {
-    }
-
-    public virtual void OnExit()
-    {
-    }
-
-    public virtual void OnUpdate()
-    {
-    }
-
-    public virtual void OnFixedUpdate()
-    {
-    }
+    public virtual void OnEnter() { }
+    public virtual void OnExit() { }
+    public virtual void OnUpdate() { }
+    public virtual void OnFixedUpdate() { }
 }
 

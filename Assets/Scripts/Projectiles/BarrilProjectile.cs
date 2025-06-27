@@ -41,6 +41,8 @@ public class BarrilProjectile : Projectile
     public override void OnGet()
     {
         base.OnGet();
+        particles.Stop();
+        particles.Clear();
         barrilRenderer.enabled = true;
         collision.enabled = true;
         body.isKinematic = false;
@@ -85,6 +87,23 @@ public class BarrilProjectile : Projectile
         body.isKinematic = true;
         StartCoroutine(SendReleaseaEventAfterSeconds(particles.main.duration));
         onBarrilExplote?.Invoke(this);
+
+        Collider[] colliders = Physics.OverlapSphere(body.position, 50.0f);
+        if (colliders.Length > 0)
+        {
+            foreach (Collider coll in colliders)
+            {
+                IDamagable damagable = null;
+                if (coll.gameObject.TryGetComponent<IDamagable>(out damagable))
+                {
+                    Rigidbody target = null;
+                    if (coll.TryGetComponent<Rigidbody>(out target))
+                    {
+                        target.AddExplosionForce(100, body.position, 75.0f, 75.0f, ForceMode.Impulse);
+                    }
+                }
+            }
+        }
     }
 
     protected IEnumerator SendReleaseaEventAfterSeconds(float seconds)

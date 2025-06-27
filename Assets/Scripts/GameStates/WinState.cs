@@ -1,6 +1,6 @@
 using System;
 
-class WinState : GameState
+class WinState : State<GameManager>
 {
     public static event Action onWinStateEnter;
     public static event Action onWinSateExit;
@@ -22,7 +22,7 @@ class WinState : GameState
 
     private void OnResetButtonClick()
     {
-        gameManager.SetCountDownState();
+        owner.SetCountDownState();
     }
 
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamagable
 {
     public static event Action<Player> onPlayerCreated;
+    public static event Action onPlayerHit;
+
     private static Vector3 startPosition;
     private static Quaternion startRotation;
 
@@ -156,5 +158,6 @@ public class Player : MonoBehaviour, IDamagable
 
     public void TakeDamage(int amount)
     {
+        onPlayerHit?.Invoke();
     }
 }

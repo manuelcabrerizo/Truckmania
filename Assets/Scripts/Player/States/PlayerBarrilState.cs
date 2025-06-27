@@ -59,6 +59,7 @@ public class PlayerBarrilState : State<Player>
                     if (aimPercentage < 0.2f)
                     {
                         barril.Explote();
+                        owner.TakeDamage(1);
                     }
                     else
                     {
