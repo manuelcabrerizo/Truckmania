@@ -6,6 +6,7 @@ class PlayingState : State<GameManager>
 {
     public static event Action<bool> onShowPlayingUI;
     public static event Action<int, int> onUpdateCoinPickText;
+    public static event Action<int, int> onUpdateEnemyKillText;
     public static event Action<int> onUpdateTimeText;
 
     private int roundTime;
@@ -38,7 +39,9 @@ class PlayingState : State<GameManager>
         onShowPlayingUI?.Invoke(true);
         onUpdateTimeText?.Invoke(seconds);
         onUpdateCoinPickText?.Invoke(coinsCollectedCount, coins.Count);
+        onUpdateEnemyKillText?.Invoke(enemiesKillCount, enemies.Count);
 
+        // TODO: move to count down state
         foreach (Coin coin in coins)
         {
             coin.Restart();
@@ -70,7 +73,7 @@ class PlayingState : State<GameManager>
 
         if (seconds == 0)
         {
-            if (coinsCollectedCount == coins.Count)
+            if (coinsCollectedCount == coins.Count && enemiesKillCount == enemies.Count)
             {
                 owner.SetWinState();
             }
@@ -97,5 +100,6 @@ class PlayingState : State<GameManager>
     private void OnEnemyKill(Enemy enemy)
     {
         enemiesKillCount++;
+        onUpdateEnemyKillText?.Invoke(enemiesKillCount, enemies.Count);
     }
 }

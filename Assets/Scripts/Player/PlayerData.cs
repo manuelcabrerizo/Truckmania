@@ -13,11 +13,13 @@ public class PlayerData
     public Transform[] hitPoints;
     public Transform[] wheels;
     public Transform[] wheelsVisuals;
+    public Material[] materials;
     public ParticleSystem dirtLeft;
     public ParticleSystem dirtRight;
     public Transform barrilTransform;
 
     [Header("Gameplay State")]
+    public bool isCoundown;
     public bool isGrounded;
     public bool wasGrounded;
     public Vector3 localVelocity;
@@ -36,12 +38,15 @@ public class PlayerData
     public float sideFlip;
 
     [Header("Components")]
+    public Transform transform;
     public Rigidbody body;
     public PlayerAimBar aimBar;
     public CameraMovement cameraMovement;
 
     public void Initialize()
     {
+        CountDownState.onCountDownEnter += OnCountDownEnter;
+        CountDownState.onCountDownExit += OnCountDownExit;
         ToxicBarrilProjectile.onBarrilPickUp += OnBarrilPickUp;
         CameraMovement.onCameraCreated += OnCameraCreated;
         InputManager.onAccelerate += OnAccelerate;
@@ -53,6 +58,8 @@ public class PlayerData
 
     public void Destroy()
     {
+        CountDownState.onCountDownEnter -= OnCountDownEnter;
+        CountDownState.onCountDownExit -= OnCountDownExit;
         ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
         CameraMovement.onCameraCreated -= OnCameraCreated;
         InputManager.onAccelerate -= OnAccelerate;
@@ -60,6 +67,23 @@ public class PlayerData
         InputManager.onSteer -= OnSteer;
         InputManager.onFlip -= OnFlip;
         InputManager.onSideFlip -= OnSideFlip;
+    }
+
+    public void Restart()
+    {
+        body.position = Player.startPosition;
+        transform.position = Player.startPosition;
+        transform.rotation = Player.startRotation;
+        barril = null;
+        isGrounded = false;
+        wasGrounded = false;
+        wasDrifting = false;
+        keepDrifting = false;
+        localVelocity = Vector3.zero;
+        velocityRatio = 0.0f;
+        sliptAngle = 0;
+
+        cameraMovement.Restart();
     }
 
     public void Update(Player player)
@@ -177,5 +201,15 @@ public class PlayerData
     private void OnSideFlip(float sideFlip)
     {
         this.sideFlip = sideFlip;
+    }
+
+    public void OnCountDownEnter()
+    {
+        isCoundown = true;
+    }
+
+    public void OnCountDownExit()
+    {
+        isCoundown = false;
     }
 }

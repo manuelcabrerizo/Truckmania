@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class Bigfoot : Enemy
 {
@@ -46,6 +47,7 @@ public class Bigfoot : Enemy
 
     protected override void OnDestroyed()
     {
+        SkinnedMeshRenderer.material.SetColor("_Tint", Color.black);
         stateMachine.Clear();
     }
 
@@ -97,7 +99,6 @@ public class Bigfoot : Enemy
         collision.enabled = false;
         animator.enabled = false;
         deadState.SetDead();
-        SendEnemyKillEvent();
     }
 
     public void HitAnimationEnd()

@@ -5470,16 +5470,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7354966d4661cc4c9e3b0387f38ee6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barril: {fileID: 0}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 128
-  barrilTransform: {fileID: 1931263113962479405}
-  <Ctx>k__BackingField:
-    playerData: {fileID: 11400000, guid: 153f0e0e5c17fc04dba6791df067f32e, type: 2}
+  <Data>k__BackingField:
     drivableLayer:
       serializedVersion: 2
       m_Bits: 64
+    enemyMask:
+      serializedVersion: 2
+      m_Bits: 128
+    playerData: {fileID: 11400000, guid: 153f0e0e5c17fc04dba6791df067f32e, type: 2}
     hitPoints:
     - {fileID: 1925220946003146584}
     - {fileID: 7156822343183850821}
@@ -5495,16 +5493,34 @@ MonoBehaviour:
     - {fileID: 8601483249346610381}
     - {fileID: 2129104563218508987}
     - {fileID: 8654176745067781146}
+    materials:
+    - {fileID: 2100000, guid: 887aa1ab0983c584c97fbf4a2185394e, type: 2}
+    - {fileID: 2100000, guid: 483f53345e05d3a45aa40d3428d23d6e, type: 2}
+    - {fileID: 2100000, guid: ec364b386c83f934bbc3ff86eff56a91, type: 2}
+    - {fileID: 2100000, guid: 725534a0f05f27c4b95005ab437c413c, type: 2}
+    - {fileID: 2100000, guid: 59b5699c4f5aabc4fa56ffd34c713d90, type: 2}
+    - {fileID: 2100000, guid: 6551da06dd133334ba8e9169aad06e2d, type: 2}
+    - {fileID: 2100000, guid: c88fc66046d28514c8319f101df9a3d2, type: 2}
     dirtLeft: {fileID: 7158746877308159482}
     dirtRight: {fileID: 6962978413257122309}
-    aimBar: {fileID: 0}
+    barrilTransform: {fileID: 1931263113962479405}
     isGrounded: 0
     wasGrounded: 0
     localVelocity: {x: 0, y: 0, z: 0}
     velocityRatio: 0
     sliptAngle: 0
     upsideDownRatio: 0
+    barril: {fileID: 0}
+    wasDrifting: 0
+    keepDrifting: 0
+    accel: 0
+    steer: 0
+    breaking: 0
+    flip: 0
+    sideFlip: 0
     body: {fileID: 0}
+    aimBar: {fileID: 0}
+    cameraMovement: {fileID: 0}
 --- !u!114 &5485600247969027308
 MonoBehaviour:
   m_ObjectHideFlags: 0

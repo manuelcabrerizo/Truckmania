@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     // Playing ui
     [SerializeField] private GameObject playingUI;
     [SerializeField] private TextMeshProUGUI coinCountText;
+    [SerializeField] private TextMeshProUGUI enemyCountText;
     [SerializeField] private TextMeshProUGUI pressRToRestartText;
     [SerializeField] private TextMeshProUGUI timeText;
 
@@ -41,6 +42,7 @@ public class UIManager : MonoBehaviour
     {
         PlayingState.onShowPlayingUI += OnShowPlayingUI;
         PlayingState.onUpdateCoinPickText += OnUpdateCoinPickText;
+        PlayingState.onUpdateEnemyKillText += OnUpdateEnemyKillText;
         PlayingState.onUpdateTimeText += OnUpdateTimeText;
         PlayerRestartState.onOnShowResetText += OnShowResetText;
         CountDownState.onShowCountDownUI += OnShowCountDownUI;
@@ -70,6 +72,7 @@ public class UIManager : MonoBehaviour
     {
         PlayingState.onShowPlayingUI -= OnShowPlayingUI;
         PlayingState.onUpdateCoinPickText -= OnUpdateCoinPickText;
+        PlayingState.onUpdateEnemyKillText -= OnUpdateEnemyKillText;
         PlayingState.onUpdateTimeText -= OnUpdateTimeText;
         PlayerRestartState.onOnShowResetText -= OnShowResetText;
         CountDownState.onShowCountDownUI -= OnShowCountDownUI;
@@ -102,8 +105,12 @@ public class UIManager : MonoBehaviour
 
     public void OnUpdateCoinPickText(int coinCount, int coinSpawn)
     {
-        coinCountText.text = "Coin Coun: " + coinCount + " | " + coinSpawn;
         coinCountText.text = "You grabbed " + coinCount +" coins of " + coinSpawn;
+    }
+
+    public void OnUpdateEnemyKillText(int enemyCount, int enemySpawn)
+    {
+        enemyCountText.text = "You Kill " + enemyCount + " enemies of " + enemySpawn;
     }
 
     private void OnShowResetText(bool value)

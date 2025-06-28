@@ -14,7 +14,7 @@ public class CameraMovement : MonoBehaviour
     private GameObject lockTarget = null;
 
     private Vector3 back;
-    private bool isEnable = true;
+    //private bool isEnable = true;
     private bool isLock = false;
 
     private float lockTransitionTime = 0.5f;
@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour
         back.Normalize();
         transform.position = target.transform.position + (back + Vector3.up * 0.3f) * cameraData.distance;
         transform.LookAt(target.transform.position, Vector3.up);
-        isEnable = true;
+        //isEnable = true;
         isLock = false;
     }
 
@@ -96,11 +96,6 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    public void SetEnable(bool value)
-    {
-        isEnable = value;
-    }
-
     private void AlignToTarget()
     {
         if (target.Data.isGrounded)
@@ -108,7 +103,7 @@ public class CameraMovement : MonoBehaviour
             back = -target.transform.forward;
             back.Normalize();
         }
-        if (!target.Data.isGrounded || !isEnable)
+        if (!target.Data.isGrounded)
         {
             back.y = 0.0f;
             back.Normalize();
@@ -152,7 +147,7 @@ public class CameraMovement : MonoBehaviour
             back = -target.transform.forward;
             back.Normalize();
         }
-        if (!target.Data.isGrounded || !isEnable)
+        if (!target.Data.isGrounded)
         {
             back.y = 0.0f;
             back.Normalize();
@@ -220,6 +215,15 @@ public class CameraMovement : MonoBehaviour
             isLock = false;
             onTargetUnlock?.Invoke();
         }
+    }
+
+    public void Restart()
+    {
+        back = -target.transform.forward;
+        back.Normalize();
+        lockTarget = null;
+        isLock = false;
+        onTargetUnlock?.Invoke();
     }
 
     private void OnEnemyKill(Enemy enemy)

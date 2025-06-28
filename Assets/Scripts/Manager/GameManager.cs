@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //[SerializeField] private Player player;
-    //[SerializeField] private CameraMovement cameraMovement;
-
     [SerializeField] private PlayStateData playStateData;
     [SerializeField] private AudioSource music;
 
@@ -56,32 +53,24 @@ public class GameManager : MonoBehaviour
     public void SetPlayingState()
     {
         music.Play();
-        //playerMovement.SetEnable(true);
-        //cameraMovement.SetEnable(true);
         fsm.ChangeState(playingState);
     }
 
     public void SetCountDownState()
     {
         music.Stop();
-        //playerMovement.SetEnable(false);
-        //cameraMovement.SetEnable(false);
         fsm.ChangeState(countDownState);
     }
 
     public void SetGameOverState()
     {
         music.Stop();
-        //playerMovement.SetEnable(false);
-        //cameraMovement.SetEnable(false);
         fsm.ChangeState(gameOverState);
     }
 
     public void SetWinState()
     {
         music.Stop();
-        //playerMovement.SetEnable(false);
-        //cameraMovement.SetEnable(false);
         fsm.ChangeState(winState);
     }
 

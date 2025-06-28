@@ -3,6 +3,9 @@ using UnityEngine;
 
 class CountDownState : State<GameManager>
 {
+    public static event Action onCountDownEnter;
+    public static event Action onCountDownExit;
+
     public static event Action<bool> onShowCountDownUI;
     public static event Action<float> onCountDownChange;
 
@@ -15,6 +18,7 @@ class CountDownState : State<GameManager>
 
     public override void OnEnter()
     {
+        onCountDownEnter?.Invoke();
         onShowCountDownUI?.Invoke(true);
         onCountDownChange?.Invoke(timeToWait);
         timer = 0;
@@ -26,6 +30,7 @@ class CountDownState : State<GameManager>
         timer = 0;
         secondCount = 0;
         onShowCountDownUI?.Invoke(false);
+        onCountDownExit?.Invoke();
     }
 
     public override void OnUpdate()

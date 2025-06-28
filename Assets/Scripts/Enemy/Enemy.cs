@@ -39,13 +39,12 @@ public class Enemy : MonoBehaviour, IDamagable
         life = maxLife;
     }
 
-    public void SendEnemyKillEvent()
-    {
-        onEnemyKill?.Invoke(this);
-    }
-
     public virtual void TakeDamage(int amount)
     {
         life = Mathf.Max(life - amount, 0);
+        if (life == 0)
+        {
+            onEnemyKill?.Invoke(this);
+        }
     }
 }

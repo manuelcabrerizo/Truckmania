@@ -47,10 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297508e1ed033ee4c9561644511f9518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 6
+  maxLife: 6
+  damagableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   hand: {fileID: 8065333624301119655}
   target: {fileID: 0}
-  attackRadio: 164
+  attackRadio: 180
+  skinnedMeshRenderer: {fileID: 8173304665931501899}
 --- !u!136 &7435065898350266538
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -177,5 +181,10 @@ Transform:
 --- !u!4 &8065333624301119655 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1070350730909333850, guid: b3b3d4a9af9a4324887ecea13050dc82, type: 3}
+  m_PrefabInstance: {fileID: 2218176324590808577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8173304665931501899 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1178286313342140598, guid: b3b3d4a9af9a4324887ecea13050dc82, type: 3}
   m_PrefabInstance: {fileID: 2218176324590808577}
   m_PrefabAsset: {fileID: 0}

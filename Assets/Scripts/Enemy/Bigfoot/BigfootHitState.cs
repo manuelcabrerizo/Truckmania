@@ -16,12 +16,12 @@ public class BigfootHitState : State<Bigfoot>
 
     public override void OnUpdate()
     {
-        owner.SkinnedMeshRenderer.material.color = Color.Lerp(Color.white, Color.red, Mathf.Sin(time * 40));
+        owner.SkinnedMeshRenderer.material.SetColor("_Tint", Color.Lerp(Color.black, Color.red, Mathf.Sin(time * 40)));
         time += Time.deltaTime;
     }
 
     public override void OnExit()
     {
-        owner.SkinnedMeshRenderer.material.color = Color.white;
+        owner.SkinnedMeshRenderer.material.SetColor("_Tint", Color.black);
     }
 }

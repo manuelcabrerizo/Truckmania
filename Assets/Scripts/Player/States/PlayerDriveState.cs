@@ -3,21 +3,12 @@ using UnityEngine;
 
 public class PlayerDriveState : State<Player>
 {
-    public PlayerDriveState(Player owner, Func<bool> condition)
-    : base(owner, condition) { }
+    public PlayerDriveState(Player owner, Func<bool> enterCondition) 
+        : base(owner, enterCondition) { }
 
     public override void OnEnter()
     {
         Debug.Log("Drive OnEnter");
-        PlayerData data = owner.Data;
-        if (data.keepDrifting == true)
-        {
-            Debug.Log("keepDrifting = true");
-        }
-        else
-        {
-            Debug.Log("keepDrifting = false");
-        }
     }
 
     public override void OnExit()
