@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,9 +13,20 @@ public class GameManager : MonoBehaviour
     private State<GameManager> pauseState;
     private State<GameManager> gameOverState;
     private State<GameManager> winState;
+    private State<GameManager> endState;
 
     private List<Coin> coins = new List<Coin>();
     private List<Enemy> enemies = new List<Enemy>();
+    private List<Box> boxes = new List<Box>();
+
+    public int coinsCollectedCount = 0;
+    public int enemiesKillCount = 0;
+    public int seconds;
+
+    public List<Coin> Coins => coins;
+    public List<Enemy> Enemies => enemies;
+    public List<Box> Boxes => boxes;
+
 
     private void Awake()
     {
@@ -23,13 +35,15 @@ public class GameManager : MonoBehaviour
         InputManager.onPause += PauseGame;
         Coin.onCoinSpawn += OnCoinSpawn;
         Enemy.onEnemySpawn += OnEnemySpawn;
+        Box.onBoxSpawn += OnBoxSpawn;
 
         fsm = new StateMachine();
         countDownState = new CountDownState(this);
-        playingState = new PlayingState(this, playStateData.roundTime, coins, enemies);
+        playingState = new PlayingState(this, playStateData.roundTime, coins, enemies, boxes);
         pauseState = new PauseState(this);
         gameOverState = new GameOverState(this);
         winState = new WinState(this);
+        endState = new EndState(this);
     }
 
     private void Start()
@@ -43,6 +57,7 @@ public class GameManager : MonoBehaviour
         InputManager.onPause -= PauseGame;
         Coin.onCoinSpawn -= OnCoinSpawn;
         Enemy.onEnemySpawn -= OnEnemySpawn;
+        Box.onBoxSpawn -= OnBoxSpawn;
     }
 
     private void Update()
@@ -74,6 +89,11 @@ public class GameManager : MonoBehaviour
         fsm.ChangeState(winState);
     }
 
+    public void SetEndState()
+    {
+        fsm.ChangeState(endState);
+    }
+
     public void PauseGame()
     {
         if (fsm.PeekState() == playingState)
@@ -103,6 +123,11 @@ public class GameManager : MonoBehaviour
     private void OnEnemySpawn(Enemy enemy)
     { 
         enemies.Add(enemy);
+    }
+
+    private void OnBoxSpawn(Box box)
+    {
+        boxes.Add(box);
     }
 
 }

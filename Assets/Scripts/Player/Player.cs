@@ -29,6 +29,7 @@ public class Player : MonoBehaviour, IDamagable
 
         Data.transform = transform;
         Data.body = GetComponent<Rigidbody>();
+        Data.collision = GetComponent<Collider>();
         Data.aimBar = GetComponent<PlayerAimBar>();
 
         stateMachine = new StateMachine();
@@ -95,25 +96,28 @@ public class Player : MonoBehaviour, IDamagable
         State<Player> driftState = new PlayerDriftState(this,
             () => { return Data.breaking > 0.01f || Data.keepDrifting; },
             () => { return (Data.sliptAngle <= Data.playerData.driftAngle) ||
-                            Data.isGrounded == false || Data.isCoundown; });
+                            Data.isGrounded == false || Data.isCoundown || Data.isNoclipCheatActive; });
         State<Player> fallState = new PlayerFallState(this,
             () => { return !Data.isGrounded; },
-            () => { return Data.isGrounded || Data.body.velocity.magnitude <= 0.01f || Data.isCoundown; });
+            () => { return Data.isGrounded || Data.body.velocity.magnitude <= 0.01f || Data.isCoundown || Data.isNoclipCheatActive; });
         State<Player> restartState = new PlayerRestartState(this,
             () => { return Data.upsideDownRatio < 0.25f && Data.body.velocity.magnitude <= 0.01f; },
-            () => { return Data.upsideDownRatio >= 0.25f || Data.isCoundown; });
-
+            () => { return Data.upsideDownRatio >= 0.25f || Data.isCoundown || Data.isNoclipCheatActive; });
         State<Player> barrilState = new PlayerBarrilState(this, () => { return Data.barril != null; });
+        State<Player> noclip = new PlayerNoclipState(this,
+            () => { return Data.isNoclipCheatActive; },
+            () => { return !Data.isNoclipCheatActive || Data.isCoundown; });
 
         StateGraph<Player> stateGraph = new StateGraph<Player>();
         stateGraph.AddStateTransitions(idleState, new List<State<Player>> { driveState });
-        stateGraph.AddStateTransitions(driveState, new List<State<Player>> { driftState, fallState, barrilState, restartState, idleState });
-        stateGraph.AddStateTransitions(driftState, new List<State<Player>> { driveState, fallState, barrilState, restartState, idleState });
-        stateGraph.AddStateTransitions(fallState, new List<State<Player>> { driveState, driftState, barrilState, restartState, idleState });
-        stateGraph.AddStateTransitions(restartState, new List<State<Player>> { driveState, fallState, barrilState, idleState });
-        stateGraph.AddStateTransitions(barrilState, new List<State<Player>> { driveState, driftState, fallState, restartState, idleState });
+        stateGraph.AddStateTransitions(driveState, new List<State<Player>> { driftState, fallState, barrilState, restartState, idleState, noclip });
+        stateGraph.AddStateTransitions(driftState, new List<State<Player>> { driveState, fallState, barrilState, restartState, idleState, noclip });
+        stateGraph.AddStateTransitions(fallState, new List<State<Player>> { driveState, driftState, barrilState, restartState, idleState, noclip });
+        stateGraph.AddStateTransitions(restartState, new List<State<Player>> { driveState, fallState, barrilState, idleState, noclip });
+        stateGraph.AddStateTransitions(barrilState, new List<State<Player>> { driveState, driftState, fallState, restartState, idleState, noclip });
+        stateGraph.AddStateTransitions(noclip, new List<State<Player>> { driveState, driftState, fallState, restartState, idleState, barrilState });
 
-        List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState, idleState };
+        List<State<Player>> basicStates = new List<State<Player>> { driveState, driftState, fallState, restartState, idleState, noclip };
         List<State<Player>> additiveStates = new List<State<Player>> { barrilState };
 
         this.basicStates = basicStates;
@@ -166,8 +170,11 @@ public class Player : MonoBehaviour, IDamagable
 
     public void TakeDamage(int amount)
     {
-        StartCoroutine(StartFeedbackAnimation(2.0f, Color.red));
-        onPlayerHit?.Invoke();
+        if (!Data.isGodModeCheatActive)
+        {
+            StartCoroutine(StartFeedbackAnimation(2.0f, Color.red));
+            onPlayerHit?.Invoke();
+        }
     }
 
     public void OnJump()

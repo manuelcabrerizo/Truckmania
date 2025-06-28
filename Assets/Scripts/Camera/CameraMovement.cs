@@ -7,14 +7,14 @@ public class CameraMovement : MonoBehaviour
     public static event Action onTargetLock;
     public static event Action onTargetUnlock;
 
-
     [SerializeField] private CameraData cameraData;
     [SerializeField] private Player target;
+    [SerializeField] private LayerMask collisionMask;
     [SerializeField] private LayerMask enemyMask;
     private GameObject lockTarget = null;
 
     private Vector3 back;
-    //private bool isEnable = true;
+    private bool isEnable = true;
     private bool isLock = false;
 
     private float lockTransitionTime = 0.5f;
@@ -25,13 +25,14 @@ public class CameraMovement : MonoBehaviour
     {
         InputManager.onLockCamera += OnLockCamera;
         Enemy.onEnemyKill += OnEnemyKill;
+        EndState.onEnter += OnEnterEndState;
 
         back = -target.transform.forward;
         back.y = 0.0f;
         back.Normalize();
         transform.position = target.transform.position + (back + Vector3.up * 0.3f) * cameraData.distance;
         transform.LookAt(target.transform.position, Vector3.up);
-        //isEnable = true;
+        isEnable = true;
         isLock = false;
     }
 
@@ -39,6 +40,7 @@ public class CameraMovement : MonoBehaviour
     {
         InputManager.onLockCamera -= OnLockCamera;
         Enemy.onEnemyKill -= OnEnemyKill;
+        EndState.onEnter -= OnEnterEndState;
     }
 
     private void Start()
@@ -48,6 +50,11 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!isEnable)
+        {
+            return;
+        }
+
         if (isLock)
         {
             if (lockTimer <= lockTransitionTime)
@@ -68,6 +75,11 @@ public class CameraMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isEnable)
+        {
+            return;
+        }
+
         if (isLock == false)
         {
             if (lockT > 0.0f && lockTarget != null)
@@ -113,7 +125,7 @@ public class CameraMovement : MonoBehaviour
         Vector3 targetPosition = target.transform.position + toCamera;
 
         RaycastHit hit;
-        if (Physics.SphereCast(target.transform.position, 0.2f, toCamera.normalized, out hit, toCamera.magnitude))
+        if (Physics.SphereCast(target.transform.position, 0.2f, toCamera.normalized, out hit, toCamera.magnitude, collisionMask))
         {
             targetPosition = target.transform.position + toCamera.normalized * hit.distance;
         }
@@ -130,7 +142,7 @@ public class CameraMovement : MonoBehaviour
         Vector3 targetPosition = target.transform.position + toCamera;
 
         RaycastHit hit;
-        if (Physics.SphereCast(target.transform.position, 0.2f, toCamera.normalized, out hit, toCamera.magnitude))
+        if (Physics.SphereCast(target.transform.position, 0.2f, toCamera.normalized, out hit, toCamera.magnitude, collisionMask))
         {
             targetPosition = target.transform.position + toCamera.normalized * hit.distance;
         }
@@ -219,6 +231,7 @@ public class CameraMovement : MonoBehaviour
 
     public void Restart()
     {
+        isEnable = true;
         back = -target.transform.forward;
         back.Normalize();
         lockTarget = null;
@@ -229,5 +242,10 @@ public class CameraMovement : MonoBehaviour
     private void OnEnemyKill(Enemy enemy)
     {
         LockTargetLost(enemy.gameObject);
+    }
+
+    private void OnEnterEndState()
+    {
+        isEnable = false;
     }
 }

@@ -29,6 +29,9 @@ public class PlayerData
     public ToxicBarrilProjectile barril = null;
     public bool wasDrifting = false;
     public bool keepDrifting = false;
+    public bool isNoclipCheatActive = false;
+    public bool isGodModeCheatActive = false;
+
 
     [Header("Input State")]
     public float accel;
@@ -40,6 +43,7 @@ public class PlayerData
     [Header("Components")]
     public Transform transform;
     public Rigidbody body;
+    public Collider collision;
     public PlayerAimBar aimBar;
     public CameraMovement cameraMovement;
 
@@ -54,6 +58,8 @@ public class PlayerData
         InputManager.onSteer += OnSteer;
         InputManager.onFlip += OnFlip;
         InputManager.onSideFlip += OnSideFlip;
+        InputManager.onNoclipCheat += OnNoclipCheat;
+        InputManager.onGodModeCheat += OnGodModeCheat;
     }
 
     public void Destroy()
@@ -67,6 +73,8 @@ public class PlayerData
         InputManager.onSteer -= OnSteer;
         InputManager.onFlip -= OnFlip;
         InputManager.onSideFlip -= OnSideFlip;
+        InputManager.onNoclipCheat -= OnNoclipCheat;
+        InputManager.onGodModeCheat -= OnGodModeCheat;
     }
 
     public void Restart()
@@ -82,20 +90,26 @@ public class PlayerData
         localVelocity = Vector3.zero;
         velocityRatio = 0.0f;
         sliptAngle = 0;
-
+       isNoclipCheatActive = false;
         cameraMovement.Restart();
     }
 
     public void Update(Player player)
     {
-        UpdateWheelRotation();
+        if (!isCoundown)
+        {
+            UpdateWheelRotation();
+        }
     }
 
     public void FixedUpdate(Player player)
     {
-        upsideDownRatio = Vector3.Dot(player.transform.up, Vector3.up);
-        ProcessLocalVelocity(player.transform);
-        Suspension();
+        if (!isNoclipCheatActive)
+        {
+            upsideDownRatio = Vector3.Dot(player.transform.up, Vector3.up);
+            ProcessLocalVelocity(player.transform);
+            Suspension();
+        }
     }
 
     private void ProcessLocalVelocity(Transform transform)
@@ -211,5 +225,21 @@ public class PlayerData
     public void OnCountDownExit()
     {
         isCoundown = false;
+    }
+
+    private void OnNoclipCheat()
+    {
+        if (!isCoundown)
+        {
+            isNoclipCheatActive = !isNoclipCheatActive;
+        }
+    }
+
+    private void OnGodModeCheat()
+    {
+        if (!isCoundown)
+        {
+            isGodModeCheatActive = !isGodModeCheatActive;
+        }
     }
 }

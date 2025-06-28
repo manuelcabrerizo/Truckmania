@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4433fb205aabf4ca6475f3497826dc, type: 3}
   m_Name: PlayStateData
   m_EditorClassIdentifier: 
-  roundTime: 480
+  roundTime: 60

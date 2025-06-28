@@ -14,6 +14,10 @@ public class InputManager : MonoBehaviour
     public static event Action onPause;
     public static event Action onResetCar;
     public static event Action onLockCamera;
+    public static event Action onWinCheat;
+    public static event Action onLoseCheat;
+    public static event Action onGodModeCheat;
+    public static event Action onNoclipCheat;
 
     public void OnAccelerate(InputAction.CallbackContext context)
     {
@@ -46,7 +50,7 @@ public class InputManager : MonoBehaviour
     public void OnShoot(InputAction.CallbackContext context)
     {
         if (context.started)
-        { 
+        {
             onShoot?.Invoke();
         }
     }
@@ -76,7 +80,7 @@ public class InputManager : MonoBehaviour
     public void OnLockCamera(InputAction.CallbackContext context)
     {
         if (context.started)
-        { 
+        {
             onLockCamera?.Invoke();
         }
     }
@@ -84,5 +88,37 @@ public class InputManager : MonoBehaviour
     public void OnSideFlip(InputAction.CallbackContext context)
     {
         onSideFlip?.Invoke(context.ReadValue<float>());
+    }
+
+    public void OnWinCheat(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            onWinCheat?.Invoke();
+        }
+    }
+
+    public void OnLoseCheat(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        { 
+            onLoseCheat?.Invoke();
+        }
+    }
+
+    public void OnGodModeCheat(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            onGodModeCheat?.Invoke();
+        }
+    }
+
+    public void OnNoclipCheat(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            onNoclipCheat?.Invoke();
+        }
     }
 }

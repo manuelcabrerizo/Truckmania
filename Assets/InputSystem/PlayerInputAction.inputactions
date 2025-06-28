@@ -94,6 +94,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "WinCheat",
+                    "type": "Button",
+                    "id": "793ab29d-76db-4138-84e7-311be1667164",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LoseCheat",
+                    "type": "Button",
+                    "id": "907f56a5-b98e-430f-8aaf-3a12b5e6cbc5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GodModeCheat",
+                    "type": "Button",
+                    "id": "257314eb-ca0b-484d-8c66-6bdf7b6bef6c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NoclipCheat",
+                    "type": "Button",
+                    "id": "ef087b8d-8665-4c7a-b8ef-be02a429f6de",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -402,6 +438,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "SideFlip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2705212a-ed31-41d9-9b33-bc4bb82c7262",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WinCheat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d712b2d-debd-4370-83df-5528d3ba5d28",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LoseCheat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "44aab205-4544-4ade-a525-b91c8035aff1",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GodModeCheat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed96138b-3c3c-4c76-8cc6-9a44c2ebc7c6",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NoclipCheat",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
