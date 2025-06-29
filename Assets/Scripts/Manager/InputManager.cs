@@ -9,7 +9,6 @@ public class InputManager : MonoBehaviour
     public static event Action<float> onSteer;
     public static event Action<float> onFlip;
     public static event Action<float> onSideFlip;
-    public static event Action onJump;
     public static event Action onShoot;
     public static event Action onPause;
     public static event Action onResetCar;
@@ -37,14 +36,6 @@ public class InputManager : MonoBehaviour
     public void OnFlip(InputAction.CallbackContext context)
     {
         onFlip?.Invoke(context.ReadValue<float>());
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            onJump?.Invoke();
-        }
     }
 
     public void OnShoot(InputAction.CallbackContext context)

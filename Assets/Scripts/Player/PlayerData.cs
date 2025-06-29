@@ -75,10 +75,20 @@ public class PlayerData
         InputManager.onSideFlip -= OnSideFlip;
         InputManager.onNoclipCheat -= OnNoclipCheat;
         InputManager.onGodModeCheat -= OnGodModeCheat;
+
+        if (barril)
+        {
+            barril.SendReleaseEvent();
+        }
+
     }
 
     public void Restart()
     {
+        if (barril)
+        {
+            barril.SendReleaseEvent();
+        }
         body.position = Player.startPosition;
         transform.position = Player.startPosition;
         transform.rotation = Player.startRotation;
@@ -90,7 +100,7 @@ public class PlayerData
         localVelocity = Vector3.zero;
         velocityRatio = 0.0f;
         sliptAngle = 0;
-       isNoclipCheatActive = false;
+        isNoclipCheatActive = false;
         cameraMovement.Restart();
     }
 

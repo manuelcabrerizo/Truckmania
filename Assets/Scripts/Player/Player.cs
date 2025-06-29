@@ -20,8 +20,6 @@ public class Player : MonoBehaviour, IDamagable
 
     private void Awake()
     {
-        InputManager.onJump += OnJump;
-
         Data.Initialize();
 
         startPosition = transform.position;
@@ -40,14 +38,15 @@ public class Player : MonoBehaviour, IDamagable
 
     private void OnDestroy()
     {
-        InputManager.onJump -= OnJump;
-
         StopAllCoroutines();
         foreach (Material mat in Data.materials)
         {
             mat.SetColor("_Tint", Color.black);
         }
 
+        stateMachine.Clear();
+        additiveStateMachine.Clear();
+        
         Data.Destroy();
     }
 
@@ -174,17 +173,6 @@ public class Player : MonoBehaviour, IDamagable
         {
             StartCoroutine(StartFeedbackAnimation(2.0f, Color.red));
             onPlayerHit?.Invoke();
-        }
-    }
-
-    public void OnJump()
-    {
-        if (Data.isGrounded)
-        {
-            // zeron velocity in the up direction
-            Vector3 downVelocity = Vector3.Dot(-transform.up, Data.body.velocity) * transform.up;
-            Data.body.velocity -= downVelocity;
-            Data.body.AddForce(transform.up * 200.0f, ForceMode.Impulse);
         }
     }
 

@@ -27,7 +27,7 @@ public class UIMainMenu : MonoBehaviour
 
     private void OnPlayButtonClick()
     {
-        SceneManager.LoadScene("Gameplay");
+        LevelManager.Instance.LoadFirstLevel();
     }
 
     private void OnControlsButtonClick()

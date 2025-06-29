@@ -8,7 +8,6 @@ public class PlayerDriftState : State<Player>
 
     public override void OnEnter()
     {
-        Debug.Log("Drift OnEnter");
         PlayerData data = owner.Data;
         data.dirtLeft.Play();
         data.dirtRight.Play();
@@ -17,7 +16,6 @@ public class PlayerDriftState : State<Player>
 
     public override void OnExit()
     {
-        Debug.Log("Drift OnExit");
         PlayerData data = owner.Data;
         data.dirtLeft.Stop();
         data.dirtRight.Stop();

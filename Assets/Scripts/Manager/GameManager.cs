@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private PlayStateData playStateData;
     [SerializeField] private AudioSource music;
 
     private StateMachine fsm;
@@ -37,9 +35,11 @@ public class GameManager : MonoBehaviour
         Enemy.onEnemySpawn += OnEnemySpawn;
         Box.onBoxSpawn += OnBoxSpawn;
 
+        int roundTime = LevelManager.Instance.GetCurrentRoundTime();
+
         fsm = new StateMachine();
         countDownState = new CountDownState(this);
-        playingState = new PlayingState(this, playStateData.roundTime, coins, enemies, boxes);
+        playingState = new PlayingState(this, roundTime, coins, enemies, boxes);
         pauseState = new PauseState(this);
         gameOverState = new GameOverState(this);
         winState = new WinState(this);

@@ -8,7 +8,6 @@ public class PlayerFallState : State<Player>
 
     public override void OnEnter()
     {
-        Debug.Log("Fall OnEnter");
         PlayerData data = owner.Data;
         if (data.wasDrifting)
         {
@@ -18,11 +17,8 @@ public class PlayerFallState : State<Player>
 
     public override void OnExit()
     {
-        Debug.Log("Fall OnExit");
         PlayerData data = owner.Data;
         data.wasDrifting = false;
-
-
     }
 
     public override void OnFixedUpdate()

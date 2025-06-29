@@ -15,6 +15,10 @@ public class ToxicBarrilSpawner : MonoBehaviour
     private void OnDestroy()
     {
         ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
+        if (spawnedBarril)
+        {
+            spawnedBarril.SendReleaseEvent();
+        }
     }
 
     private void Update()

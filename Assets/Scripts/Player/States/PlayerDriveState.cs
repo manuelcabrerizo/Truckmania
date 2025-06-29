@@ -6,15 +6,10 @@ public class PlayerDriveState : State<Player>
     public PlayerDriveState(Player owner, Func<bool> enterCondition) 
         : base(owner, enterCondition) { }
 
-    public override void OnEnter()
-    {
-        Debug.Log("Drive OnEnter");
-    }
+
 
     public override void OnExit()
     {
-        Debug.Log("Drive OnExit");
-
         PlayerData data = owner.Data;
         data.wasDrifting = false;
     }

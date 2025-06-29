@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PauseState : State<GameManager>
 {
@@ -11,7 +12,6 @@ public class PauseState : State<GameManager>
     {
         UIManager.onResumeButtonClick += OnResumeButtonClick;
         UIManager.onResetButtonClick += OnResetButtonClick;
-
         Time.timeScale = 0.0f;
         onPauseStateEnter?.Invoke();
     }

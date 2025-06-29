@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PlayerRestartState : State<Player>
 {
@@ -23,11 +24,15 @@ public class PlayerRestartState : State<Player>
 
         PlayerData data = owner.Data;
         data.wasDrifting = false;
-
     }
 
     private void OnResetCar()
     {
+        if (owner == null)
+        {
+            int StopHere = 0;
+        }
+
         PlayerData data = owner.Data;
         owner.transform.position += Vector3.up * 2.0f;
         Vector3 forward = data.cameraMovement.transform.forward;

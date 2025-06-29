@@ -1,13 +1,22 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private VolumeData volumeData;
+
+    public static event Action onNextButtonClick;
     public static event Action onResumeButtonClick;
     public static event Action onResetButtonClick;
+
+    public static event Action<float> onMasterSliderChange;
+    public static event Action<float> onMusicSliderChange;
+    public static event Action<float> onSfxSliderChange;
+
     // Playing ui
     [SerializeField] private GameObject playingUI;
     [SerializeField] private TextMeshProUGUI coinCountText;
@@ -21,9 +30,12 @@ public class UIManager : MonoBehaviour
 
     // Win ui
     [SerializeField] private GameObject winPanel;
+    [SerializeField] private Button winNextButton;
     [SerializeField] private Button winResetButton;
     [SerializeField] private Button winMenuButton;
     [SerializeField] private Button winExitButton;
+    [SerializeField] private TextMeshProUGUI winCurrentTimeText;
+    [SerializeField] private TextMeshProUGUI winBestTimeText;
 
     // GameOver ui
     [SerializeField] private GameObject gameOverPanel;
@@ -35,8 +47,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private Button pauseResumeButton;
     [SerializeField] private Button pauseResetButton;
+    [SerializeField] private Button pauseSettingsButton;
     [SerializeField] private Button pauseMenuButton;
     [SerializeField] private Button pauseExitButton;
+
+    // Settings ui
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private Slider settingsMasterSlider;
+    [SerializeField] private Slider settingsMusicSlider;
+    [SerializeField] private Slider settingsSfxSlider;
+    [SerializeField] private Button settingsBackButton;
 
     private void Awake()
     {
@@ -50,6 +70,9 @@ public class UIManager : MonoBehaviour
 
         WinState.onWinStateEnter += OnWinStateEnter;
         WinState.onWinSateExit += OnWinStateExit;
+        WinState.onCurrentTimeSet += OnCurrentTimeSet;
+        WinState.onBestTimeSet += OnBestTimeSet;
+        winNextButton.onClick.AddListener(OnNextButtonClick);
         winResetButton.onClick.AddListener(OnResetButtonClick);
         winMenuButton.onClick.AddListener(OnMenuButtonClick);
         winExitButton.onClick.AddListener(OnExitButtonClick);
@@ -64,8 +87,14 @@ public class UIManager : MonoBehaviour
         PauseState.onPauseSateExit += OnPauseStateExit;
         pauseResumeButton.onClick.AddListener(OnResumeButtonClick);
         pauseResetButton.onClick.AddListener(OnResetButtonClick);
+        pauseSettingsButton.onClick.AddListener(OnSettingsButtonClick);
         pauseMenuButton.onClick.AddListener(OnMenuButtonClick);
         pauseExitButton.onClick.AddListener(OnExitButtonClick);
+
+        settingsMasterSlider.onValueChanged.AddListener(OnMasterSliderChange);
+        settingsMusicSlider.onValueChanged.AddListener(OnMusicSliderChange);
+        settingsSfxSlider.onValueChanged.AddListener(OnSfxSliderChange);
+        settingsBackButton.onClick.AddListener(OnBackButtonClick);
     }
 
     private void OnDestroy()
@@ -80,6 +109,9 @@ public class UIManager : MonoBehaviour
 
         WinState.onWinStateEnter -= OnWinStateEnter;
         WinState.onWinSateExit -= OnWinStateExit;
+        WinState.onCurrentTimeSet -= OnCurrentTimeSet;
+        WinState.onBestTimeSet -= OnBestTimeSet;
+        winNextButton.onClick.RemoveListener(OnNextButtonClick);
         winResetButton.onClick.RemoveListener(OnResetButtonClick);
         winMenuButton.onClick.RemoveListener(OnMenuButtonClick);
         winExitButton.onClick.RemoveListener(OnExitButtonClick);
@@ -94,13 +126,23 @@ public class UIManager : MonoBehaviour
         PauseState.onPauseSateExit -= OnPauseStateExit;
         pauseResumeButton.onClick.RemoveListener(OnResumeButtonClick);
         pauseResetButton.onClick.RemoveListener(OnResetButtonClick);
+        pauseSettingsButton.onClick.RemoveListener(OnSettingsButtonClick);
         pauseMenuButton.onClick.RemoveListener(OnMenuButtonClick);
         pauseExitButton.onClick.RemoveListener(OnExitButtonClick);
+
+        settingsMasterSlider.onValueChanged.RemoveListener(OnMasterSliderChange);
+        settingsMusicSlider.onValueChanged.RemoveListener(OnMusicSliderChange);
+        settingsSfxSlider.onValueChanged.RemoveListener(OnSfxSliderChange);
+        settingsBackButton.onClick.RemoveListener(OnBackButtonClick);
     }
 
     private void Start()
     {
         pressRToRestartText.gameObject.SetActive(false);
+
+        settingsMasterSlider.value = volumeData.Master;
+        settingsMusicSlider.value = volumeData.Music;
+        settingsSfxSlider.value = volumeData.Sfx;
     }
 
     public void OnUpdateCoinPickText(int coinCount, int coinSpawn)
@@ -142,16 +184,23 @@ public class UIManager : MonoBehaviour
     private void OnPauseStateEnter()
     {
         pausePanel.SetActive(true);
+        settingsPanel.SetActive(false);
+        EventSystem.current.firstSelectedGameObject = pauseResumeButton.gameObject;
+        pauseResumeButton.Select();
     }
 
     private void OnPauseStateExit()
     {
         pausePanel.SetActive(false);
+        settingsPanel.SetActive(false);
     }
 
     private void OnWinStateEnter()
     {
         winPanel.SetActive(true);
+        EventSystem.current.firstSelectedGameObject = winNextButton.gameObject;
+        winNextButton.Select();
+
     }
 
     private void OnWinStateExit()
@@ -162,6 +211,8 @@ public class UIManager : MonoBehaviour
     private void OnGameOverStateEnter()
     {
         gameOverPanel.SetActive(true);
+        EventSystem.current.firstSelectedGameObject = gameOverResetButton.gameObject;
+        gameOverResetButton.Select();
     }
 
     private void OnGameOverStateExit()
@@ -174,9 +225,22 @@ public class UIManager : MonoBehaviour
         onResumeButtonClick?.Invoke();
     }
 
+    private void OnNextButtonClick()
+    {
+        onNextButtonClick?.Invoke();
+    }
+
     private void OnResetButtonClick()
     {
         onResetButtonClick?.Invoke();
+    }
+
+    private void OnSettingsButtonClick()
+    {
+        pausePanel.SetActive(false);
+        settingsPanel.SetActive(true);
+        EventSystem.current.firstSelectedGameObject = settingsMasterSlider.gameObject;
+        settingsMasterSlider.Select();
     }
 
     private void OnMenuButtonClick()
@@ -193,5 +257,37 @@ public class UIManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    private void OnMasterSliderChange(float value)
+    { 
+        onMasterSliderChange?.Invoke(value);
+    }
+    private void OnMusicSliderChange(float value)
+    {
+        onMusicSliderChange?.Invoke(value);
+    }
+    private void OnSfxSliderChange(float value)
+    {
+        onSfxSliderChange?.Invoke(value);
+    }
+
+    private void OnBackButtonClick()
+    {
+        settingsPanel.SetActive(false);
+        pausePanel.SetActive(true);
+        EventSystem.current.firstSelectedGameObject = pauseResumeButton.gameObject;
+        pauseResumeButton.Select();
+    }
+
+    private void OnCurrentTimeSet(string text, int seconds)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
+        winCurrentTimeText.text = text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+    }
+    private void OnBestTimeSet(string text, int seconds)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
+        winBestTimeText.text = text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
 }
