@@ -41,6 +41,8 @@ class WinState : State<GameManager>
         PlayerPrefs.SetInt(KeyName, bestTime);
 
         onWinStateEnter?.Invoke();
+
+        AudioManager.onPauseAll?.Invoke();
     }
 
     public override void OnExit()
@@ -48,6 +50,7 @@ class WinState : State<GameManager>
         onWinSateExit?.Invoke();
         UIManager.onNextButtonClick -= OnNextButtonClick;
         UIManager.onResetButtonClick -= OnResetButtonClick;
+        AudioManager.onResumeAll?.Invoke();
     }
 
     private void OnNextButtonClick()
