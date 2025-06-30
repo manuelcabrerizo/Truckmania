@@ -37,6 +37,7 @@ class CountDownState : State<GameManager>
     {
         if(timer >= 1.0f)
         {
+            AudioManager.onPlayClip?.Invoke(owner.Clips.countDown);
             secondCount++;
             onCountDownChange?.Invoke(timeToWait - secondCount);
             timer -= 1.0f;

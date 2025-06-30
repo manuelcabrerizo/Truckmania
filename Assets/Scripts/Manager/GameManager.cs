@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource music;
-
+   [SerializeField] private SoundClipsSO clips;
     private StateMachine fsm;
     private State<GameManager> countDownState;
     private State<GameManager> playingState;
@@ -21,6 +20,7 @@ public class GameManager : MonoBehaviour
     public int enemiesKillCount = 0;
     public int seconds;
 
+    public SoundClipsSO Clips => clips;
     public List<Coin> Coins => coins;
     public List<Enemy> Enemies => enemies;
     public List<Box> Boxes => boxes;
@@ -28,15 +28,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
-
         InputManager.onPause += PauseGame;
         Coin.onCoinSpawn += OnCoinSpawn;
         Enemy.onEnemySpawn += OnEnemySpawn;
         Box.onBoxSpawn += OnBoxSpawn;
+    }
 
+    private void Start()
+    {
         int roundTime = LevelManager.Instance.GetCurrentRoundTime();
-
         fsm = new StateMachine();
         countDownState = new CountDownState(this);
         playingState = new PlayingState(this, roundTime, coins, enemies, boxes);
@@ -44,10 +44,7 @@ public class GameManager : MonoBehaviour
         gameOverState = new GameOverState(this);
         winState = new WinState(this);
         endState = new EndState(this);
-    }
 
-    private void Start()
-    {
         SetCountDownState();
     }
 
@@ -67,25 +64,25 @@ public class GameManager : MonoBehaviour
 
     public void SetPlayingState()
     {
-        music.Play();
+        AudioManager.onPlayMusic?.Invoke();
         fsm.ChangeState(playingState);
     }
 
     public void SetCountDownState()
     {
-        music.Stop();
+        AudioManager.onStopMusic?.Invoke();
         fsm.ChangeState(countDownState);
     }
 
     public void SetGameOverState()
     {
-        music.Stop();
+        AudioManager.onStopMusic?.Invoke();
         fsm.ChangeState(gameOverState);
     }
 
     public void SetWinState()
     {
-        music.Stop();
+        AudioManager.onStopMusic?.Invoke();
         fsm.ChangeState(winState);
     }
 
@@ -98,19 +95,19 @@ public class GameManager : MonoBehaviour
     {
         if (fsm.PeekState() == playingState)
         {
-            music.Pause();
+            AudioManager.onPauseMusic?.Invoke();
             fsm.PushState(pauseState);
         }
         else if (fsm.PeekState() == pauseState)
         {
-            music.Play();
+            AudioManager.onPlayMusic?.Invoke();
             fsm.PopState();
         }
     }
 
     public void ResumeGame()
     {
-        music.Play();
+        AudioManager.onPlayMusic?.Invoke();
         fsm.PopState();
     }
 

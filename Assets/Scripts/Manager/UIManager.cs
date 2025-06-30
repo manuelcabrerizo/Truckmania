@@ -28,6 +28,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject countDownUI;
     [SerializeField] private TextMeshProUGUI timerText;
 
+    // Finish and Timeout ui
+    [SerializeField] private GameObject finishUI;
+    [SerializeField] private GameObject timeoutUI;
+
     // Win ui
     [SerializeField] private GameObject winPanel;
     [SerializeField] private Button winNextButton;
@@ -67,6 +71,8 @@ public class UIManager : MonoBehaviour
         PlayerRestartState.onOnShowResetText += OnShowResetText;
         CountDownState.onShowCountDownUI += OnShowCountDownUI;
         CountDownState.onCountDownChange += OnCountDownChange;
+        EndState.onShowFinishUI += OnShowFinishUI;
+        EndState.onShowTimeoutUI += OnShowTimeoutUI;
 
         WinState.onWinStateEnter += OnWinStateEnter;
         WinState.onWinSateExit += OnWinStateExit;
@@ -106,6 +112,8 @@ public class UIManager : MonoBehaviour
         PlayerRestartState.onOnShowResetText -= OnShowResetText;
         CountDownState.onShowCountDownUI -= OnShowCountDownUI;
         CountDownState.onCountDownChange -= OnCountDownChange;
+        EndState.onShowFinishUI -= OnShowFinishUI;
+        EndState.onShowTimeoutUI -= OnShowTimeoutUI;
 
         WinState.onWinStateEnter -= OnWinStateEnter;
         WinState.onWinSateExit -= OnWinStateExit;
@@ -179,6 +187,16 @@ public class UIManager : MonoBehaviour
     private void OnCountDownChange(float value)
     {
         timerText.text = value.ToString();
+    }
+
+    private void OnShowFinishUI(bool value)
+    { 
+        finishUI.SetActive(value);
+    }
+
+    private void OnShowTimeoutUI(bool value)
+    { 
+        timeoutUI.SetActive(value);
     }
 
     private void OnPauseStateEnter()

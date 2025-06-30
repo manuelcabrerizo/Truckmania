@@ -61,6 +61,7 @@ public class PlayerBarrilState : State<Player>
                     }
                     else
                     {
+                        AudioManager.onPlayClip?.Invoke(data.clips.barrilShoot);
                         float attackRadioRatio = Mathf.Min(Mathf.Sqrt(minDistSq) / 200.0f, 1.0f);
                         float timeToTarget = 3.0f - (3.0f * (1.0f - attackRadioRatio));
                         Vector3 shootPos = colliders[minIndex].transform.position + Vector3.up * 20.0f;

@@ -14,6 +14,13 @@ public class PlayerDriveState : State<Player>
         data.wasDrifting = false;
     }
 
+    public override void OnUpdate()
+    {
+        PlayerData data = owner.Data;
+        float currentPitch = Mathf.Lerp(0.75f, 1.5f, Mathf.Abs(data.accel));
+        data.engineSound.pitch = currentPitch;
+    }
+
     public override void OnFixedUpdate()
     {
         ProcessGroundMovement();

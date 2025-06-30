@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Box : MonoBehaviour
 {
+    [SerializeField] private SoundClipsSO clips;
+    [SerializeField] private LayerMask playerLayer;
     public static event Action<Box> onBoxSpawn;
 
     private Vector3 startPosition;
@@ -23,6 +25,14 @@ public class Box : MonoBehaviour
         transform.rotation = startRotation;
         body.velocity = Vector3.zero;
         body.angularVelocity = Vector3.zero;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Utils.CheckCollisionLayer(collision.gameObject, playerLayer))
+        {
+            AudioManager.onPlayClip?.Invoke(clips.box);
+        }
     }
 
 

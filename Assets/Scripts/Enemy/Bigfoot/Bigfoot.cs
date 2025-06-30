@@ -3,6 +3,7 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class Bigfoot : Enemy
 {
+    [SerializeField] private SoundClipsSO clips;
     [SerializeField] private Transform hand = null;
     [SerializeField] private Transform target = null;
     [SerializeField] private float attackRadio = 4.0f;
@@ -27,6 +28,7 @@ public class Bigfoot : Enemy
     public BigfootHitState HitState => hitState;
     public Animator Animator => animator;
     public SkinnedMeshRenderer SkinnedMeshRenderer => skinnedMeshRenderer;
+    public SoundClipsSO Clips => clips;
 
     protected override void OnAwaken()
     {
@@ -92,6 +94,11 @@ public class Bigfoot : Enemy
     public void LunchCrate()
     {
         attackState.LunchCrate();
+    }
+
+    public void StartRoar()
+    {
+        AudioManager.onPlayClip3D?.Invoke(clips.mounsterAttack, transform.position, 100, 400);
     }
 
     public void Kill()

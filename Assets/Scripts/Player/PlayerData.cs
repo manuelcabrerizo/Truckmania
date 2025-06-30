@@ -10,6 +10,7 @@ public class PlayerData
 
     [Header("References")]
     public PlayerDataSo playerData;
+    public SoundClipsSO clips;
     public Transform[] hitPoints;
     public Transform[] wheels;
     public Transform[] wheelsVisuals;
@@ -46,6 +47,7 @@ public class PlayerData
     public Collider collision;
     public PlayerAimBar aimBar;
     public CameraMovement cameraMovement;
+    public AudioSource engineSound;
 
     public void Initialize()
     {

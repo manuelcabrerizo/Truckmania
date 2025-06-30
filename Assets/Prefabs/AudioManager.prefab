@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4423894571398113210}
   - component: {fileID: -5745027601857738441}
-  - component: {fileID: 7198688025805740451}
+  - component: {fileID: 2300383773037561141}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -45,9 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5927942513e66f46b4494edaf6d9b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 24100000, guid: 40e2cd4666eac0643908a43515565a91, type: 2}
   volumeData: {fileID: 11400000, guid: 6cb3553e0b69b094a94ae2d998a185a8, type: 2}
---- !u!82 &7198688025805740451
+  soundClips: {fileID: 11400000, guid: e47dcf20b69162b44bc45b1701cfb47e, type: 2}
+  mixer: {fileID: 24100000, guid: 40e2cd4666eac0643908a43515565a91, type: 2}
+  audioSourcePrefab: {fileID: 1254963914729384754, guid: fa221432a08b9c342997faaa84ec851f, type: 3}
+  collectionCheck: 1
+  defaultCapacity: 20
+  maxSize: 100
+--- !u!82 &2300383773037561141
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,7 +62,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 2451343510551392490, guid: 40e2cd4666eac0643908a43515565a91, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 49fd6a6327ec2d149bccc1298762e9df, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

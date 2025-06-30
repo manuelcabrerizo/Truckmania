@@ -5426,6 +5426,7 @@ GameObject:
   - component: {fileID: 5485600247969027308}
   - component: {fileID: 697911458418622276}
   - component: {fileID: 3829375061455782254}
+  - component: {fileID: 2736162292301476274}
   m_Layer: 9
   m_Name: ArcadeCar
   m_TagString: Untagged
@@ -5478,6 +5479,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 128
     playerData: {fileID: 11400000, guid: 153f0e0e5c17fc04dba6791df067f32e, type: 2}
+    clips: {fileID: 11400000, guid: e47dcf20b69162b44bc45b1701cfb47e, type: 2}
     hitPoints:
     - {fileID: 1925220946003146584}
     - {fileID: 7156822343183850821}
@@ -5504,6 +5506,7 @@ MonoBehaviour:
     dirtLeft: {fileID: 7158746877308159482}
     dirtRight: {fileID: 6962978413257122309}
     barrilTransform: {fileID: 1931263113962479405}
+    isCoundown: 0
     isGrounded: 0
     wasGrounded: 0
     localVelocity: {x: 0, y: 0, z: 0}
@@ -5513,14 +5516,19 @@ MonoBehaviour:
     barril: {fileID: 0}
     wasDrifting: 0
     keepDrifting: 0
+    isNoclipCheatActive: 0
+    isGodModeCheatActive: 0
     accel: 0
     steer: 0
     breaking: 0
     flip: 0
     sideFlip: 0
+    transform: {fileID: 0}
     body: {fileID: 0}
+    collision: {fileID: 0}
     aimBar: {fileID: 0}
     cameraMovement: {fileID: 0}
+    engineSound: {fileID: 0}
 --- !u!114 &5485600247969027308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5583,6 +5591,102 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.8359277, y: 1.3117881, z: 4.376223}
   m_Center: {x: -0.1675607, y: 0.79346013, z: -0.12748742}
+--- !u!82 &2736162292301476274
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222577605293664888}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -4790271690342864663, guid: 40e2cd4666eac0643908a43515565a91, type: 2}
+  m_audioClip: {fileID: 8300000, guid: ceb6e86238803d94cbbe45318cd84b4e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1587984010389833687
 GameObject:
   m_ObjectHideFlags: 0

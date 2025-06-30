@@ -7,6 +7,7 @@ public class BarrilProjectile : Projectile
     public static event Action<BarrilProjectile> onBarrilExplote;
     public static event Action<BarrilProjectile> onBarrilExploteEnd;
 
+    [SerializeField] private SoundClipsSO clips;
     [SerializeField] protected ParticleSystem particles;
     [SerializeField] protected MeshRenderer barrilRenderer;
     protected Rigidbody body;
@@ -87,6 +88,7 @@ public class BarrilProjectile : Projectile
         body.isKinematic = true;
         StartCoroutine(SendReleaseaEventAfterSeconds(particles.main.duration));
         onBarrilExplote?.Invoke(this);
+        AudioManager.onPlayClip3D?.Invoke(clips.explosion, transform.position, 100, 400);
 
         Collider[] colliders = Physics.OverlapSphere(body.position, 50.0f);
         if (colliders.Length > 0)

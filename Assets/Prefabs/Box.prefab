@@ -48,6 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee2c80f43a47564eac52a36911b3753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clips: {fileID: 11400000, guid: e47dcf20b69162b44bc45b1701cfb47e, type: 2}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!33 &1383999364733171126
 MeshFilter:
   m_ObjectHideFlags: 0

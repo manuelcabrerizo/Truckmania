@@ -51,6 +51,7 @@ MonoBehaviour:
   damagableLayer:
     serializedVersion: 2
     m_Bits: 1024
+  clips: {fileID: 11400000, guid: e47dcf20b69162b44bc45b1701cfb47e, type: 2}
   hand: {fileID: 8065333624301119655}
   target: {fileID: 0}
   attackRadio: 180

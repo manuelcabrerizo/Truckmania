@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class Utils
 {
     static public bool CheckCollisionLayer(GameObject gameObject, LayerMask layer)

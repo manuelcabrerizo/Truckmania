@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b572f7948ed3dfc4f9b68659664b5c60, type: 3}
+  m_Name: SoundClipsSO
+  m_EditorClassIdentifier: 
+  music: {fileID: 8300000, guid: 49fd6a6327ec2d149bccc1298762e9df, type: 3}
+  engine: {fileID: 8300000, guid: ceb6e86238803d94cbbe45318cd84b4e, type: 3}
+  drift: {fileID: 0}
+  coin: {fileID: 8300000, guid: e07e30d26a1574aa2bb57f3f6fd09cf0, type: 3}
+  box: {fileID: 8300000, guid: 82ef6eaed5d940240a305b0266087f97, type: 3}
+  explosion: {fileID: 8300000, guid: fd706038486fee041947a774223dc22e, type: 3}
+  barrilPickup: {fileID: 8300000, guid: 4bc21899eae7448ccaf4ebdd49cfcd9f, type: 3}
+  barrilShoot: {fileID: 8300000, guid: 1d5bbda432c2345c19e277a086954ba9, type: 3}
+  mounsterIdle: {fileID: 8300000, guid: 6811bbd09dedb497ea07997567b158c2, type: 3}
+  mounsterHit: {fileID: 8300000, guid: ec834e3a0a9a041e58e015c0bf39ed52, type: 3}
+  mounsterAttack: {fileID: 8300000, guid: 8a42266be58db4c518b5d4e47cc0f780, type: 3}
+  mounsterDeath: {fileID: 8300000, guid: 6beb606fbac8f4d0e9ea410969417e51, type: 3}
+  countDown: {fileID: 8300000, guid: 47a55d6266d254dfd9aa158d6e3f3158, type: 3}
+  reset: {fileID: 8300000, guid: bfae989fc5c764e0eb255d3f39101459, type: 3}
+  start: {fileID: 8300000, guid: 1d1ae493e61614cb9bc398f291ff6f6a, type: 3}
+  win: {fileID: 0}
+  gameOver: {fileID: 0}
+  timeOut: {fileID: 0}
+  finish: {fileID: 0}

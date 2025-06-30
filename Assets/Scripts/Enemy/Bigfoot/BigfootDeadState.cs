@@ -12,6 +12,7 @@ public class BigfootDeadState : State<Bigfoot>
     {
         isDead = false;
         owner.Animator.SetBool("IsDead", true);
+        AudioManager.onPlayClip3D?.Invoke(owner.Clips.mounsterDeath, owner.transform.position, 100, 400);
     }
 
     public override void OnUpdate()

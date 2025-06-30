@@ -22,6 +22,13 @@ public class PlayerDriftState : State<Player>
         data.wasDrifting = true;
     }
 
+    public override void OnUpdate()
+    {
+        PlayerData data = owner.Data;
+        float currentPitch = Mathf.Lerp(0.70f, 1.0f, data.sliptAngle / (data.playerData.driftAngle*0.5f));
+        data.engineSound.pitch = currentPitch;
+    }
+
 
     public override void OnFixedUpdate()
     {

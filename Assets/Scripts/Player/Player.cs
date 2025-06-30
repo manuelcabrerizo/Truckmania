@@ -29,6 +29,7 @@ public class Player : MonoBehaviour, IDamagable
         Data.body = GetComponent<Rigidbody>();
         Data.collision = GetComponent<Collider>();
         Data.aimBar = GetComponent<PlayerAimBar>();
+        Data.engineSound = GetComponent<AudioSource>();
 
         stateMachine = new StateMachine();
         additiveStateMachine = new StateMachine();
@@ -78,6 +79,7 @@ public class Player : MonoBehaviour, IDamagable
         IPickable pickable = null;
         if (other.gameObject.TryGetComponent<IPickable>(out pickable))
         {
+            AudioManager.onPlayClip?.Invoke(Data.clips.barrilPickup);
             StartCoroutine(StartFeedbackAnimation(0.5f, Color.yellow));
             pickable.PickUp();
         }

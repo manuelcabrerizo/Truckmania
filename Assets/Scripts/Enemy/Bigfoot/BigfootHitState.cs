@@ -12,6 +12,7 @@ public class BigfootHitState : State<Bigfoot>
     {
         time = 0.0f;
         owner.Animator.SetTrigger("Hit");
+        AudioManager.onPlayClip3D?.Invoke(owner.Clips.mounsterHit, owner.transform.position, 100, 400);
     }
 
     public override void OnUpdate()

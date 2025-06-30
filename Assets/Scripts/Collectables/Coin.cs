@@ -6,14 +6,13 @@ public class Coin : MonoBehaviour, IPickable
     public static event Action<Coin> onCoinSpawn;
     public static event Action<Coin> onCoinPick;
 
+    [SerializeField] private SoundClipsSO clips;
     [SerializeField] private MeshRenderer meshRenderer;
     private Collider collision;
-    private AudioSource pickupSound;
 
     private void Awake()
     {
         collision = GetComponent<Collider>();
-        pickupSound = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -36,7 +35,7 @@ public class Coin : MonoBehaviour, IPickable
     {
         meshRenderer.enabled = false;
         collision.enabled = false;
-        pickupSound.Play();
+        AudioManager.onPlayClip?.Invoke(clips.coin);
         onCoinPick?.Invoke(this);
     }
 }
