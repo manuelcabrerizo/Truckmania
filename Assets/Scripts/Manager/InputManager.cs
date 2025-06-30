@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviourSingleton<InputManager>
 {
     public static event Action<float> onAccelerate;
     public static event Action<float> onBreak;
@@ -17,6 +17,15 @@ public class InputManager : MonoBehaviour
     public static event Action onLoseCheat;
     public static event Action onGodModeCheat;
     public static event Action onNoclipCheat;
+    public static event Action onJoystickOrKeyboardUse;
+
+    public bool JoystickOrKeyboardUse { get; private set; }
+    
+
+    protected override void OnAwaken()
+    {
+        JoystickOrKeyboardUse = true;
+    }
 
     public void OnAccelerate(InputAction.CallbackContext context)
     {
@@ -112,4 +121,37 @@ public class InputManager : MonoBehaviour
             onNoclipCheat?.Invoke();
         }
     }
+
+    public void OnJoystickUse(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (JoystickOrKeyboardUse == false)
+            {
+                onJoystickOrKeyboardUse?.Invoke();
+                JoystickOrKeyboardUse = true;
+            }
+        }
+    }
+
+    public void OnKeyboardUse(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (JoystickOrKeyboardUse == false)
+            {
+                onJoystickOrKeyboardUse?.Invoke();
+                JoystickOrKeyboardUse = true;
+            }
+        }
+    }
+
+    public void OnMouseUse(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            JoystickOrKeyboardUse = false;
+        }
+    }
+
 }

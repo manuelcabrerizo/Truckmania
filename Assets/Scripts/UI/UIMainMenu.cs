@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,6 +16,9 @@ public class UIMainMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsButtonClick);
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
+
+        InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
+
     }
 
     private void OnDestroy()
@@ -23,6 +27,9 @@ public class UIMainMenu : MonoBehaviour
         controlsButton.onClick.RemoveListener(OnControlsButtonClick);
         creditsButton.onClick.RemoveListener(OnCreditsButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
+
+        InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
+
     }
 
     private void OnPlayButtonClick()
@@ -51,4 +58,9 @@ public class UIMainMenu : MonoBehaviour
 #endif
     }
 
+    private void OnJoystickAndKeyboardUse()
+    {
+        EventSystem.current.firstSelectedGameObject = playButton.gameObject;
+        playButton.Select();
+    }
 }

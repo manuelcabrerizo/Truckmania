@@ -60,8 +60,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider settingsSfxSlider;
     [SerializeField] private Button settingsBackButton;
 
+    private Selectable currentFirstButton = null;
+
     private void Awake()
     {
+        InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
+
         PlayingState.onShowPlayingUI += OnShowPlayingUI;
         PlayingState.onUpdateCoinPickText += OnUpdateCoinPickText;
         PlayingState.onUpdateEnemyKillText += OnUpdateEnemyKillText;
@@ -102,6 +106,8 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
+
         PlayingState.onShowPlayingUI -= OnShowPlayingUI;
         PlayingState.onUpdateCoinPickText -= OnUpdateCoinPickText;
         PlayingState.onUpdateEnemyKillText -= OnUpdateEnemyKillText;
@@ -198,6 +204,7 @@ public class UIManager : MonoBehaviour
     {
         pausePanel.SetActive(true);
         settingsPanel.SetActive(false);
+        currentFirstButton = pauseResumeButton;
         EventSystem.current.firstSelectedGameObject = pauseResumeButton.gameObject;
         pauseResumeButton.Select();
     }
@@ -211,9 +218,9 @@ public class UIManager : MonoBehaviour
     private void OnWinStateEnter()
     {
         winPanel.SetActive(true);
+        currentFirstButton = winNextButton;
         EventSystem.current.firstSelectedGameObject = winNextButton.gameObject;
         winNextButton.Select();
-
     }
 
     private void OnWinStateExit()
@@ -224,6 +231,7 @@ public class UIManager : MonoBehaviour
     private void OnGameOverStateEnter()
     {
         gameOverPanel.SetActive(true);
+        currentFirstButton = gameOverResetButton;
         EventSystem.current.firstSelectedGameObject = gameOverResetButton.gameObject;
         gameOverResetButton.Select();
     }
@@ -252,6 +260,7 @@ public class UIManager : MonoBehaviour
     {
         pausePanel.SetActive(false);
         settingsPanel.SetActive(true);
+        currentFirstButton = settingsMusicSlider;
         EventSystem.current.firstSelectedGameObject = settingsMusicSlider.gameObject;
         settingsMusicSlider.Select();
     }
@@ -285,6 +294,7 @@ public class UIManager : MonoBehaviour
     {
         settingsPanel.SetActive(false);
         pausePanel.SetActive(true);
+        currentFirstButton = pauseResumeButton;
         EventSystem.current.firstSelectedGameObject = pauseResumeButton.gameObject;
         pauseResumeButton.Select();
     }
@@ -298,5 +308,14 @@ public class UIManager : MonoBehaviour
     {
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
         winBestTimeText.text = text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+    }
+
+    private void OnJoystickAndKeyboardUse()
+    {
+        if (currentFirstButton != null)
+        {
+            EventSystem.current.firstSelectedGameObject = currentFirstButton.gameObject;
+            currentFirstButton.Select();
+        }
     }
 }

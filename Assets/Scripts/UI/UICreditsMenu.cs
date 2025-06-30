@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,12 +12,15 @@ public class UICreditsMenu : MonoBehaviour
     {
         backButton.onClick.AddListener(OnBackButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
+        InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
+
     }
 
     private void OnDestroy()
     {
         backButton.onClick.RemoveListener(OnBackButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
+        InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
     }
 
     private void OnBackButtonClick()
@@ -33,6 +37,12 @@ public class UICreditsMenu : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    private void OnJoystickAndKeyboardUse()
+    {
+        EventSystem.current.firstSelectedGameObject = backButton.gameObject;
+        backButton.Select();
     }
 
 }
