@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VolumeData
   m_EditorClassIdentifier: 
   Master: 1
-  Music: 0.25
-  Sfx: 0.5
+  Music: 1
+  Sfx: 1

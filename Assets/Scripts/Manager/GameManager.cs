@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         int roundTime = LevelManager.Instance.GetCurrentRoundTime();
         fsm = new StateMachine();
         countDownState = new CountDownState(this);
-        playingState = new PlayingState(this, roundTime, coins, enemies, boxes);
+        playingState = new PlayingState(this, roundTime);
         pauseState = new PauseState(this);
         gameOverState = new GameOverState(this);
         winState = new WinState(this);

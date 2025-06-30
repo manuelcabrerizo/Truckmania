@@ -59,7 +59,7 @@ Shader "Custom/FeebackShader"
 				float fresnel = saturate(dot(n, v));
 
                 float4 col = tex2D(_MainTex, i.uv);
-				col.xyz *= 2.0f;
+				col.xyz *= 3.0f;
 				col.xyz *= _Color;
 				col.xyz *= diffuse;
 				col.xyz += _Tint * (1.0f - fresnel);

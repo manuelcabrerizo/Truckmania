@@ -34,11 +34,10 @@ public class PlayerNoclipState : State<Player>
 
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         PlayerData data = owner.Data;
         data.body.AddTorque(data.steer * data.body.transform.up * 8.0f, ForceMode.Acceleration);
-
         data.body.AddForce(data.transform.forward * data.accel * 50.0f, ForceMode.Acceleration);
         data.body.AddForce(Vector3.up * data.flip * 50.0f, ForceMode.Acceleration);
     }

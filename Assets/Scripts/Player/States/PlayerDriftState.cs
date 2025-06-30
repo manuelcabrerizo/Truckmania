@@ -12,6 +12,9 @@ public class PlayerDriftState : State<Player>
         data.dirtLeft.Play();
         data.dirtRight.Play();
         data.keepDrifting = false;
+        data.engineSound.clip = data.clips.drift;
+        data.engineSound.pitch = 1.0f;
+        data.engineSound.Play();
     }
 
     public override void OnExit()
@@ -20,15 +23,9 @@ public class PlayerDriftState : State<Player>
         data.dirtLeft.Stop();
         data.dirtRight.Stop();
         data.wasDrifting = true;
+        data.engineSound.clip = data.clips.engine;
+        data.engineSound.Play();
     }
-
-    public override void OnUpdate()
-    {
-        PlayerData data = owner.Data;
-        float currentPitch = Mathf.Lerp(0.70f, 1.0f, data.sliptAngle / (data.playerData.driftAngle*0.5f));
-        data.engineSound.pitch = currentPitch;
-    }
-
 
     public override void OnFixedUpdate()
     {

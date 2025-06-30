@@ -23,6 +23,21 @@ class CountDownState : State<GameManager>
         onCountDownChange?.Invoke(timeToWait);
         timer = 0;
         secondCount = 0;
+
+        foreach (Coin coin in owner.Coins)
+        {
+            coin.Restart();
+        }
+
+        foreach (Enemy enemy in owner.Enemies)
+        {
+            enemy.Restart();
+        }
+
+        foreach (Box box in owner.Boxes)
+        {
+            box.Restart();
+        }
     }
 
     public override void OnExit()

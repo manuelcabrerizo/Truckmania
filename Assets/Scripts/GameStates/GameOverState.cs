@@ -12,12 +12,14 @@ class GameOverState : State<GameManager>
     {
         UIManager.onResetButtonClick += OnResetButtonClick;
         onGameOverStateEnter?.Invoke();
+        AudioManager.onPauseAll?.Invoke();
     }
 
     public override void OnExit()
     {
         onGameOverSateExit?.Invoke();
         UIManager.onResetButtonClick -= OnResetButtonClick;
+        AudioManager.onResumeAll?.Invoke();
     }
 
     private void OnResetButtonClick()

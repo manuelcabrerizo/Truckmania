@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class Bigfoot : Enemy
 {
+    public static event Action<Enemy> onBigfootKill;
+
     [SerializeField] private SoundClipsSO clips;
     [SerializeField] private Transform hand = null;
     [SerializeField] private Transform target = null;
@@ -106,6 +108,7 @@ public class Bigfoot : Enemy
         collision.enabled = false;
         animator.enabled = false;
         deadState.SetDead();
+        onBigfootKill?.Invoke(this);
     }
 
     public void HitAnimationEnd()

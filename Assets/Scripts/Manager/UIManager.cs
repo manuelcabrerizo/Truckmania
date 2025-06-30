@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
     public static event Action onResumeButtonClick;
     public static event Action onResetButtonClick;
 
-    public static event Action<float> onMasterSliderChange;
     public static event Action<float> onMusicSliderChange;
     public static event Action<float> onSfxSliderChange;
 
@@ -57,7 +56,6 @@ public class UIManager : MonoBehaviour
 
     // Settings ui
     [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private Slider settingsMasterSlider;
     [SerializeField] private Slider settingsMusicSlider;
     [SerializeField] private Slider settingsSfxSlider;
     [SerializeField] private Button settingsBackButton;
@@ -97,7 +95,6 @@ public class UIManager : MonoBehaviour
         pauseMenuButton.onClick.AddListener(OnMenuButtonClick);
         pauseExitButton.onClick.AddListener(OnExitButtonClick);
 
-        settingsMasterSlider.onValueChanged.AddListener(OnMasterSliderChange);
         settingsMusicSlider.onValueChanged.AddListener(OnMusicSliderChange);
         settingsSfxSlider.onValueChanged.AddListener(OnSfxSliderChange);
         settingsBackButton.onClick.AddListener(OnBackButtonClick);
@@ -138,7 +135,6 @@ public class UIManager : MonoBehaviour
         pauseMenuButton.onClick.RemoveListener(OnMenuButtonClick);
         pauseExitButton.onClick.RemoveListener(OnExitButtonClick);
 
-        settingsMasterSlider.onValueChanged.RemoveListener(OnMasterSliderChange);
         settingsMusicSlider.onValueChanged.RemoveListener(OnMusicSliderChange);
         settingsSfxSlider.onValueChanged.RemoveListener(OnSfxSliderChange);
         settingsBackButton.onClick.RemoveListener(OnBackButtonClick);
@@ -148,7 +144,6 @@ public class UIManager : MonoBehaviour
     {
         pressRToRestartText.gameObject.SetActive(false);
 
-        settingsMasterSlider.value = volumeData.Master;
         settingsMusicSlider.value = volumeData.Music;
         settingsSfxSlider.value = volumeData.Sfx;
     }
@@ -257,8 +252,8 @@ public class UIManager : MonoBehaviour
     {
         pausePanel.SetActive(false);
         settingsPanel.SetActive(true);
-        EventSystem.current.firstSelectedGameObject = settingsMasterSlider.gameObject;
-        settingsMasterSlider.Select();
+        EventSystem.current.firstSelectedGameObject = settingsMusicSlider.gameObject;
+        settingsMusicSlider.Select();
     }
 
     private void OnMenuButtonClick()
@@ -277,10 +272,6 @@ public class UIManager : MonoBehaviour
 #endif
     }
 
-    private void OnMasterSliderChange(float value)
-    { 
-        onMasterSliderChange?.Invoke(value);
-    }
     private void OnMusicSliderChange(float value)
     {
         onMusicSliderChange?.Invoke(value);

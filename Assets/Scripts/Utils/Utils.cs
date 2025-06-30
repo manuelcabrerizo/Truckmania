@@ -34,17 +34,7 @@ public class Utils
     }
     public static float LinearToDecibel(float linear)
     {
-        float dB;
-        if (linear != 0)
-            dB = 20.0f * Mathf.Log10(linear);
-        else
-            dB = -144.0f;
+        float dB = Mathf.Log10(linear) * 20;
         return dB;
-    }
-
-    public static float DecibelToLinear(float dB)
-    {
-        float linear = Mathf.Pow(10.0f, dB / 20.0f);
-        return linear;
     }
 }

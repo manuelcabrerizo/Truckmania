@@ -13,17 +13,10 @@ class PlayingState : State<GameManager>
     private float timer;
     private float timerScale = 1.0f;
 
-    private List<Coin> coins;
-    private List<Enemy> enemies;
-    private List<Box> boxes;
-
-    public PlayingState(GameManager gameManager, int roundTime, List<Coin> coins, List<Enemy> enemies, List<Box> boxes)
+    public PlayingState(GameManager gameManager, int roundTime)
     : base(gameManager)
     {
         this.roundTime = roundTime;
-        this.coins = coins;
-        this.enemies = enemies;
-        this.boxes = boxes;
     }
     
     public override void OnEnter()
@@ -42,24 +35,8 @@ class PlayingState : State<GameManager>
 
         onShowPlayingUI?.Invoke(true);
         onUpdateTimeText?.Invoke(owner.seconds);
-        onUpdateCoinPickText?.Invoke(owner.coinsCollectedCount, coins.Count);
-        onUpdateEnemyKillText?.Invoke(owner.enemiesKillCount, enemies.Count);
-
-        // TODO: move to count down state
-        foreach (Coin coin in coins)
-        {
-            coin.Restart();
-        }
-
-        foreach (Enemy enemy in enemies)
-        {
-            enemy.Restart();
-        }
-
-        foreach (Box box in boxes)
-        { 
-            box.Restart();
-        }
+        onUpdateCoinPickText?.Invoke(owner.coinsCollectedCount, owner.Coins.Count);
+        onUpdateEnemyKillText?.Invoke(owner.enemiesKillCount, owner.Enemies.Count);
     }
 
     public override void OnExit()
@@ -105,20 +82,20 @@ class PlayingState : State<GameManager>
     private void OnCoinPick(Coin coin)
     {
         owner.coinsCollectedCount++;
-        onUpdateCoinPickText?.Invoke(owner.coinsCollectedCount, coins.Count);
+        onUpdateCoinPickText?.Invoke(owner.coinsCollectedCount, owner.Coins.Count);
     }
 
     private void OnEnemyKill(Enemy enemy)
     {
         owner.enemiesKillCount++;
-        onUpdateEnemyKillText?.Invoke(owner.enemiesKillCount, enemies.Count);
+        onUpdateEnemyKillText?.Invoke(owner.enemiesKillCount, owner.Enemies.Count);
     }
 
     private void OnWinCheat()
     {
-        owner.coinsCollectedCount = coins.Count;
-        owner.enemiesKillCount = enemies.Count;
-        owner.seconds = 0;
+        owner.coinsCollectedCount = owner.Coins.Count;
+        owner.enemiesKillCount = owner.Enemies.Count;
+        owner.SetEndState();
     }
 
     private void OnLoseCheat()

@@ -24,7 +24,7 @@ public class CameraMovement : MonoBehaviour
     private void Awake()
     {
         InputManager.onLockCamera += OnLockCamera;
-        Enemy.onEnemyKill += OnEnemyKill;
+        Bigfoot.onBigfootKill += OnBigfootKill;
         EndState.onEnter += OnEnterEndState;
 
         back = -target.transform.forward;
@@ -39,7 +39,7 @@ public class CameraMovement : MonoBehaviour
     private void OnDestroy()
     {
         InputManager.onLockCamera -= OnLockCamera;
-        Enemy.onEnemyKill -= OnEnemyKill;
+        Bigfoot.onBigfootKill -= OnBigfootKill;
         EndState.onEnter -= OnEnterEndState;
     }
 
@@ -237,9 +237,14 @@ public class CameraMovement : MonoBehaviour
         lockTarget = null;
         isLock = false;
         onTargetUnlock?.Invoke();
+
+        Vector3 toCamera = (back + Vector3.up * cameraData.height) * cameraData.distance;
+        Vector3 targetPosition = target.transform.position + toCamera;
+        transform.position = targetPosition;
+
     }
 
-    private void OnEnemyKill(Enemy enemy)
+    private void OnBigfootKill(Enemy enemy)
     {
         LockTargetLost(enemy.gameObject);
     }

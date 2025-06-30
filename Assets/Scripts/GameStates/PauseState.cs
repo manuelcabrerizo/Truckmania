@@ -14,6 +14,8 @@ public class PauseState : State<GameManager>
         UIManager.onResetButtonClick += OnResetButtonClick;
         Time.timeScale = 0.0f;
         onPauseStateEnter?.Invoke();
+
+        AudioManager.onPauseAll?.Invoke();
     }
 
     public override void OnExit()
@@ -23,6 +25,7 @@ public class PauseState : State<GameManager>
 
         UIManager.onResumeButtonClick -= OnResumeButtonClick;
         UIManager.onResetButtonClick -= OnResetButtonClick;
+        AudioManager.onResumeAll?.Invoke();
     }
 
     private void OnResumeButtonClick()

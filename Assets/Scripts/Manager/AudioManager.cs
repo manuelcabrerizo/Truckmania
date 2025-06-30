@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Pool;
 
 public class AudioManager : MonoBehaviour
 {
+    public static Action onPauseAll;
+    public static Action onResumeAll;
     public static Action onPlayMusic;
     public static Action onStopMusic;
     public static Action onPauseMusic;
@@ -26,9 +29,10 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        UIManager.onMasterSliderChange += OnMasterSliderChange;
         UIManager.onMusicSliderChange += OnMusicSliderChange;
         UIManager.onSfxSliderChange += OnSfxSliderChange;
+        onPauseAll += PauseAll;
+        onResumeAll += ResumeAll;
         onPlayMusic += PlayMusic;
         onStopMusic += StopMusic;
         onPauseMusic += PauseMusic;
@@ -50,9 +54,10 @@ public class AudioManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        UIManager.onMasterSliderChange -= OnMasterSliderChange;
         UIManager.onMusicSliderChange -= OnMusicSliderChange;
         UIManager.onSfxSliderChange -= OnSfxSliderChange;
+        onPauseAll -= PauseAll;
+        onResumeAll -= ResumeAll;
         onPlayMusic -= PlayMusic;
         onStopMusic -= StopMusic;
         onPauseMusic -= PauseMusic;
@@ -88,6 +93,7 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(ReleaseAudioSourceIfFinish(audioSource));
     }
 
+
     private void PlayClip3D(AudioClip clip, Vector3 position, float minDist, float maxDist)
     {
         AudioSource audioSource = pool.Get();
@@ -98,6 +104,16 @@ public class AudioManager : MonoBehaviour
         audioSource.clip = clip;
         audioSource.Play();
         StartCoroutine(ReleaseAudioSourceIfFinish(audioSource));
+    }
+
+    private void PauseAll()
+    {
+        mixer.SetFloat("MasterVolume", -80);
+    }
+
+    private void ResumeAll()
+    {
+        mixer.SetFloat("MasterVolume", 0);
     }
 
     private IEnumerator ReleaseAudioSourceIfFinish(AudioSource audioSource)
@@ -141,11 +157,4 @@ public class AudioManager : MonoBehaviour
         volumeData.Music = value;
         mixer.SetFloat("MusicVolume", Utils.LinearToDecibel(volumeData.Music));
     }
-
-    private void OnMasterSliderChange(float value)
-    {
-        volumeData.Master = value;
-        mixer.SetFloat("MasterVolume", Utils.LinearToDecibel(volumeData.Master));
-    }
-
 }
