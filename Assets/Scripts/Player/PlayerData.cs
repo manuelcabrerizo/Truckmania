@@ -55,13 +55,6 @@ public class PlayerData
         CountDownState.onCountDownExit += OnCountDownExit;
         ToxicBarrilProjectile.onBarrilPickUp += OnBarrilPickUp;
         CameraMovement.onCameraCreated += OnCameraCreated;
-        InputManager.onAccelerate += OnAccelerate;
-        InputManager.onBreak += OnBreak;
-        InputManager.onSteer += OnSteer;
-        InputManager.onFlip += OnFlip;
-        InputManager.onSideFlip += OnSideFlip;
-        InputManager.onNoclipCheat += OnNoclipCheat;
-        InputManager.onGodModeCheat += OnGodModeCheat;
     }
 
     public void Destroy()
@@ -70,13 +63,6 @@ public class PlayerData
         CountDownState.onCountDownExit -= OnCountDownExit;
         ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
         CameraMovement.onCameraCreated -= OnCameraCreated;
-        InputManager.onAccelerate -= OnAccelerate;
-        InputManager.onBreak -= OnBreak;
-        InputManager.onSteer -= OnSteer;
-        InputManager.onFlip -= OnFlip;
-        InputManager.onSideFlip -= OnSideFlip;
-        InputManager.onNoclipCheat -= OnNoclipCheat;
-        InputManager.onGodModeCheat -= OnGodModeCheat;
 
         if (barril)
         {
@@ -208,26 +194,6 @@ public class PlayerData
     {
         this.cameraMovement = cameraMovement;
     }
-    private void OnAccelerate(float accel)
-    {
-        this.accel = accel;
-    }
-    private void OnBreak(float breaking)
-    {
-        this.breaking = breaking;
-    }
-    private void OnSteer(float steer)
-    {
-        this.steer = steer;
-    }
-    private void OnFlip(float flip)
-    {
-        this.flip = flip;
-    }
-    private void OnSideFlip(float sideFlip)
-    {
-        this.sideFlip = sideFlip;
-    }
 
     public void OnCountDownEnter()
     {
@@ -239,19 +205,4 @@ public class PlayerData
         isCoundown = false;
     }
 
-    private void OnNoclipCheat()
-    {
-        if (!isCoundown)
-        {
-            isNoclipCheatActive = !isNoclipCheatActive;
-        }
-    }
-
-    private void OnGodModeCheat()
-    {
-        if (!isCoundown)
-        {
-            isGodModeCheatActive = !isGodModeCheatActive;
-        }
-    }
 }

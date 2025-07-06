@@ -7,6 +7,10 @@ public class Player : MonoBehaviour, IDamagable
 {
     public static event Action<Player> onPlayerCreated;
     public static event Action onPlayerHit;
+    public static event Action<Player> onShoot;
+    public static event Action<Player> onRestart;
+    public static event Action<Player> onGodMode;
+    public static event Action<Player> onNoclipMode;
 
     public static Vector3 startPosition;
     public static Quaternion startRotation;
@@ -167,6 +171,34 @@ public class Player : MonoBehaviour, IDamagable
                 }
             }
         }
+    }
+
+    public void Shoot()
+    {
+        onShoot?.Invoke(this);
+    }
+
+    public void Restart()
+    {
+        onRestart?.Invoke(this);   
+    }
+
+    public void SetGodMode()
+    {
+        if (!Data.isCoundown)
+        {
+            Data.isGodModeCheatActive = !Data.isGodModeCheatActive;
+        }
+        onGodMode?.Invoke(this);
+    }
+
+    public void SetNoclipMode()
+    {
+        if (!Data.isCoundown)
+        {
+            Data.isNoclipCheatActive = !Data.isNoclipCheatActive;
+        }
+        onNoclipMode?.Invoke(this);
     }
 
     public void TakeDamage(int amount)

@@ -4,54 +4,79 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviourSingleton<InputManager>
 {
-    public static event Action<float> onAccelerate;
-    public static event Action<float> onBreak;
-    public static event Action<float> onSteer;
-    public static event Action<float> onFlip;
-    public static event Action<float> onSideFlip;
-    public static event Action onShoot;
     public static event Action onPause;
-    public static event Action onResetCar;
     public static event Action onLockCamera;
     public static event Action onWinCheat;
     public static event Action onLoseCheat;
     public static event Action onGodModeCheat;
-    public static event Action onNoclipCheat;
     public static event Action onJoystickOrKeyboardUse;
 
     public bool JoystickOrKeyboardUse { get; private set; }
-    
+    private Player player = null;
 
     protected override void OnAwaken()
     {
         JoystickOrKeyboardUse = true;
+        Player.onPlayerCreated += OnPlayerCreated;
+    }
+
+    protected override void OnDestroyed()
+    {
+        Player.onPlayerCreated -= OnPlayerCreated;
+    }
+
+    private void OnPlayerCreated(Player player)
+    {
+        this.player = player;
     }
 
     public void OnAccelerate(InputAction.CallbackContext context)
     {
-        onAccelerate?.Invoke(context.ReadValue<float>());
+        player.Data.accel = context.ReadValue<float>();
     }
 
     public void OnBreak(InputAction.CallbackContext context)
     {
-        onBreak?.Invoke(context.ReadValue<float>());
+        player.Data.breaking = context.ReadValue<float>();
     }
 
     public void OnSteer(InputAction.CallbackContext context)
     {
-        onSteer?.Invoke(context.ReadValue<float>());
+        player.Data.steer = context.ReadValue<float>();
     }
 
     public void OnFlip(InputAction.CallbackContext context)
     {
-        onFlip?.Invoke(context.ReadValue<float>());
+        player.Data.flip = context.ReadValue<float>();
+    }
+
+    public void OnSideFlip(InputAction.CallbackContext context)
+    {
+        player.Data.sideFlip = context.ReadValue<float>();
+    }
+
+    public void OnGodModeCheat(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            player.SetGodMode();
+            onGodModeCheat?.Invoke();
+        }
+    }
+
+    public void OnNoclipCheat(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            player.SetNoclipMode();
+        }
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            onShoot?.Invoke();
+            player.Shoot();
         }
     }
 
@@ -73,7 +98,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            onResetCar?.Invoke();
+            player.Restart();
         }
     }
 
@@ -83,11 +108,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         {
             onLockCamera?.Invoke();
         }
-    }
-
-    public void OnSideFlip(InputAction.CallbackContext context)
-    {
-        onSideFlip?.Invoke(context.ReadValue<float>());
     }
 
     public void OnWinCheat(InputAction.CallbackContext context)
@@ -103,22 +123,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         if (context.started)
         { 
             onLoseCheat?.Invoke();
-        }
-    }
-
-    public void OnGodModeCheat(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            onGodModeCheat?.Invoke();
-        }
-    }
-
-    public void OnNoclipCheat(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            onNoclipCheat?.Invoke();
         }
     }
 

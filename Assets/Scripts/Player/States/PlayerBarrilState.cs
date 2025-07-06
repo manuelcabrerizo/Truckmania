@@ -8,12 +8,12 @@ public class PlayerBarrilState : State<Player>
 
     public override void OnEnter()
     {
-        InputManager.onShoot += OnShoot;
+        Player.onShoot += OnShoot;
     }
 
     public override void OnExit() 
     {
-        InputManager.onShoot -= OnShoot;
+        Player.onShoot -= OnShoot;
     }
 
     public override void OnUpdate()
@@ -26,8 +26,13 @@ public class PlayerBarrilState : State<Player>
         }
     }
 
-    private void OnShoot()
+    private void OnShoot(Player player)
     {
+        if (player != owner)
+        {
+            return;
+        }
+
         PlayerData data = owner.Data;
         ToxicBarrilProjectile barril = data.barril;
         Transform transform = owner.transform;

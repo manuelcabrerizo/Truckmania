@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class PlayerRestartState : State<Player>
 {
@@ -13,21 +12,26 @@ public class PlayerRestartState : State<Player>
 
     public override void OnEnter()
     {
-        InputManager.onResetCar += OnResetCar;
+        Player.onRestart += OnResetCar;
         onOnShowResetText?.Invoke(true);
     }
 
     public override void OnExit()
     {
-        InputManager.onResetCar -= OnResetCar;
+        Player.onRestart -= OnResetCar;
         onOnShowResetText?.Invoke(false);
 
         PlayerData data = owner.Data;
         data.wasDrifting = false;
     }
 
-    private void OnResetCar()
+    private void OnResetCar(Player player)
     {
+        if (player != owner)
+        {
+            return;
+        }
+
         PlayerData data = owner.Data;
         owner.transform.position += Vector3.up * 2.0f;
         Vector3 forward = data.cameraMovement.transform.forward;

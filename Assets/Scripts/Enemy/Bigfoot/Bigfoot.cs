@@ -115,4 +115,9 @@ public class Bigfoot : Enemy
     {
         stateMachine.ChangeState(idleState);
     }
+
+    public void SetIdleState()
+    {
+        stateMachine.ChangeState(idleState);
+    }
 }
