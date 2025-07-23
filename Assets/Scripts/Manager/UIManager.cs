@@ -304,6 +304,7 @@ public class UIManager : MonoBehaviour
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
         winCurrentTimeText.text = text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
+
     private void OnBestTimeSet(string text, int seconds)
     {
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);

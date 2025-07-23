@@ -77,7 +77,7 @@ public class PlayerBarrilState : State<Player>
                         }
                         else
                         {
-                            Vector3 toTarget = shootPos + barril.transform.position;
+                            Vector3 toTarget = shootPos - barril.transform.position;
                             toTarget.y = 0.0f;
                             toTarget.Normalize();
                             Vector3 right = Vector3.Cross(toTarget, Vector3.up);
