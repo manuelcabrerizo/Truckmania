@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Pool;
@@ -29,8 +28,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        UIManager.onMusicSliderChange += OnMusicSliderChange;
-        UIManager.onSfxSliderChange += OnSfxSliderChange;
+        UISettings.onMusicSliderChange += OnMusicSliderChange;
+        UISettings.onSfxSliderChange += OnSfxSliderChange;
         onPauseAll += PauseAll;
         onResumeAll += ResumeAll;
         onPlayMusic += PlayMusic;
@@ -54,8 +53,8 @@ public class AudioManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        UIManager.onMusicSliderChange -= OnMusicSliderChange;
-        UIManager.onSfxSliderChange -= OnSfxSliderChange;
+        UISettings.onMusicSliderChange -= OnMusicSliderChange;
+        UISettings.onSfxSliderChange -= OnSfxSliderChange;
         onPauseAll -= PauseAll;
         onResumeAll -= ResumeAll;
         onPlayMusic -= PlayMusic;

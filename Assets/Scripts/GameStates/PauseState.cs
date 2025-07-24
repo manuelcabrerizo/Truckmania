@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PauseState : State<GameManager>
 {
@@ -10,8 +9,9 @@ public class PauseState : State<GameManager>
         : base(gameManager) { }
     public override void OnEnter()
     {
-        UIManager.onResumeButtonClick += OnResumeButtonClick;
-        UIManager.onResetButtonClick += OnResetButtonClick;
+        GameEventManager.Instance.AddListener<ResumeButtonClickEvent>(OnResumeButtonClick);
+        GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
+
         Time.timeScale = 0.0f;
         onPauseStateEnter?.Invoke();
 
@@ -22,18 +22,17 @@ public class PauseState : State<GameManager>
     {
         Time.timeScale = 1.0f;
         onPauseSateExit?.Invoke();
-
-        UIManager.onResumeButtonClick -= OnResumeButtonClick;
-        UIManager.onResetButtonClick -= OnResetButtonClick;
+        GameEventManager.Instance.RemoveListener<ResumeButtonClickEvent>(OnResumeButtonClick);
+        GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
         AudioManager.onResumeAll?.Invoke();
     }
 
-    private void OnResumeButtonClick()
+    private void OnResumeButtonClick(GameEvent gameEvent)
     {
         owner.ResumeGame();
     }
 
-    private void OnResetButtonClick()
+    private void OnResetButtonClick(GameEvent gameEvent)
     {
         owner.ResumeGame();
         owner.SetCountDownState();

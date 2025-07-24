@@ -14,8 +14,8 @@ class WinState : State<GameManager>
 
     public override void OnEnter()
     {
-        UIManager.onNextButtonClick += OnNextButtonClick;
-        UIManager.onResetButtonClick += OnResetButtonClick;
+        GameEventManager.Instance.AddListener<NextButtonClickEvent>(OnNextButtonClick);
+        GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
 
         int roundTime = LevelManager.Instance.GetCurrentRoundTime();
         int levelIndex = LevelManager.Instance.GetCurrentLevel();
@@ -48,17 +48,17 @@ class WinState : State<GameManager>
     public override void OnExit()
     {
         onWinSateExit?.Invoke();
-        UIManager.onNextButtonClick -= OnNextButtonClick;
-        UIManager.onResetButtonClick -= OnResetButtonClick;
+        GameEventManager.Instance.RemoveListener<NextButtonClickEvent>(OnNextButtonClick);
+        GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
         AudioManager.onResumeAll?.Invoke();
     }
 
-    private void OnNextButtonClick()
+    private void OnNextButtonClick(GameEvent gameEvent)
     { 
         LevelManager.Instance.LoadNextLevel();
     }
 
-    private void OnResetButtonClick()
+    private void OnResetButtonClick(GameEvent gameEvent)
     {
         owner.SetCountDownState();
     }

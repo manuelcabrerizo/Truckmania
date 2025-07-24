@@ -10,7 +10,7 @@ class GameOverState : State<GameManager>
 
     public override void OnEnter()
     {
-        UIManager.onResetButtonClick += OnResetButtonClick;
+        GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
         onGameOverStateEnter?.Invoke();
         AudioManager.onPauseAll?.Invoke();
     }
@@ -18,11 +18,11 @@ class GameOverState : State<GameManager>
     public override void OnExit()
     {
         onGameOverSateExit?.Invoke();
-        UIManager.onResetButtonClick -= OnResetButtonClick;
+        GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
         AudioManager.onResumeAll?.Invoke();
     }
 
-    private void OnResetButtonClick()
+    private void OnResetButtonClick(GameEvent gameEvent)
     {
         owner.SetCountDownState();
     }
