@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIGameOver : MonoBehaviour
@@ -23,6 +24,17 @@ public class UIGameOver : MonoBehaviour
         gameOverExitButton.onClick.RemoveListener(OnExitButtonClick);
     }
 
+    private void OnEnable()
+    {
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        OnJoystickAndKeyboardUse(null);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+    }
+
     private void OnExitButtonClick()
     {
         GameEventManager.Instance.TriggerEvent(new ExitButtonClickEvent());
@@ -36,5 +48,11 @@ public class UIGameOver : MonoBehaviour
     private void OnResetButtonClick()
     {
         GameEventManager.Instance.TriggerEvent(new ResetButtonClickEvent());
+    }
+
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
+    {
+        EventSystem.current.firstSelectedGameObject = gameOverResetButton.gameObject;
+        gameOverResetButton.Select();
     }
 }

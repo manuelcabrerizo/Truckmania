@@ -12,13 +12,11 @@ public class BigfootHitState : State<Bigfoot>
         time = 0.0f;
         owner.Animator.SetTrigger("Hit");
         GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(owner.Clips.mounsterHit, owner.transform.position, 100, 400));
-        Debug.Log("Hit OnEnter");
     }
 
     public override void OnExit()
     {
         owner.SkinnedMeshRenderer.material.SetColor("_Tint", Color.black);
-        Debug.Log("Hit OnExit");
     }
 
     public override void OnUpdate()
@@ -29,6 +27,5 @@ public class BigfootHitState : State<Bigfoot>
             owner.SetIdleState();
         }
         time += Time.deltaTime;
-        
     }
 }

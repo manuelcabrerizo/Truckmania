@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UISettings : MonoBehaviour
 {
     [SerializeField] private VolumeData volumeData;
     [SerializeField] private SettingsData settingsData;
-    [SerializeField] private GameObject panel;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Button backButton;
@@ -100,9 +100,20 @@ public class UISettings : MonoBehaviour
         vsyncToggle.onValueChanged.RemoveListener(OnVsyncChange);
     }
 
+    private void OnEnable()
+    {
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        OnJoystickAndKeyboardUse(null);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+    }
+
     private void OnBackButtonClick()
     {
-        panel.SetActive(false);
+        GameEventManager.Instance.TriggerEvent(new SettingBackButtonClickEvent());
     }
 
     private void OnSfxSliderChange(float value)
@@ -203,4 +214,9 @@ public class UISettings : MonoBehaviour
         return currentFrameRateIndex;
     }
 
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
+    {
+        EventSystem.current.firstSelectedGameObject = musicSlider.gameObject;
+        musicSlider.Select();
+    }
 }

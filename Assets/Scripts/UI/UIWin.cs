@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIWin : MonoBehaviour
@@ -30,6 +31,17 @@ public class UIWin : MonoBehaviour
         resetButton.onClick.RemoveListener(OnResetButtonClick);
         menuButton.onClick.RemoveListener(OnMenuButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
+    }
+
+    private void OnEnable()
+    {
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        OnJoystickAndKeyboardUse(null);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
     private void OnCurrentTimeSet(GameEvent gameEvent)
@@ -64,5 +76,11 @@ public class UIWin : MonoBehaviour
     private void OnNextButtonClick()
     {
         GameEventManager.Instance.TriggerEvent(new NextButtonClickEvent());
+    }
+
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
+    {
+        EventSystem.current.firstSelectedGameObject = nextButton.gameObject;
+        nextButton.Select();
     }
 }

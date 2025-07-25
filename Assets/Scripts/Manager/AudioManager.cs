@@ -150,7 +150,6 @@ public class AudioManager : MonoBehaviour
     private void OnMusicSliderChange(GameEvent gameEvent)
     {
         MusicSliderChangeEvent sliderChagneEvent = (MusicSliderChangeEvent)gameEvent;
-
         volumeData.Music = sliderChagneEvent.value;
         mixer.SetFloat("MusicVolume", Utils.LinearToDecibel(volumeData.Music));
     }

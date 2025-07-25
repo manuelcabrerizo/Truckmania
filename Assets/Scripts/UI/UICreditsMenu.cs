@@ -12,15 +12,14 @@ public class UICreditsMenu : MonoBehaviour
     {
         backButton.onClick.AddListener(OnBackButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
-        //InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
-
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
     private void OnDestroy()
     {
         backButton.onClick.RemoveListener(OnBackButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
-        //InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
     private void OnBackButtonClick()
@@ -39,7 +38,7 @@ public class UICreditsMenu : MonoBehaviour
 #endif
     }
 
-    private void OnJoystickAndKeyboardUse()
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
     {
         EventSystem.current.firstSelectedGameObject = backButton.gameObject;
         backButton.Select();

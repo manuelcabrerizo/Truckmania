@@ -16,9 +16,7 @@ public class UIMainMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsButtonClick);
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
-
-        //InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
-
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
     private void OnDestroy()
@@ -27,9 +25,7 @@ public class UIMainMenu : MonoBehaviour
         controlsButton.onClick.RemoveListener(OnControlsButtonClick);
         creditsButton.onClick.RemoveListener(OnCreditsButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
-
-        //InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
-
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
     private void OnPlayButtonClick()
@@ -58,7 +54,7 @@ public class UIMainMenu : MonoBehaviour
 #endif
     }
 
-    private void OnJoystickAndKeyboardUse()
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
     {
         EventSystem.current.firstSelectedGameObject = playButton.gameObject;
         playButton.Select();

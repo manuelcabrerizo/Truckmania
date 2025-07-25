@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,11 +11,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject pausePanel;
-    private Selectable currentFirstButton = null;
 
     private void Awake()
     {
-        //InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
         GameEventManager.Instance.AddListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.AddListener<CountDownShowUIEvent>(OnShowCountDownUI);
         GameEventManager.Instance.AddListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
@@ -29,13 +25,13 @@ public class UIManager : MonoBehaviour
         GameEventManager.Instance.AddListener<PauseStateEnterEvent>(OnPauseStateEnter);
         GameEventManager.Instance.AddListener<PauseStateExitEvent>(OnPauseStateExit);
         GameEventManager.Instance.AddListener<SettingButtonClickEvent>(OnSettingsButtonClick);
+        GameEventManager.Instance.AddListener<SettingBackButtonClickEvent>(OnSettingsBackButtonClick);
         GameEventManager.Instance.AddListener<MenuButtonClickEvent>(OnMenuButtonClick);
         GameEventManager.Instance.AddListener<ExitButtonClickEvent>(OnExitButtonClick);
     }
 
     private void OnDestroy()
     {
-        //InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
         GameEventManager.Instance.RemoveListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.RemoveListener<CountDownShowUIEvent>(OnShowCountDownUI);
         GameEventManager.Instance.RemoveListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
@@ -47,31 +43,32 @@ public class UIManager : MonoBehaviour
         GameEventManager.Instance.RemoveListener<PauseStateEnterEvent>(OnPauseStateEnter);
         GameEventManager.Instance.RemoveListener<PauseStateExitEvent>(OnPauseStateExit);
         GameEventManager.Instance.RemoveListener<SettingButtonClickEvent>(OnSettingsButtonClick);
+        GameEventManager.Instance.RemoveListener<SettingBackButtonClickEvent>(OnSettingsBackButtonClick);
         GameEventManager.Instance.RemoveListener<MenuButtonClickEvent>(OnMenuButtonClick);
         GameEventManager.Instance.RemoveListener<ExitButtonClickEvent>(OnExitButtonClick);
     }
 
     private void OnShowPlayingUI(GameEvent gameEvent)
     {
-        PlayingShowUIEvent showUIEvent = gameEvent as PlayingShowUIEvent;
+        PlayingShowUIEvent showUIEvent = (PlayingShowUIEvent)gameEvent;
         playingUI.SetActive(showUIEvent.show);
     }
 
     private void OnShowCountDownUI(GameEvent gameEvent)
     {
-        CountDownShowUIEvent showUIEvent = gameEvent as CountDownShowUIEvent;
+        CountDownShowUIEvent showUIEvent = (CountDownShowUIEvent)gameEvent;
         countDownUI.SetActive(showUIEvent.show);
     }
 
     private void OnShowFinishUI(GameEvent gameEvent)
     {
-        EndStateShowFinishUIEvent showUIEvent = gameEvent as EndStateShowFinishUIEvent;
+        EndStateShowFinishUIEvent showUIEvent = (EndStateShowFinishUIEvent)gameEvent;
         finishUI.SetActive(showUIEvent.show);
     }
 
     private void OnShowTimeoutUI(GameEvent gameEvent)
     {
-        EndStateShowTimeoutUIEvent showUIEvent = gameEvent as EndStateShowTimeoutUIEvent;
+        EndStateShowTimeoutUIEvent showUIEvent = (EndStateShowTimeoutUIEvent)gameEvent;
         timeoutUI.SetActive(showUIEvent.show);
     }
 
@@ -109,7 +106,14 @@ public class UIManager : MonoBehaviour
 
     private void OnSettingsButtonClick(GameEvent gameEvent)
     {
+        pausePanel.SetActive(false);
         settingsPanel.SetActive(true);
+    }
+
+    private void OnSettingsBackButtonClick(GameEvent @event)
+    {
+        settingsPanel.SetActive(false);
+        pausePanel.SetActive(true);
     }
 
     private void OnMenuButtonClick(GameEvent gameEvent)
@@ -126,14 +130,5 @@ public class UIManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
-    }
-
-    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
-    {
-        if (currentFirstButton != null)
-        {
-            EventSystem.current.firstSelectedGameObject = currentFirstButton.gameObject;
-            currentFirstButton.Select();
-        }
     }
 }

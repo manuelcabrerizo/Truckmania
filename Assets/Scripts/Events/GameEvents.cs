@@ -16,6 +16,7 @@ public class ResetButtonClickEvent : GameEvent { }
 public class ExitButtonClickEvent : GameEvent { }
 public class MenuButtonClickEvent : GameEvent { }
 public class SettingButtonClickEvent : GameEvent { }
+public class SettingBackButtonClickEvent : GameEvent { }
 public class MusicSliderChangeEvent : GameEvent
 {
     public float value;

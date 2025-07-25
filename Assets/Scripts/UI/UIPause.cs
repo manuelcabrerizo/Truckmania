@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIPause : MonoBehaviour
@@ -28,6 +28,17 @@ public class UIPause : MonoBehaviour
         pauseExitButton.onClick.RemoveListener(OnExitButtonClick);
     }
 
+    private void OnEnable()
+    {
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        OnJoystickAndKeyboardUse(null);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+    }
+
     private void OnSettingsButtonClick()
     {
         GameEventManager.Instance.TriggerEvent(new SettingButtonClickEvent());
@@ -51,5 +62,11 @@ public class UIPause : MonoBehaviour
     private void OnMenuButtonClick()
     {
         GameEventManager.Instance.TriggerEvent(new MenuButtonClickEvent());
+    }
+
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
+    {
+        EventSystem.current.firstSelectedGameObject = pauseResumeButton.gameObject;
+        pauseResumeButton.Select();
     }
 }
