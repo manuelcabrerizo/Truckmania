@@ -15,14 +15,13 @@ class PlayingState : State<GameManager>
     
     public override void OnEnter()
     {        
-        EndTrigger.onEndTriggerHit += OnEndTriggerHit;
+        GameEventManager.Instance.AddListener<EndTriggerHitEvent>(OnEndTriggerHit);
         GameEventManager.Instance.AddListener<CoinPickEvent>(OnCoinPick);
         GameEventManager.Instance.AddListener<EnemyKillEvent>(OnEnemyKill);
         GameEventManager.Instance.AddListener<PlayerHitEvent>(OnPlayerHit);
-
-        InputManager.onWinCheat += OnWinCheat;
-        InputManager.onLoseCheat += OnLoseCheat;
-        InputManager.onGodModeCheat += OnGodModeCheat;
+        GameEventManager.Instance.AddListener<WinCheatEvent>(OnWinCheat);
+        GameEventManager.Instance.AddListener<LoseCheatEvent>(OnLoseCheat);
+        GameEventManager.Instance.AddListener<GodModeCheatEvent>(OnGodModeCheat);
 
         owner.seconds = roundTime;
         owner.coinsCollectedCount = 0;
@@ -38,14 +37,13 @@ class PlayingState : State<GameManager>
     {
         GameEventManager.Instance.TriggerEvent(new PlayingShowUIEvent(false));
 
-        EndTrigger.onEndTriggerHit -= OnEndTriggerHit;
+        GameEventManager.Instance.RemoveListener<EndTriggerHitEvent>(OnEndTriggerHit);
         GameEventManager.Instance.RemoveListener<CoinPickEvent>(OnCoinPick);
         GameEventManager.Instance.RemoveListener<EnemyKillEvent>(OnEnemyKill);
         GameEventManager.Instance.RemoveListener<PlayerHitEvent>(OnPlayerHit);
-
-        InputManager.onWinCheat -= OnWinCheat;
-        InputManager.onLoseCheat -= OnLoseCheat;
-        InputManager.onGodModeCheat -= OnGodModeCheat;
+        GameEventManager.Instance.RemoveListener<WinCheatEvent>(OnWinCheat);
+        GameEventManager.Instance.RemoveListener<LoseCheatEvent>(OnLoseCheat);
+        GameEventManager.Instance.RemoveListener<GodModeCheatEvent>(OnGodModeCheat);
     }
 
     public override void OnUpdate()
@@ -72,7 +70,7 @@ class PlayingState : State<GameManager>
         GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
     }
 
-    private void OnEndTriggerHit()
+    private void OnEndTriggerHit(GameEvent gameEvent)
     {
         owner.SetEndState();
     }
@@ -89,21 +87,21 @@ class PlayingState : State<GameManager>
         GameEventManager.Instance.TriggerEvent(new UpdateEnemyKillTextEvent(owner.enemiesKillCount, owner.Enemies.Count));
     }
 
-    private void OnWinCheat()
+    private void OnWinCheat(GameEvent gameEvent)
     {
         owner.coinsCollectedCount = owner.Coins.Count;
         owner.enemiesKillCount = owner.Enemies.Count;
         owner.SetEndState();
     }
 
-    private void OnLoseCheat()
+    private void OnLoseCheat(GameEvent gameEvent)
     {
         owner.coinsCollectedCount = 0;
         owner.enemiesKillCount = 0;
         owner.seconds = 0;
     }
 
-    private void OnGodModeCheat()
+    private void OnGodModeCheat(GameEvent gameEvent)
     {
         if (timerScale > 0.5f)
         {

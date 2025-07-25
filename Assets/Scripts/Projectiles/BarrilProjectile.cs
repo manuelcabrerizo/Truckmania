@@ -84,7 +84,7 @@ public class BarrilProjectile : Projectile
         collision.enabled = false;
         body.isKinematic = true;
         StartCoroutine(SendReleaseaEventAfterSeconds(particles.main.duration));
-        AudioManager.onPlayClip3D?.Invoke(clips.explosion, transform.position, 100, 400);
+        GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(clips.explosion, transform.position, 100, 400));
 
         Collider[] colliders = Physics.OverlapSphere(body.position, 50.0f);
         if (colliders.Length > 0)

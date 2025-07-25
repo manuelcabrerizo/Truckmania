@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
+        //InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
         GameEventManager.Instance.AddListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.AddListener<CountDownShowUIEvent>(OnShowCountDownUI);
         GameEventManager.Instance.AddListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
+        //InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
         GameEventManager.Instance.RemoveListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.RemoveListener<CountDownShowUIEvent>(OnShowCountDownUI);
         GameEventManager.Instance.RemoveListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
@@ -128,7 +128,7 @@ public class UIManager : MonoBehaviour
 #endif
     }
 
-    private void OnJoystickAndKeyboardUse()
+    private void OnJoystickAndKeyboardUse(GameEvent gameEvent)
     {
         if (currentFirstButton != null)
         {

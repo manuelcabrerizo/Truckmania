@@ -1,5 +1,4 @@
-﻿using Unity.IO.LowLevel.Unsafe;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BigfootHitState : State<Bigfoot>
 {
@@ -8,12 +7,11 @@ public class BigfootHitState : State<Bigfoot>
     public BigfootHitState(Bigfoot bigfoot)
         : base(bigfoot) { }
 
-
     public override void OnEnter()
     {
         time = 0.0f;
         owner.Animator.SetTrigger("Hit");
-        AudioManager.onPlayClip3D?.Invoke(owner.Clips.mounsterHit, owner.transform.position, 100, 400);
+        GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(owner.Clips.mounsterHit, owner.transform.position, 100, 400));
         Debug.Log("Hit OnEnter");
     }
 

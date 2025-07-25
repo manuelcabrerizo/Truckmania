@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerRestartState : State<Player>
 {
-    public static event Action<bool> onOnShowResetText;
-
     public PlayerRestartState(Player owner, Func<bool> enterCondition, Func<bool> exitCondition) 
         : base(owner, enterCondition, exitCondition) 
     {
@@ -13,14 +11,13 @@ public class PlayerRestartState : State<Player>
     public override void OnEnter()
     {
         GameEventManager.Instance.AddListener<PlayerRestartEvent>(OnResetCar);
-        onOnShowResetText?.Invoke(true);
+        GameEventManager.Instance.TriggerEvent(new ShowResetTextEvent(true));
     }
 
     public override void OnExit()
     {
         GameEventManager.Instance.RemoveListener<PlayerRestartEvent>(OnResetCar);
-        onOnShowResetText?.Invoke(false);
-
+        GameEventManager.Instance.TriggerEvent(new ShowResetTextEvent(false));
         PlayerData data = owner.Data;
         data.wasDrifting = false;
     }

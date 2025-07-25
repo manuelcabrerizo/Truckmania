@@ -1,5 +1,3 @@
-using System;
-
 class GameOverState : State<GameManager>
 {
     public GameOverState(GameManager gameManager)
@@ -9,14 +7,14 @@ class GameOverState : State<GameManager>
     {
         GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
         GameEventManager.Instance.TriggerEvent(new GameOverStateEnterEvent());
-        AudioManager.onPauseAll?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new PauseAllSoundEvent());
     }
 
     public override void OnExit()
     {
         GameEventManager.Instance.TriggerEvent(new GameOverStateExitEvent());
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
-        AudioManager.onResumeAll?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new ResumeAllSoundEvent());
     }
 
     private void OnResetButtonClick(GameEvent gameEvent)

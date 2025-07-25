@@ -75,7 +75,7 @@ public class Player : MonoBehaviour, IDamagable
         IPickable pickable = null;
         if (other.gameObject.TryGetComponent<IPickable>(out pickable))
         {
-            AudioManager.onPlayClip?.Invoke(Data.clips.barrilPickup);
+            GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(Data.clips.barrilPickup));
             StartCoroutine(StartFeedbackAnimation(0.5f, Color.yellow));
             pickable.PickUp();
         }

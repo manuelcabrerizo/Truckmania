@@ -12,7 +12,7 @@ public class BigfootDeadState : State<Bigfoot>
     {
         isDead = false;
         owner.Animator.SetBool("IsDead", true);
-        AudioManager.onPlayClip3D?.Invoke(owner.Clips.mounsterDeath, owner.transform.position, 100, 400);
+        GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(owner.Clips.mounsterDeath, owner.transform.position, 100, 400));
     }
 
     public override void OnUpdate()
@@ -33,6 +33,5 @@ public class BigfootDeadState : State<Bigfoot>
     {
         isDead = true;
         owner.SkinnedMeshRenderer.material.color = Color.white;
-
     }
 }

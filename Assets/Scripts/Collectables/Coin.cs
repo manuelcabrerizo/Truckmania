@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Coin : MonoBehaviour, IPickable
@@ -32,7 +31,7 @@ public class Coin : MonoBehaviour, IPickable
     {
         meshRenderer.enabled = false;
         collision.enabled = false;
-        AudioManager.onPlayClip?.Invoke(clips.coin);
+        GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(clips.coin));
         GameEventManager.Instance.TriggerEvent(new CoinPickEvent());
     }
 }

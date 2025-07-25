@@ -1,16 +1,7 @@
-using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviourSingleton<InputManager>
 {
-    public static event Action onPause;
-    public static event Action onLockCamera;
-    public static event Action onWinCheat;
-    public static event Action onLoseCheat;
-    public static event Action onGodModeCheat;
-    public static event Action onJoystickOrKeyboardUse;
-
     public bool JoystickOrKeyboardUse { get; private set; }
     private Player player = null;
 
@@ -61,7 +52,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         if (context.started)
         {
             player.SetGodMode();
-            onGodModeCheat?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new GodModeCheatEvent());
         }
     }
 
@@ -91,7 +82,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 #endif
         if (context.started)
         {
-            onPause?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new PauseEvent());
         }
     }
 
@@ -107,7 +98,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            onLockCamera?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new LockCameraEvent());
         }
     }
 
@@ -115,15 +106,15 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            onWinCheat?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new WinCheatEvent());
         }
     }
 
     public void OnLoseCheat(InputAction.CallbackContext context)
     {
         if (context.started)
-        { 
-            onLoseCheat?.Invoke();
+        {
+            GameEventManager.Instance.TriggerEvent(new LoseCheatEvent());
         }
     }
 
@@ -133,7 +124,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         {
             if (JoystickOrKeyboardUse == false)
             {
-                onJoystickOrKeyboardUse?.Invoke();
+                GameEventManager.Instance.TriggerEvent(new JoystickOrKeyboardUseEvent());
                 JoystickOrKeyboardUse = true;
             }
         }
@@ -145,7 +136,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         {
             if (JoystickOrKeyboardUse == false)
             {
-                onJoystickOrKeyboardUse?.Invoke();
+                GameEventManager.Instance.TriggerEvent(new JoystickOrKeyboardUseEvent());
                 JoystickOrKeyboardUse = true;
             }
         }

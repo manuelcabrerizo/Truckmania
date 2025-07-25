@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        InputManager.onPause += PauseGame;
+        GameEventManager.Instance.AddListener<PauseEvent>(PauseGame);
         GameEventManager.Instance.AddListener<CoinSpawnEvent>(OnCoinSpawn);
         GameEventManager.Instance.AddListener<EnemySpawnEvent>(OnEnemySpawn);
         GameEventManager.Instance.AddListener<BoxSpawnEvent>(OnBoxSpawn);
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy () 
     {
         fsm.Clear();
-        InputManager.onPause -= PauseGame;
+        GameEventManager.Instance.RemoveListener<PauseEvent>(PauseGame);
         GameEventManager.Instance.RemoveListener<CoinSpawnEvent>(OnCoinSpawn);
         GameEventManager.Instance.RemoveListener<EnemySpawnEvent>(OnEnemySpawn);
         GameEventManager.Instance.RemoveListener<BoxSpawnEvent>(OnBoxSpawn);
@@ -64,25 +64,25 @@ public class GameManager : MonoBehaviour
 
     public void SetPlayingState()
     {
-        AudioManager.onPlayMusic?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new PlayMusicEvent());
         fsm.ChangeState(playingState);
     }
 
     public void SetCountDownState()
     {
-        AudioManager.onStopMusic?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new StopMusicEvent());
         fsm.ChangeState(countDownState);
     }
 
     public void SetGameOverState()
     {
-        AudioManager.onStopMusic?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new StopMusicEvent());
         fsm.ChangeState(gameOverState);
     }
 
     public void SetWinState()
     {
-        AudioManager.onStopMusic?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new StopMusicEvent());
         fsm.ChangeState(winState);
     }
 
@@ -91,23 +91,23 @@ public class GameManager : MonoBehaviour
         fsm.ChangeState(endState);
     }
 
-    public void PauseGame()
+    public void PauseGame(GameEvent gameEvent)
     {
         if (fsm.PeekState() == playingState)
         {
-            AudioManager.onPauseMusic?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new PauseMusicEvent());
             fsm.PushState(pauseState);
         }
         else if (fsm.PeekState() == pauseState)
         {
-            AudioManager.onPlayMusic?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new PlayMusicEvent());
             fsm.PopState();
         }
     }
 
     public void ResumeGame()
     {
-        AudioManager.onPlayMusic?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new PlayMusicEvent());
         fsm.PopState();
     }
 

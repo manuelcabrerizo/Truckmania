@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Box : MonoBehaviour
@@ -30,7 +29,7 @@ public class Box : MonoBehaviour
     {
         if (Utils.CheckCollisionLayer(collision.gameObject, playerLayer))
         {
-            AudioManager.onPlayClip?.Invoke(clips.box);
+            GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(clips.box));
         }
     }
 }

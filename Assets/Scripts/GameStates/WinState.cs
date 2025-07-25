@@ -34,16 +34,16 @@ class WinState : State<GameManager>
         PlayerPrefs.SetInt(KeyName, bestTime);
 
         GameEventManager.Instance.TriggerEvent(new WinStateEnterEvent());
-        AudioManager.onPauseAll?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new PauseAllSoundEvent());
     }
 
     public override void OnExit()
     {
         GameEventManager.Instance.TriggerEvent(new WinStateExitEvent());
+        GameEventManager.Instance.TriggerEvent(new ResumeAllSoundEvent());
 
         GameEventManager.Instance.RemoveListener<NextButtonClickEvent>(OnNextButtonClick);
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
-        AudioManager.onResumeAll?.Invoke();
     }
 
     private void OnNextButtonClick(GameEvent gameEvent)

@@ -12,7 +12,7 @@ public class UICreditsMenu : MonoBehaviour
     {
         backButton.onClick.AddListener(OnBackButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
-        InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
+        //InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
 
     }
 
@@ -20,7 +20,7 @@ public class UICreditsMenu : MonoBehaviour
     {
         backButton.onClick.RemoveListener(OnBackButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
-        InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
+        //InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
     }
 
     private void OnBackButtonClick()

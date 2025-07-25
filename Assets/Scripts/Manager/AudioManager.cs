@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -6,14 +5,6 @@ using UnityEngine.Pool;
 
 public class AudioManager : MonoBehaviour
 {
-    public static Action onPauseAll;
-    public static Action onResumeAll;
-    public static Action onPlayMusic;
-    public static Action onStopMusic;
-    public static Action onPauseMusic;
-    public static Action<AudioClip> onPlayClip;
-    public static Action<AudioClip, Vector3, float, float> onPlayClip3D;
-
     [SerializeField] private VolumeData volumeData;
     [SerializeField] private SoundClipsSO soundClips;
 
@@ -28,15 +19,15 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        UISettings.onMusicSliderChange += OnMusicSliderChange;
-        UISettings.onSfxSliderChange += OnSfxSliderChange;
-        onPauseAll += PauseAll;
-        onResumeAll += ResumeAll;
-        onPlayMusic += PlayMusic;
-        onStopMusic += StopMusic;
-        onPauseMusic += PauseMusic;
-        onPlayClip += PlayClip;
-        onPlayClip3D += PlayClip3D;
+        GameEventManager.Instance.AddListener<MusicSliderChangeEvent>(OnMusicSliderChange);
+        GameEventManager.Instance.AddListener<SfxSliderChangeEvent>(OnSfxSliderChange);
+        GameEventManager.Instance.AddListener<PauseAllSoundEvent>(PauseAll);
+        GameEventManager.Instance.AddListener<ResumeAllSoundEvent>(ResumeAll);
+        GameEventManager.Instance.AddListener<PlayMusicEvent>(PlayMusic);
+        GameEventManager.Instance.AddListener<StopMusicEvent>(StopMusic);
+        GameEventManager.Instance.AddListener<PauseMusicEvent>(PauseMusic);
+        GameEventManager.Instance.AddListener<PlayAudioClipEvent>(PlayClip);
+        GameEventManager.Instance.AddListener<PlayAudioClip3DEvent>(PlayClip3D);
 
         mixer.SetFloat("SfxVolume", Utils.LinearToDecibel(volumeData.Sfx));
         mixer.SetFloat("MusicVolume", Utils.LinearToDecibel(volumeData.Music));
@@ -53,64 +44,68 @@ public class AudioManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        UISettings.onMusicSliderChange -= OnMusicSliderChange;
-        UISettings.onSfxSliderChange -= OnSfxSliderChange;
-        onPauseAll -= PauseAll;
-        onResumeAll -= ResumeAll;
-        onPlayMusic -= PlayMusic;
-        onStopMusic -= StopMusic;
-        onPauseMusic -= PauseMusic;
-        onPlayClip -= PlayClip;
-        onPlayClip3D -= PlayClip3D;
+        GameEventManager.Instance.RemoveListener<MusicSliderChangeEvent>(OnMusicSliderChange);
+        GameEventManager.Instance.RemoveListener<SfxSliderChangeEvent>(OnSfxSliderChange);
+        GameEventManager.Instance.RemoveListener<PauseAllSoundEvent>(PauseAll);
+        GameEventManager.Instance.RemoveListener<ResumeAllSoundEvent>(ResumeAll);
+        GameEventManager.Instance.RemoveListener<PlayMusicEvent>(PlayMusic);
+        GameEventManager.Instance.RemoveListener<StopMusicEvent>(StopMusic);
+        GameEventManager.Instance.RemoveListener<PauseMusicEvent>(PauseMusic);
+        GameEventManager.Instance.RemoveListener<PlayAudioClipEvent>(PlayClip);
+        GameEventManager.Instance.RemoveListener<PlayAudioClip3DEvent>(PlayClip3D);
 
         StopAllCoroutines();
         pool.Clear();
     }
 
-    private void PlayMusic()
+    private void PlayMusic(GameEvent gameEvent)
     {
         musicAudioSource.Play();
     }
 
-    private void PauseMusic()
+    private void PauseMusic(GameEvent gameEvent)
     {
         musicAudioSource.Pause();
     }
 
-    private void StopMusic()
+    private void StopMusic(GameEvent gameEvent)
     {
         musicAudioSource.Stop();
     }
 
-    private void PlayClip(AudioClip clip)
+    private void PlayClip(GameEvent gameEvent)
     {
+        PlayAudioClipEvent playClipEvent = (PlayAudioClipEvent)gameEvent;
+
         AudioSource audioSource = pool.Get();
         audioSource.transform.position = Vector3.zero;
         audioSource.spatialBlend = 0.0f;
-        audioSource.clip = clip;
+        audioSource.clip = playClipEvent.audioClip;
         audioSource.Play();
         StartCoroutine(ReleaseAudioSourceIfFinish(audioSource));
     }
 
 
-    private void PlayClip3D(AudioClip clip, Vector3 position, float minDist, float maxDist)
+    private void PlayClip3D(GameEvent gameEvent)
     {
+        PlayAudioClip3DEvent playClipEvent = (PlayAudioClip3DEvent)gameEvent;
+
         AudioSource audioSource = pool.Get();
-        audioSource.transform.position = position;
+        audioSource.transform.position = playClipEvent.position;
         audioSource.spatialBlend = 1.0f;
-        audioSource.minDistance = minDist;
-        audioSource.maxDistance = maxDist;
-        audioSource.clip = clip;
+        audioSource.minDistance = playClipEvent.min;
+        audioSource.maxDistance = playClipEvent.max;
+        audioSource.clip = playClipEvent.audioClip;
         audioSource.Play();
         StartCoroutine(ReleaseAudioSourceIfFinish(audioSource));
     }
 
-    private void PauseAll()
+    private void PauseAll(GameEvent gameEvent)
     {
         mixer.SetFloat("MasterVolume", -80);
     }
 
-    private void ResumeAll()
+    private void ResumeAll(GameEvent gameEvent)
     {
         mixer.SetFloat("MasterVolume", 0);
     }
@@ -145,15 +140,18 @@ public class AudioManager : MonoBehaviour
         Destroy(pooledObject);
     }
 
-    private void OnSfxSliderChange(float value)
+    private void OnSfxSliderChange(GameEvent gameEvent)
     {
-        volumeData.Sfx = value;
+        SfxSliderChangeEvent sliderChagneEvent = (SfxSliderChangeEvent)gameEvent;
+        volumeData.Sfx = sliderChagneEvent.value;
         mixer.SetFloat("SfxVolume", Utils.LinearToDecibel(volumeData.Sfx));
     }
 
-    private void OnMusicSliderChange(float value)
+    private void OnMusicSliderChange(GameEvent gameEvent)
     {
-        volumeData.Music = value;
+        MusicSliderChangeEvent sliderChagneEvent = (MusicSliderChangeEvent)gameEvent;
+
+        volumeData.Music = sliderChagneEvent.value;
         mixer.SetFloat("MusicVolume", Utils.LinearToDecibel(volumeData.Music));
     }
 }

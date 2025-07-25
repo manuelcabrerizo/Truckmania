@@ -19,7 +19,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Awake()
     {
-        InputManager.onLockCamera += OnLockCamera;
+        GameEventManager.Instance.AddListener<LockCameraEvent>(OnLockCamera);
         GameEventManager.Instance.AddListener<BigfootKillEvent>(OnBigfootKill);
         GameEventManager.Instance.AddListener<EndStateEnterEvent>(OnEnterEndState);
 
@@ -34,7 +34,7 @@ public class CameraMovement : MonoBehaviour
 
     private void OnDestroy()
     {
-        InputManager.onLockCamera -= OnLockCamera;
+        GameEventManager.Instance.RemoveListener<LockCameraEvent>(OnLockCamera);
         GameEventManager.Instance.RemoveListener<BigfootKillEvent>(OnBigfootKill);
         GameEventManager.Instance.RemoveListener<EndStateEnterEvent>(OnEnterEndState);
     }
@@ -178,7 +178,7 @@ public class CameraMovement : MonoBehaviour
         transform.LookAt(lookAtPosition, Vector3.up);
     }
 
-    private void OnLockCamera()
+    private void OnLockCamera(GameEvent gameEvent)
     {
         if (isLock == false)
         {

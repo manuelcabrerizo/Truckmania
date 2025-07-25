@@ -9,13 +9,29 @@ public abstract class GameEvent
     }
 }
 
-// Button Click Events
+// Button UI Events
 public class ResumeButtonClickEvent : GameEvent { }
 public class NextButtonClickEvent : GameEvent { }
 public class ResetButtonClickEvent : GameEvent { }
 public class ExitButtonClickEvent : GameEvent { }
 public class MenuButtonClickEvent : GameEvent { }
 public class SettingButtonClickEvent : GameEvent { }
+public class MusicSliderChangeEvent : GameEvent
+{
+    public float value;
+    public MusicSliderChangeEvent(float value)
+    { 
+        this.value = value;
+    }
+}
+public class SfxSliderChangeEvent : GameEvent
+{
+    public float value;
+    public SfxSliderChangeEvent(float value)
+    {
+        this.value = value;
+    }
+}
 
 // Count Down State Events
 public class CountDownStateEnterEvent : GameEvent { }
@@ -102,6 +118,15 @@ public class UpdateTimeTextEvent : GameEvent
     public UpdateTimeTextEvent(int seconds)
     {
         this.seconds = seconds;
+    }
+}
+
+public class ShowResetTextEvent : GameEvent
+{
+    public bool show;
+    public ShowResetTextEvent(bool show) 
+    {
+        this.show = show;
     }
 }
 
@@ -230,4 +255,44 @@ public class PlayerRestartEvent : PlayerEvent
 {
     public PlayerRestartEvent(Player player)
         : base(player) { }
+}
+
+public class EndTriggerHitEvent : GameEvent { }
+
+// Input Events
+public class PauseEvent : GameEvent { }
+public class LockCameraEvent : GameEvent { }
+public class WinCheatEvent : GameEvent { }
+public class LoseCheatEvent : GameEvent { }
+public class GodModeCheatEvent : GameEvent { }
+public class JoystickOrKeyboardUseEvent : GameEvent { }
+
+// Audio Events
+public class PauseAllSoundEvent : GameEvent { }
+public class ResumeAllSoundEvent : GameEvent { }
+public class PlayMusicEvent : GameEvent { }
+public class StopMusicEvent : GameEvent { }
+public class PauseMusicEvent : GameEvent { }
+public class PlayAudioClipEvent : GameEvent
+{ 
+    public AudioClip audioClip;
+    public PlayAudioClipEvent(AudioClip audioClip)
+    {
+        this.audioClip = audioClip;
+    }
+}
+public class PlayAudioClip3DEvent : GameEvent
+{
+    public AudioClip audioClip;
+    public Vector3 position;
+    public float min;
+    public float max;
+
+    public PlayAudioClip3DEvent(AudioClip audioClip, Vector3 position, float min, float max)
+    {
+        this.audioClip = audioClip;
+        this.position = position;
+        this.min = min;
+        this.max = max;
+    }
 }

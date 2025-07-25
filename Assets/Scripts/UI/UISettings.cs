@@ -8,10 +8,6 @@ public class UISettings : MonoBehaviour
 {
     [SerializeField] private VolumeData volumeData;
     [SerializeField] private SettingsData settingsData;
-
-    public static event Action<float> onMusicSliderChange;
-    public static event Action<float> onSfxSliderChange;
-
     [SerializeField] private GameObject panel;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
@@ -111,12 +107,12 @@ public class UISettings : MonoBehaviour
 
     private void OnSfxSliderChange(float value)
     {
-        onSfxSliderChange?.Invoke(value);
+        GameEventManager.Instance.TriggerEvent(new SfxSliderChangeEvent(value));
     }
 
     private void OnMusicSliderChange(float value)
     {
-        onMusicSliderChange?.Invoke(value);
+        GameEventManager.Instance.TriggerEvent(new MusicSliderChangeEvent(value));
     }
 
     private void OnSetResolution(int index)

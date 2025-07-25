@@ -17,7 +17,7 @@ public class UIMainMenu : MonoBehaviour
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
 
-        InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
+        //InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
 
     }
 
@@ -28,7 +28,7 @@ public class UIMainMenu : MonoBehaviour
         creditsButton.onClick.RemoveListener(OnCreditsButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
 
-        InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
+        //InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
 
     }
 

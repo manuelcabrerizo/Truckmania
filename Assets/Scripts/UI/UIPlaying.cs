@@ -14,7 +14,7 @@ public class UIPlaying : MonoBehaviour
         GameEventManager.Instance.AddListener<UpdateCoinPickTextEvent>(OnUpdateCoinPickText);
         GameEventManager.Instance.AddListener<UpdateEnemyKillTextEvent>(OnUpdateEnemyKillText);
         GameEventManager.Instance.AddListener<UpdateTimeTextEvent>(OnUpdateTimeText);
-        PlayerRestartState.onOnShowResetText += OnShowResetText;
+        GameEventManager.Instance.AddListener<ShowResetTextEvent>(OnShowResetText);
     }
 
     private void OnDestroy()
@@ -22,7 +22,7 @@ public class UIPlaying : MonoBehaviour
         GameEventManager.Instance.RemoveListener<UpdateCoinPickTextEvent>(OnUpdateCoinPickText);
         GameEventManager.Instance.RemoveListener<UpdateEnemyKillTextEvent>(OnUpdateEnemyKillText);
         GameEventManager.Instance.RemoveListener<UpdateTimeTextEvent>(OnUpdateTimeText);
-        PlayerRestartState.onOnShowResetText -= OnShowResetText;
+        GameEventManager.Instance.RemoveListener<ShowResetTextEvent>(OnShowResetText);
     }
 
     private void Start()
@@ -32,26 +32,26 @@ public class UIPlaying : MonoBehaviour
 
     public void OnUpdateCoinPickText(GameEvent gameEvent)
     {
-        UpdateCoinPickTextEvent e = gameEvent as UpdateCoinPickTextEvent;
+        UpdateCoinPickTextEvent e = (UpdateCoinPickTextEvent)gameEvent;
         coinCountText.text = "You grabbed " + e.coinCount + " coins of " + e.coinSpawn;
     }
 
     public void OnUpdateEnemyKillText(GameEvent gameEvent)
     {
-        UpdateEnemyKillTextEvent e = gameEvent as UpdateEnemyKillTextEvent;
+        UpdateEnemyKillTextEvent e = (UpdateEnemyKillTextEvent)gameEvent;
         enemyCountText.text = "You Kill " + e.enemyCount + " enemies of " + e.enemySpawn;
     }
 
-    private void OnShowResetText(bool value)
+    private void OnShowResetText(GameEvent gameEvent)
     {
-        pressRToRestartText.gameObject.SetActive(value);
+        ShowResetTextEvent e = (ShowResetTextEvent)gameEvent;
+        pressRToRestartText.gameObject.SetActive(e.show);
     }
 
     private void OnUpdateTimeText(GameEvent gameEvent)
     {
-        UpdateTimeTextEvent e = gameEvent as UpdateTimeTextEvent;
+        UpdateTimeTextEvent e = (UpdateTimeTextEvent)gameEvent;
         TimeSpan timeSpan = TimeSpan.FromSeconds(e.seconds);
         timeText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
-
 }

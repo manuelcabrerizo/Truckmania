@@ -98,7 +98,7 @@ public class Bigfoot : Enemy
 
     public void StartRoar()
     {
-        AudioManager.onPlayClip3D?.Invoke(clips.mounsterAttack, transform.position, 100, 400);
+        GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(clips.mounsterAttack, transform.position, 100, 400));
     }
 
     public void Kill()
