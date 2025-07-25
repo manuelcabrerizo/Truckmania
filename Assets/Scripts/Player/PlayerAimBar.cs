@@ -16,9 +16,8 @@ public class PlayerAimBar : MonoBehaviour
 
     private void Awake()
     {
-        CameraMovement.onTargetLock += OnTargetLock;
-        CameraMovement.onTargetUnlock += OnTargetUnlock;
-
+        GameEventManager.Instance.AddListener<TargetLockEvent>(OnTargetLock);
+        GameEventManager.Instance.AddListener<TargetUnlockEvent>(OnTargetUnlock);
         meshRenderer = aimBar.GetComponent<MeshRenderer>();
         currentSpeed = speed;
         isAiming = false;
@@ -26,8 +25,8 @@ public class PlayerAimBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        CameraMovement.onTargetLock -= OnTargetLock;
-        CameraMovement.onTargetUnlock -= OnTargetUnlock;
+        GameEventManager.Instance.RemoveListener<TargetLockEvent>(OnTargetLock);
+        GameEventManager.Instance.RemoveListener<TargetUnlockEvent>(OnTargetUnlock);
         StopAllCoroutines();
     }
 
@@ -48,13 +47,13 @@ public class PlayerAimBar : MonoBehaviour
         }
     }
 
-    private void OnTargetLock()
+    private void OnTargetLock(GameEvent gameEvent)
     {
         isAiming = true;
         aimBar.SetActive(true);
     }
 
-    private void OnTargetUnlock()
+    private void OnTargetUnlock(GameEvent gameEvent)
     { 
         isAiming = false;
         aimBar?.SetActive(false);

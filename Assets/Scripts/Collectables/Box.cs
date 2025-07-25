@@ -5,7 +5,6 @@ public class Box : MonoBehaviour
 {
     [SerializeField] private SoundClipsSO clips;
     [SerializeField] private LayerMask playerLayer;
-    public static event Action<Box> onBoxSpawn;
 
     private Vector3 startPosition;
     private Quaternion startRotation;
@@ -16,7 +15,7 @@ public class Box : MonoBehaviour
         body = GetComponent<Rigidbody>();
         startPosition = transform.position;
         startRotation = transform.rotation;
-        onBoxSpawn?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new BoxSpawnEvent(this));
     }
 
     public void Restart()
@@ -34,6 +33,4 @@ public class Box : MonoBehaviour
             AudioManager.onPlayClip?.Invoke(clips.box);
         }
     }
-
-
 }

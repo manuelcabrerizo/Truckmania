@@ -54,7 +54,6 @@ public class UIManager : MonoBehaviour
     private void OnShowPlayingUI(GameEvent gameEvent)
     {
         PlayingShowUIEvent showUIEvent = gameEvent as PlayingShowUIEvent;
-
         playingUI.SetActive(showUIEvent.show);
     }
 

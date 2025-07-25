@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class BarrilProjectile : Projectile
 {
-    public static event Action<BarrilProjectile> onBarrilExplote;
-    public static event Action<BarrilProjectile> onBarrilExploteEnd;
-
     [SerializeField] private SoundClipsSO clips;
     [SerializeField] protected ParticleSystem particles;
     [SerializeField] protected MeshRenderer barrilRenderer;
@@ -87,7 +84,6 @@ public class BarrilProjectile : Projectile
         collision.enabled = false;
         body.isKinematic = true;
         StartCoroutine(SendReleaseaEventAfterSeconds(particles.main.duration));
-        onBarrilExplote?.Invoke(this);
         AudioManager.onPlayClip3D?.Invoke(clips.explosion, transform.position, 100, 400);
 
         Collider[] colliders = Physics.OverlapSphere(body.position, 50.0f);
@@ -112,6 +108,5 @@ public class BarrilProjectile : Projectile
     {
         yield return new WaitForSeconds(seconds);
         SendReleaseEvent();
-        onBarrilExploteEnd?.Invoke(this);
     }
 }

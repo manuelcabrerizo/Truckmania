@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
 {
@@ -12,17 +11,19 @@ public class ProjectileSpawner : Spawner<ProjectileSpawner, Projectile>
     {
         PoolManager.Instance.InitPool(explosiveBarrilPrefab, transform, initialBarrilCount);
         PoolManager.Instance.InitPool(toxicBarrilProjectile, transform, initialBarrilCount);
-
-        Projectile.onProjectileRelease += OnProjectileRelease;
+        GameEventManager.Instance.AddListener<ProjectileReleaseEvent>(OnProjectileRelease);
     }
 
     protected override void OnDestroyed()
     {
-        Projectile.onProjectileRelease -= OnProjectileRelease;
+        GameEventManager.Instance.RemoveListener<ProjectileReleaseEvent>(OnProjectileRelease);
     }
 
-    private void OnProjectileRelease(Projectile projectile)
+    private void OnProjectileRelease(GameEvent gameEvent)
     {
+        ProjectileReleaseEvent projectileReleaseEvent = (ProjectileReleaseEvent)gameEvent;
+        Projectile projectile = projectileReleaseEvent.projectile;
+
         if (projectile == null)
         {
             return;

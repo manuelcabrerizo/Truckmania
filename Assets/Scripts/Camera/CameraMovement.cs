@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public static event Action<CameraMovement> onCameraCreated;
-    public static event Action onTargetLock;
-    public static event Action onTargetUnlock;
-
     [SerializeField] private CameraData cameraData;
     [SerializeField] private Player target;
     [SerializeField] private LayerMask collisionMask;
@@ -24,7 +20,7 @@ public class CameraMovement : MonoBehaviour
     private void Awake()
     {
         InputManager.onLockCamera += OnLockCamera;
-        Bigfoot.onBigfootKill += OnBigfootKill;
+        GameEventManager.Instance.AddListener<BigfootKillEvent>(OnBigfootKill);
         GameEventManager.Instance.AddListener<EndStateEnterEvent>(OnEnterEndState);
 
         back = -target.transform.forward;
@@ -39,13 +35,13 @@ public class CameraMovement : MonoBehaviour
     private void OnDestroy()
     {
         InputManager.onLockCamera -= OnLockCamera;
-        Bigfoot.onBigfootKill -= OnBigfootKill;
+        GameEventManager.Instance.RemoveListener<BigfootKillEvent>(OnBigfootKill);
         GameEventManager.Instance.RemoveListener<EndStateEnterEvent>(OnEnterEndState);
     }
 
     private void Start()
     {
-        onCameraCreated?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new CameraCreatedEvent(this));
     }
 
     private void Update()
@@ -206,7 +202,7 @@ public class CameraMovement : MonoBehaviour
                     lockTarget = colliders[minIndex].gameObject;
                     isLock = true;
                     lockTimer = 0.0f;
-                    onTargetLock?.Invoke();
+                    GameEventManager.Instance.TriggerEvent(new TargetLockEvent());
 
                 }
             }
@@ -214,7 +210,7 @@ public class CameraMovement : MonoBehaviour
         else
         {
             isLock = false;
-            onTargetUnlock?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new TargetUnlockEvent());
         }
 
     }
@@ -225,7 +221,7 @@ public class CameraMovement : MonoBehaviour
         {
             this.lockTarget = null;
             isLock = false;
-            onTargetUnlock?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new TargetUnlockEvent());
         }
     }
 
@@ -236,7 +232,7 @@ public class CameraMovement : MonoBehaviour
         back.Normalize();
         lockTarget = null;
         isLock = false;
-        onTargetUnlock?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new TargetUnlockEvent());
 
         Vector3 toCamera = (back + Vector3.up * cameraData.height) * cameraData.distance;
         Vector3 targetPosition = target.transform.position + toCamera;
@@ -244,9 +240,10 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    private void OnBigfootKill(Enemy enemy)
+    private void OnBigfootKill(GameEvent gameEvent)
     {
-        LockTargetLost(enemy.gameObject);
+        BigfootKillEvent bigfootKillEvent = (BigfootKillEvent)gameEvent;
+        LockTargetLost(bigfootKillEvent.enemy.gameObject);
     }
 
     private void OnEnterEndState(GameEvent gameEvent)

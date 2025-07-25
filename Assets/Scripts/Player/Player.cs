@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
 {
-    public static event Action<Player> onPlayerCreated;
-    public static event Action onPlayerHit;
-    public static event Action<Player> onShoot;
-    public static event Action<Player> onRestart;
-    public static event Action<Player> onGodMode;
-    public static event Action<Player> onNoclipMode;
-
     public static Vector3 startPosition;
     public static Quaternion startRotation;
 
@@ -57,7 +49,7 @@ public class Player : MonoBehaviour, IDamagable
 
     private void Start()
     {
-        onPlayerCreated?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new PlayerCreatedEvent(this));
     }
 
     private void Update()
@@ -175,12 +167,12 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Shoot()
     {
-        onShoot?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new PlayerShootEvent(this));
     }
 
     public void Restart()
     {
-        onRestart?.Invoke(this);   
+        GameEventManager.Instance.TriggerEvent(new PlayerRestartEvent(this));
     }
 
     public void SetGodMode()
@@ -189,7 +181,6 @@ public class Player : MonoBehaviour, IDamagable
         {
             Data.isGodModeCheatActive = !Data.isGodModeCheatActive;
         }
-        onGodMode?.Invoke(this);
     }
 
     public void SetNoclipMode()
@@ -198,7 +189,6 @@ public class Player : MonoBehaviour, IDamagable
         {
             Data.isNoclipCheatActive = !Data.isNoclipCheatActive;
         }
-        onNoclipMode?.Invoke(this);
     }
 
     public void TakeDamage(int amount)
@@ -206,7 +196,7 @@ public class Player : MonoBehaviour, IDamagable
         if (!Data.isGodModeCheatActive)
         {
             StartCoroutine(StartFeedbackAnimation(2.0f, Color.red));
-            onPlayerHit?.Invoke();
+            GameEventManager.Instance.TriggerEvent(new PlayerHitEvent());
         }
     }
 

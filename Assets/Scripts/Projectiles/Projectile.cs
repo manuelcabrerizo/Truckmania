@@ -1,10 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Projectile : MonoBehaviour, IPooleable
 {
-    public static event Action<Projectile> onProjectileRelease;
-
     public virtual void OnGet()
     {
         gameObject.SetActive(true);
@@ -17,6 +14,6 @@ public class Projectile : MonoBehaviour, IPooleable
 
     public void SendReleaseEvent()
     {
-        onProjectileRelease?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new ProjectileReleaseEvent(this));
     }
 }

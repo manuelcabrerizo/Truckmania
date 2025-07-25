@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Bigfoot : Enemy
 {
-    public static event Action<Enemy> onBigfootKill;
-
     [SerializeField] private SoundClipsSO clips;
     [SerializeField] private Transform hand = null;
     [SerializeField] private Transform target = null;
@@ -108,7 +106,7 @@ public class Bigfoot : Enemy
         collision.enabled = false;
         animator.enabled = false;
         deadState.SetDead();
-        onBigfootKill?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new BigfootKillEvent(this));
     }
 
     public void HitAnimationEnd()

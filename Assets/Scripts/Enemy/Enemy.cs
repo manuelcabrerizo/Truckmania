@@ -1,11 +1,7 @@
-using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamagable
 {
-    public static event Action<Enemy> onEnemySpawn;
-    public static event Action<Enemy> onEnemyKill;
-
     [SerializeField] protected int maxLife;
     [SerializeField] protected LayerMask damagableLayer;
 
@@ -24,7 +20,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     private void Start()
     {
-        onEnemySpawn?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new EnemySpawnEvent(this));
         OnStart();
     }
 
@@ -44,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamagable
         life = Mathf.Max(life - amount, 0);
         if (life == 0)
         {
-            onEnemyKill?.Invoke(this);
+            GameEventManager.Instance.TriggerEvent(new EnemyKillEvent());
         }
     }
 }

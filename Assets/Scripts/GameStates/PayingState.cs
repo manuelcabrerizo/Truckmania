@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 class PlayingState : State<GameManager>
@@ -17,9 +16,10 @@ class PlayingState : State<GameManager>
     public override void OnEnter()
     {        
         EndTrigger.onEndTriggerHit += OnEndTriggerHit;
-        Coin.onCoinPick += OnCoinPick;
-        Enemy.onEnemyKill += OnEnemyKill;
-        Player.onPlayerHit += OnPlayerHit;
+        GameEventManager.Instance.AddListener<CoinPickEvent>(OnCoinPick);
+        GameEventManager.Instance.AddListener<EnemyKillEvent>(OnEnemyKill);
+        GameEventManager.Instance.AddListener<PlayerHitEvent>(OnPlayerHit);
+
         InputManager.onWinCheat += OnWinCheat;
         InputManager.onLoseCheat += OnLoseCheat;
         InputManager.onGodModeCheat += OnGodModeCheat;
@@ -39,9 +39,10 @@ class PlayingState : State<GameManager>
         GameEventManager.Instance.TriggerEvent(new PlayingShowUIEvent(false));
 
         EndTrigger.onEndTriggerHit -= OnEndTriggerHit;
-        Coin.onCoinPick -= OnCoinPick;
-        Enemy.onEnemyKill -= OnEnemyKill;
-        Player.onPlayerHit -= OnPlayerHit;
+        GameEventManager.Instance.RemoveListener<CoinPickEvent>(OnCoinPick);
+        GameEventManager.Instance.RemoveListener<EnemyKillEvent>(OnEnemyKill);
+        GameEventManager.Instance.RemoveListener<PlayerHitEvent>(OnPlayerHit);
+
         InputManager.onWinCheat -= OnWinCheat;
         InputManager.onLoseCheat -= OnLoseCheat;
         InputManager.onGodModeCheat -= OnGodModeCheat;
@@ -64,7 +65,7 @@ class PlayingState : State<GameManager>
         }
     }
 
-    private void OnPlayerHit()
+    private void OnPlayerHit(GameEvent gameEvent)
     {
         owner.seconds = Math.Max(owner.seconds - 20, 0);
         timer = 0;
@@ -76,13 +77,13 @@ class PlayingState : State<GameManager>
         owner.SetEndState();
     }
 
-    private void OnCoinPick(Coin coin)
+    private void OnCoinPick(GameEvent gameEvent)
     {
         owner.coinsCollectedCount++;
         GameEventManager.Instance.TriggerEvent(new UpdateCoinPickTextEvent(owner.coinsCollectedCount, owner.Coins.Count));
     }
 
-    private void OnEnemyKill(Enemy enemy)
+    private void OnEnemyKill(GameEvent gameEvent)
     {
         owner.enemiesKillCount++;
         GameEventManager.Instance.TriggerEvent(new UpdateEnemyKillTextEvent(owner.enemiesKillCount, owner.Enemies.Count));

@@ -130,3 +130,104 @@ public class BestTimeSetEvent : GameEvent
         this.seconds = seconds;
     }
 }
+
+// Collectables Events
+public class CoinSpawnEvent : GameEvent
+{ 
+    public Coin coin;
+    public CoinSpawnEvent(Coin coin) 
+    {
+        this.coin = coin;
+    }
+}
+
+public class CoinPickEvent : GameEvent {}
+
+public class BoxSpawnEvent : GameEvent
+{ 
+    public Box box;
+    public BoxSpawnEvent(Box box) 
+    {
+        this.box = box;
+    }
+}
+
+// Enemy Events
+public class EnemySpawnEvent : GameEvent 
+{
+    public Enemy enemy;
+    public EnemySpawnEvent(Enemy enemy)
+    {
+        this.enemy = enemy;
+    }
+}
+
+public class EnemyKillEvent : GameEvent {}
+
+// Bigfoot Events
+public class BigfootKillEvent : GameEvent 
+{
+    public Enemy enemy;
+    public BigfootKillEvent(Enemy enemy)
+    {
+        this.enemy = enemy;
+    }
+}
+
+// Camera Events
+public class CameraCreatedEvent : GameEvent
+{
+    public CameraMovement cameraMovement;
+    public CameraCreatedEvent(CameraMovement cameraMovement)
+    {
+        this.cameraMovement = cameraMovement;
+    }
+}
+public class TargetLockEvent : GameEvent { };
+public class TargetUnlockEvent : GameEvent { };
+
+// Projectiles Events
+public class ProjectileReleaseEvent : GameEvent 
+{
+    public Projectile projectile;
+    public ProjectileReleaseEvent(Projectile projectile)
+    {
+        this.projectile = projectile;
+    }
+};
+
+public class ToxicBarrilPickEvent : GameEvent
+{
+    public ToxicBarrilProjectile barril;
+    public ToxicBarrilPickEvent(ToxicBarrilProjectile barril)
+    {
+        this.barril = barril;
+    }
+}
+
+// Player Events
+public abstract class PlayerEvent : GameEvent
+{ 
+    public Player player;
+    public PlayerEvent(Player player)
+    {
+        this.player = player;
+    }
+}
+
+public class PlayerCreatedEvent : PlayerEvent
+{
+    public PlayerCreatedEvent(Player player) 
+        : base(player) { }
+}
+public class PlayerHitEvent : GameEvent { }
+public class PlayerShootEvent : PlayerEvent
+{
+    public PlayerShootEvent(Player player) 
+        : base(player) { }
+}
+public class PlayerRestartEvent : PlayerEvent
+{
+    public PlayerRestartEvent(Player player)
+        : base(player) { }
+}

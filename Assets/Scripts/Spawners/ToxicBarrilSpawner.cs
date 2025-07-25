@@ -9,12 +9,12 @@ public class ToxicBarrilSpawner : MonoBehaviour
 
     private void Awake()
     {
-        ToxicBarrilProjectile.onBarrilPickUp += OnBarrilPickUp;
+        GameEventManager.Instance.AddListener<ToxicBarrilPickEvent>(OnBarrilPickUp);
     }
 
     private void OnDestroy()
     {
-        ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
+        GameEventManager.Instance.RemoveListener<ToxicBarrilPickEvent>(OnBarrilPickUp);
         if (spawnedBarril)
         {
             spawnedBarril.SendReleaseEvent();
@@ -36,8 +36,10 @@ public class ToxicBarrilSpawner : MonoBehaviour
         }
     }
 
-    private void OnBarrilPickUp(ToxicBarrilProjectile barril)
+    private void OnBarrilPickUp(GameEvent gameEvent)
     {
+        ToxicBarrilPickEvent pickEvent = (ToxicBarrilPickEvent)gameEvent;
+        ToxicBarrilProjectile barril = pickEvent.barril;
         if (spawnedBarril == barril)
         {
             spawnedBarril = null;

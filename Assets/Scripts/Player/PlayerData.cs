@@ -53,16 +53,16 @@ public class PlayerData
     {
         GameEventManager.Instance.AddListener<CountDownStateEnterEvent>(OnCountDownEnter);
         GameEventManager.Instance.AddListener<CountDownStateExitEvent>(OnCountDownExit);
-        ToxicBarrilProjectile.onBarrilPickUp += OnBarrilPickUp;
-        CameraMovement.onCameraCreated += OnCameraCreated;
+        GameEventManager.Instance.AddListener<ToxicBarrilPickEvent>(OnBarrilPickUp);
+        GameEventManager.Instance.AddListener<CameraCreatedEvent>(OnCameraCreated);
     }
 
     public void Destroy()
     {
         GameEventManager.Instance.RemoveListener<CountDownStateEnterEvent>(OnCountDownEnter);
         GameEventManager.Instance.RemoveListener<CountDownStateExitEvent>(OnCountDownExit);
-        ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
-        CameraMovement.onCameraCreated -= OnCameraCreated;
+        GameEventManager.Instance.RemoveListener<ToxicBarrilPickEvent>(OnBarrilPickUp);
+        GameEventManager.Instance.RemoveListener<CameraCreatedEvent>(OnCameraCreated);
 
         if (barril)
         {
@@ -181,8 +181,11 @@ public class PlayerData
             }
         }
     }
-    private void OnBarrilPickUp(ToxicBarrilProjectile barril)
+    private void OnBarrilPickUp(GameEvent gameEvent)
     {
+        ToxicBarrilPickEvent pickEvent = (ToxicBarrilPickEvent)gameEvent;
+        ToxicBarrilProjectile barril = pickEvent.barril;
+
         if (this.barril != null)
         {
             this.barril.SendReleaseEvent();
@@ -190,9 +193,10 @@ public class PlayerData
         this.barril = barril;
         this.barril.gameObject.layer = LayerMask.NameToLayer("ToxicBarril");
     }
-    private void OnCameraCreated(CameraMovement cameraMovement)
+    private void OnCameraCreated(GameEvent gameEvent)
     {
-        this.cameraMovement = cameraMovement;
+        CameraCreatedEvent cameraCreatedEvent = (CameraCreatedEvent)gameEvent;
+        this.cameraMovement = cameraCreatedEvent.cameraMovement;
     }
 
     public void OnCountDownEnter(GameEvent gameEvent)

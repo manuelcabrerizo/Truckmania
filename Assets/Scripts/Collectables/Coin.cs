@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour, IPickable
 {
-    public static event Action<Coin> onCoinSpawn;
-    public static event Action<Coin> onCoinPick;
-
     [SerializeField] private SoundClipsSO clips;
     [SerializeField] private MeshRenderer meshRenderer;
     private Collider collision;
@@ -17,7 +14,7 @@ public class Coin : MonoBehaviour, IPickable
 
     private void Start()
     {
-        onCoinSpawn?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new CoinSpawnEvent(this));
         transform.Rotate(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
     }
     private void Update()
@@ -36,6 +33,6 @@ public class Coin : MonoBehaviour, IPickable
         meshRenderer.enabled = false;
         collision.enabled = false;
         AudioManager.onPlayClip?.Invoke(clips.coin);
-        onCoinPick?.Invoke(this);
+        GameEventManager.Instance.TriggerEvent(new CoinPickEvent());
     }
 }

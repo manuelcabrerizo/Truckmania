@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class ToxicBarrilProjectile : BarrilProjectile, IPickable
 {
-    public static event Action<ToxicBarrilProjectile> onBarrilPickUp;
-
     private CapsuleCollider capsuleCollider;
     private float triggerRadius = 4.5f;
 
@@ -41,9 +39,8 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
             barrilRenderer.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             collision.enabled = false;
             capsuleCollider.radius = 1.0f;
-            body.useGravity = false;
-
-            onBarrilPickUp?.Invoke(this);
+            body.useGravity = false;         
+            GameEventManager.Instance.TriggerEvent(new ToxicBarrilPickEvent(this));
         }
     }
 

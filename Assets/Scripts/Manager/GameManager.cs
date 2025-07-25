@@ -29,9 +29,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         InputManager.onPause += PauseGame;
-        Coin.onCoinSpawn += OnCoinSpawn;
-        Enemy.onEnemySpawn += OnEnemySpawn;
-        Box.onBoxSpawn += OnBoxSpawn;
+        GameEventManager.Instance.AddListener<CoinSpawnEvent>(OnCoinSpawn);
+        GameEventManager.Instance.AddListener<EnemySpawnEvent>(OnEnemySpawn);
+        GameEventManager.Instance.AddListener<BoxSpawnEvent>(OnBoxSpawn);
     }
 
     private void Start()
@@ -52,9 +52,9 @@ public class GameManager : MonoBehaviour
     {
         fsm.Clear();
         InputManager.onPause -= PauseGame;
-        Coin.onCoinSpawn -= OnCoinSpawn;
-        Enemy.onEnemySpawn -= OnEnemySpawn;
-        Box.onBoxSpawn -= OnBoxSpawn;
+        GameEventManager.Instance.RemoveListener<CoinSpawnEvent>(OnCoinSpawn);
+        GameEventManager.Instance.RemoveListener<EnemySpawnEvent>(OnEnemySpawn);
+        GameEventManager.Instance.RemoveListener<BoxSpawnEvent>(OnBoxSpawn);
     }
 
     private void Update()
@@ -111,20 +111,22 @@ public class GameManager : MonoBehaviour
         fsm.PopState();
     }
 
-    private void OnCoinSpawn(Coin coin)
+    private void OnCoinSpawn(GameEvent gameEvent)
     {
-
-        coins.Add(coin);
+        CoinSpawnEvent coinSpawnEvent = (CoinSpawnEvent)gameEvent;
+        coins.Add(coinSpawnEvent.coin);
     }
 
-    private void OnEnemySpawn(Enemy enemy)
+    private void OnEnemySpawn(GameEvent gameEvent)
     { 
-        enemies.Add(enemy);
+        EnemySpawnEvent enemySpawnEvent = (EnemySpawnEvent)gameEvent;
+        enemies.Add(enemySpawnEvent.enemy);
     }
 
-    private void OnBoxSpawn(Box box)
+    private void OnBoxSpawn(GameEvent gameEvent)
     {
-        boxes.Add(box);
+        BoxSpawnEvent boxSpawnEvent = (BoxSpawnEvent)gameEvent;
+        boxes.Add(boxSpawnEvent.box);
     }
 
 }

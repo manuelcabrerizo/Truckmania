@@ -17,17 +17,18 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     protected override void OnAwaken()
     {
         JoystickOrKeyboardUse = true;
-        Player.onPlayerCreated += OnPlayerCreated;
+        GameEventManager.Instance.AddListener<PlayerCreatedEvent>(OnPlayerCreated);
     }
 
     protected override void OnDestroyed()
     {
-        Player.onPlayerCreated -= OnPlayerCreated;
+        GameEventManager.Instance.RemoveListener<PlayerCreatedEvent>(OnPlayerCreated);
     }
 
-    private void OnPlayerCreated(Player player)
+    private void OnPlayerCreated(GameEvent gameEvent)
     {
-        this.player = player;
+        PlayerCreatedEvent playerCreatedEvent = (PlayerCreatedEvent)gameEvent;
+        this.player = playerCreatedEvent.player;
     }
 
     public void OnAccelerate(InputAction.CallbackContext context)

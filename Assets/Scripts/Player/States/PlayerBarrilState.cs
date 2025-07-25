@@ -8,12 +8,12 @@ public class PlayerBarrilState : State<Player>
 
     public override void OnEnter()
     {
-        Player.onShoot += OnShoot;
+        GameEventManager.Instance.AddListener<PlayerShootEvent>(OnShoot);
     }
 
     public override void OnExit() 
     {
-        Player.onShoot -= OnShoot;
+        GameEventManager.Instance.RemoveListener<PlayerShootEvent>(OnShoot);
     }
 
     public override void OnUpdate()
@@ -26,9 +26,11 @@ public class PlayerBarrilState : State<Player>
         }
     }
 
-    private void OnShoot(Player player)
+    private void OnShoot(GameEvent gameEvent)
     {
-        if (player != owner)
+        PlayerShootEvent playerShootEvent = (PlayerShootEvent)gameEvent;
+
+        if (playerShootEvent.player != owner)
         {
             return;
         }
