@@ -203,10 +203,10 @@ public class BigfootKillEvent : GameEvent
 // Camera Events
 public class CameraCreatedEvent : GameEvent
 {
-    public CameraMovement cameraMovement;
-    public CameraCreatedEvent(CameraMovement cameraMovement)
+    public CameraController cameraController;
+    public CameraCreatedEvent(CameraController cameraController)
     {
-        this.cameraMovement = cameraMovement;
+        this.cameraController = cameraController;
     }
 }
 public class TargetLockEvent : GameEvent { };

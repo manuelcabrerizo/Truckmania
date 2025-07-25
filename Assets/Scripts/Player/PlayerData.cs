@@ -46,7 +46,7 @@ public class PlayerData
     public Rigidbody body;
     public Collider collision;
     public PlayerAimBar aimBar;
-    public CameraMovement cameraMovement;
+    public CameraController cameraController;
     public AudioSource engineSound;
 
     public void Initialize()
@@ -89,7 +89,7 @@ public class PlayerData
         velocityRatio = 0.0f;
         sliptAngle = 0;
         isNoclipCheatActive = false;
-        cameraMovement.Restart();
+        cameraController.Restart();
     }
 
     public void Update(Player player)
@@ -196,7 +196,7 @@ public class PlayerData
     private void OnCameraCreated(GameEvent gameEvent)
     {
         CameraCreatedEvent cameraCreatedEvent = (CameraCreatedEvent)gameEvent;
-        this.cameraMovement = cameraCreatedEvent.cameraMovement;
+        this.cameraController = cameraCreatedEvent.cameraController;
     }
 
     public void OnCountDownEnter(GameEvent gameEvent)

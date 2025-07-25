@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using EventListener = System.Action<GameEvent>;
 using EventListenerList = System.Collections.Generic.List<System.Action<GameEvent>>;
 
-public class GameEventManager : MonoBehaviour
+public class GameEventManager
 {
-    public static GameEventManager Instance = null;
-    private Dictionary<Type, EventListenerList> eventListeners = new Dictionary<Type, EventListenerList>();
-    
-    private void Awake()
+    private static GameEventManager instance = null;
+    public static GameEventManager Instance
     {
-        if (Instance == null)
+        get 
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            if (instance == null)
+            { 
+                instance = new GameEventManager();
+            }
+            return instance;
         }
     }
+
+    private Dictionary<Type, EventListenerList> eventListeners = new Dictionary<Type, EventListenerList>();
 
     public bool AddListener<Type>(EventListener listener) where Type : GameEvent
     {
@@ -32,7 +30,6 @@ public class GameEventManager : MonoBehaviour
         EventListenerList listeners = eventListeners[typeof(Type)];
         if (listeners.Contains(listener))
         {
-            Debug.Log( "Listener Already register");
             return false;
         }
 

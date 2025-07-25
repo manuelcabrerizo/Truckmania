@@ -110,6 +110,20 @@ public class AudioManager : MonoBehaviour
         mixer.SetFloat("MasterVolume", 0);
     }
 
+    private void OnSfxSliderChange(GameEvent gameEvent)
+    {
+        SfxSliderChangeEvent sliderChagneEvent = (SfxSliderChangeEvent)gameEvent;
+        volumeData.Sfx = sliderChagneEvent.value;
+        mixer.SetFloat("SfxVolume", Utils.LinearToDecibel(volumeData.Sfx));
+    }
+
+    private void OnMusicSliderChange(GameEvent gameEvent)
+    {
+        MusicSliderChangeEvent sliderChagneEvent = (MusicSliderChangeEvent)gameEvent;
+        volumeData.Music = sliderChagneEvent.value;
+        mixer.SetFloat("MusicVolume", Utils.LinearToDecibel(volumeData.Music));
+    }
+
     private IEnumerator ReleaseAudioSourceIfFinish(AudioSource audioSource)
     {
         yield return new WaitForSeconds(audioSource.clip.length);
@@ -138,19 +152,5 @@ public class AudioManager : MonoBehaviour
     private void OnDestroyPooledObject(AudioSource pooledObject)
     {
         Destroy(pooledObject);
-    }
-
-    private void OnSfxSliderChange(GameEvent gameEvent)
-    {
-        SfxSliderChangeEvent sliderChagneEvent = (SfxSliderChangeEvent)gameEvent;
-        volumeData.Sfx = sliderChagneEvent.value;
-        mixer.SetFloat("SfxVolume", Utils.LinearToDecibel(volumeData.Sfx));
-    }
-
-    private void OnMusicSliderChange(GameEvent gameEvent)
-    {
-        MusicSliderChangeEvent sliderChagneEvent = (MusicSliderChangeEvent)gameEvent;
-        volumeData.Music = sliderChagneEvent.value;
-        mixer.SetFloat("MusicVolume", Utils.LinearToDecibel(volumeData.Music));
     }
 }

@@ -33,7 +33,7 @@ public class PlayerRestartState : State<Player>
 
         PlayerData data = owner.Data;
         owner.transform.position += Vector3.up * 2.0f;
-        Vector3 forward = data.cameraMovement.transform.forward;
+        Vector3 forward = data.cameraController.transform.forward;
         forward.y = 0f;
         forward.Normalize();
         owner.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
