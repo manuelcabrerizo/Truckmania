@@ -1,14 +1,7 @@
-using System;
 using UnityEngine;
 
 class WinState : State<GameManager>
 {
-    public static event Action onWinStateEnter;
-    public static event Action onWinSateExit;
-    public static event Action<string, int> onCurrentTimeSet;
-    public static event Action<string, int> onBestTimeSet;
-
-
     public WinState(GameManager gameManager)
     : base(gameManager) { }
 
@@ -28,26 +21,26 @@ class WinState : State<GameManager>
             bestTime = PlayerPrefs.GetInt(KeyName);
         }
 
-        onCurrentTimeSet?.Invoke("Current Time: ", currentTime);
+        GameEventManager.Instance.TriggerEvent(new CurrentTimeSetEvent("Current Time: ", currentTime));
         if (currentTime < bestTime)
         {
             bestTime = currentTime;
-            onBestTimeSet?.Invoke("New Best Time: ", bestTime);
+            GameEventManager.Instance.TriggerEvent(new BestTimeSetEvent("New Best Time: ", bestTime));
         }
         else
         {
-            onBestTimeSet?.Invoke("Best Time: ", bestTime);
+            GameEventManager.Instance.TriggerEvent(new BestTimeSetEvent("Best Time: ", bestTime));
         }
         PlayerPrefs.SetInt(KeyName, bestTime);
 
-        onWinStateEnter?.Invoke();
-
+        GameEventManager.Instance.TriggerEvent(new WinStateEnterEvent());
         AudioManager.onPauseAll?.Invoke();
     }
 
     public override void OnExit()
     {
-        onWinSateExit?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new WinStateExitEvent());
+
         GameEventManager.Instance.RemoveListener<NextButtonClickEvent>(OnNextButtonClick);
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
         AudioManager.onResumeAll?.Invoke();

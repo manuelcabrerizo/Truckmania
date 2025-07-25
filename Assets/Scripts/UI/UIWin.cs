@@ -14,8 +14,8 @@ public class UIWin : MonoBehaviour
 
     private void Awake()
     {
-        WinState.onCurrentTimeSet += OnCurrentTimeSet;
-        WinState.onBestTimeSet += OnBestTimeSet;
+        GameEventManager.Instance.AddListener<CurrentTimeSetEvent>(OnCurrentTimeSet);
+        GameEventManager.Instance.AddListener<BestTimeSetEvent>(OnBestTimeSet);
         nextButton.onClick.AddListener(OnNextButtonClick);
         resetButton.onClick.AddListener(OnResetButtonClick);
         menuButton.onClick.AddListener(OnMenuButtonClick);
@@ -24,24 +24,26 @@ public class UIWin : MonoBehaviour
 
     private void OnDestroy()
     {
-        WinState.onCurrentTimeSet -= OnCurrentTimeSet;
-        WinState.onBestTimeSet -= OnBestTimeSet;
+        GameEventManager.Instance.RemoveListener<CurrentTimeSetEvent>(OnCurrentTimeSet);
+        GameEventManager.Instance.RemoveListener<BestTimeSetEvent>(OnBestTimeSet);
         nextButton.onClick.RemoveListener(OnNextButtonClick);
         resetButton.onClick.RemoveListener(OnResetButtonClick);
         menuButton.onClick.RemoveListener(OnMenuButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
     }
 
-    private void OnCurrentTimeSet(string text, int seconds)
+    private void OnCurrentTimeSet(GameEvent gameEvent)
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
-        currentTimeText.text = text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        CurrentTimeSetEvent e = gameEvent as CurrentTimeSetEvent;
+        TimeSpan timeSpan = TimeSpan.FromSeconds(e.seconds);
+        currentTimeText.text = e.text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
 
-    private void OnBestTimeSet(string text, int seconds)
+    private void OnBestTimeSet(GameEvent gameEvent)
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
-        bestTimeText.text = text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        BestTimeSetEvent e = gameEvent as BestTimeSetEvent;
+        TimeSpan timeSpan = TimeSpan.FromSeconds(e.seconds);
+        bestTimeText.text = e.text + $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
 
     private void OnExitButtonClick()

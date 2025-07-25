@@ -11,17 +11,17 @@ public class UIPlaying : MonoBehaviour
 
     private void Awake()
     {
-        PlayingState.onUpdateCoinPickText += OnUpdateCoinPickText;
-        PlayingState.onUpdateEnemyKillText += OnUpdateEnemyKillText;
-        PlayingState.onUpdateTimeText += OnUpdateTimeText;
+        GameEventManager.Instance.AddListener<UpdateCoinPickTextEvent>(OnUpdateCoinPickText);
+        GameEventManager.Instance.AddListener<UpdateEnemyKillTextEvent>(OnUpdateEnemyKillText);
+        GameEventManager.Instance.AddListener<UpdateTimeTextEvent>(OnUpdateTimeText);
         PlayerRestartState.onOnShowResetText += OnShowResetText;
     }
 
     private void OnDestroy()
     {
-        PlayingState.onUpdateCoinPickText -= OnUpdateCoinPickText;
-        PlayingState.onUpdateEnemyKillText -= OnUpdateEnemyKillText;
-        PlayingState.onUpdateTimeText -= OnUpdateTimeText;
+        GameEventManager.Instance.RemoveListener<UpdateCoinPickTextEvent>(OnUpdateCoinPickText);
+        GameEventManager.Instance.RemoveListener<UpdateEnemyKillTextEvent>(OnUpdateEnemyKillText);
+        GameEventManager.Instance.RemoveListener<UpdateTimeTextEvent>(OnUpdateTimeText);
         PlayerRestartState.onOnShowResetText -= OnShowResetText;
     }
 
@@ -30,14 +30,16 @@ public class UIPlaying : MonoBehaviour
         pressRToRestartText.gameObject.SetActive(false);
     }
 
-    public void OnUpdateCoinPickText(int coinCount, int coinSpawn)
+    public void OnUpdateCoinPickText(GameEvent gameEvent)
     {
-        coinCountText.text = "You grabbed " + coinCount + " coins of " + coinSpawn;
+        UpdateCoinPickTextEvent e = gameEvent as UpdateCoinPickTextEvent;
+        coinCountText.text = "You grabbed " + e.coinCount + " coins of " + e.coinSpawn;
     }
 
-    public void OnUpdateEnemyKillText(int enemyCount, int enemySpawn)
+    public void OnUpdateEnemyKillText(GameEvent gameEvent)
     {
-        enemyCountText.text = "You Kill " + enemyCount + " enemies of " + enemySpawn;
+        UpdateEnemyKillTextEvent e = gameEvent as UpdateEnemyKillTextEvent;
+        enemyCountText.text = "You Kill " + e.enemyCount + " enemies of " + e.enemySpawn;
     }
 
     private void OnShowResetText(bool value)
@@ -45,9 +47,10 @@ public class UIPlaying : MonoBehaviour
         pressRToRestartText.gameObject.SetActive(value);
     }
 
-    private void OnUpdateTimeText(int seconds)
+    private void OnUpdateTimeText(GameEvent gameEvent)
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
+        UpdateTimeTextEvent e = gameEvent as UpdateTimeTextEvent;
+        TimeSpan timeSpan = TimeSpan.FromSeconds(e.seconds);
         timeText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
 

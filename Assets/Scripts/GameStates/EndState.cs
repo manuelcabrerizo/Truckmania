@@ -1,35 +1,30 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class EndState : State<GameManager>
 {
-    public static event Action onEnter;
-    public static event Action<bool> onShowFinishUI;
-    public static event Action<bool> onShowTimeoutUI;
-
     public EndState(GameManager owner)
         : base(owner) { }
 
     public override void OnEnter()
     {
-        onEnter?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new EndStateEnterEvent());
         owner.StartCoroutine(WaitSeconds(5.0f));
 
         if (owner.seconds > 0)
         {
-            onShowFinishUI?.Invoke(true);
+            GameEventManager.Instance.TriggerEvent(new EndStateShowFinishUIEvent(true));
         }
         else
         {
-            onShowTimeoutUI?.Invoke(true);
+            GameEventManager.Instance.TriggerEvent(new EndStateShowTimeoutUIEvent(true));
         }
     }
 
     public override void OnExit()
     {
-        onShowFinishUI?.Invoke(false);
-        onShowTimeoutUI?.Invoke(false);
+        GameEventManager.Instance.TriggerEvent(new EndStateShowFinishUIEvent(false));
+        GameEventManager.Instance.TriggerEvent(new EndStateShowTimeoutUIEvent(false));
     }
 
     IEnumerator WaitSeconds(float seconds)

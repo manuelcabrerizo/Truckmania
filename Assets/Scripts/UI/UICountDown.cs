@@ -7,16 +7,18 @@ public class UICountDown : MonoBehaviour
 
     private void Awake()
     {
-        CountDownState.onCountDownChange += OnCountDownChange;
+        GameEventManager.Instance.AddListener<CountDownChangeEvent>(OnCountDownChange);
     }
 
     private void OnDestroy()
     {
-        CountDownState.onCountDownChange -= OnCountDownChange;
+        GameEventManager.Instance.RemoveListener<CountDownChangeEvent>(OnCountDownChange);
     }
 
-    private void OnCountDownChange(float value)
+    private void OnCountDownChange(GameEvent gameEvent)
     {
-        timerText.text = value.ToString();
+        CountDownChangeEvent changeEvent = gameEvent as CountDownChangeEvent;
+
+        timerText.text = changeEvent.countDown.ToString();
     }
 }

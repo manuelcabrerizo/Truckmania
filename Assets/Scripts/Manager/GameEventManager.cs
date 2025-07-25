@@ -4,22 +4,11 @@ using UnityEngine;
 using EventListener = System.Action<GameEvent>;
 using EventListenerList = System.Collections.Generic.List<System.Action<GameEvent>>;
 
-public struct ListenerToRemove
-{ 
-    public Type type;
-    public EventListener listerner;
-}
-
 public class GameEventManager : MonoBehaviour
 {
     public static GameEventManager Instance = null;
-
     private Dictionary<Type, EventListenerList> eventListeners = new Dictionary<Type, EventListenerList>();
     
-    private List<ListenerToRemove> listenersToRemove = new List<ListenerToRemove>();
-
-    //private Queue<BaseGameEvent>[] eventQueues = new Queue<BaseGameEvent>[2];
-
     private void Awake()
     {
         if (Instance == null)
@@ -30,22 +19,6 @@ public class GameEventManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (listenersToRemove.Count > 0)
-        {
-            foreach (var toRemove in listenersToRemove)
-            {
-                if (eventListeners.ContainsKey(toRemove.type))
-                {
-                    EventListenerList listenes = eventListeners[toRemove.type];
-                    listenes.Remove(toRemove.listerner);
-                }
-            }
-            listenersToRemove.Clear();
         }
     }
 
@@ -71,25 +44,26 @@ public class GameEventManager : MonoBehaviour
     {        
         if (eventListeners.ContainsKey(typeof(Type)))
         {
-            ListenerToRemove toRemove = new ListenerToRemove();
-            toRemove.type = typeof(Type);
-            toRemove.listerner = listener;
-            listenersToRemove.Add(toRemove);
-            return true;
+            EventListenerList listeners = eventListeners[typeof(Type)];
+            if (listeners.Contains(listener))
+            {
+                listeners.Remove(listener);
+                return true;
+            }
         }
         return false;
     }
 
     public void TriggerEvent(GameEvent gameEvent)
     {
-        //int eventType = gameEvent.GetID();
         Type eventType = gameEvent.GetType();
         if (eventListeners.ContainsKey(eventType))
         {
             EventListenerList listeners = eventListeners[eventType];
-            foreach (EventListener listener in listeners)
+            // Loop backwards in case a listener from this list gets remove
+            for (int i = listeners.Count - 1; i >= 0; i--)
             {
-                listener(gameEvent);
+                listeners[i](gameEvent);
             }
         }
     }

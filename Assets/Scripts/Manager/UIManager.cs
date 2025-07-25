@@ -18,17 +18,16 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         InputManager.onJoystickOrKeyboardUse += OnJoystickAndKeyboardUse;
-        PlayingState.onShowPlayingUI += OnShowPlayingUI;
-        CountDownState.onShowCountDownUI += OnShowCountDownUI;
-        EndState.onShowFinishUI += OnShowFinishUI;
-        EndState.onShowTimeoutUI += OnShowTimeoutUI;
-        WinState.onWinStateEnter += OnWinStateEnter;
-        WinState.onWinSateExit += OnWinStateExit;
-        GameOverState.onGameOverStateEnter += OnGameOverStateEnter;
-        GameOverState.onGameOverSateExit += OnGameOverStateExit;
-        PauseState.onPauseStateEnter += OnPauseStateEnter;
-        PauseState.onPauseSateExit += OnPauseStateExit;
-
+        GameEventManager.Instance.AddListener<PlayingShowUIEvent>(OnShowPlayingUI);
+        GameEventManager.Instance.AddListener<CountDownShowUIEvent>(OnShowCountDownUI);
+        GameEventManager.Instance.AddListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
+        GameEventManager.Instance.AddListener<EndStateShowTimeoutUIEvent>(OnShowTimeoutUI);
+        GameEventManager.Instance.AddListener<WinStateEnterEvent>(OnWinStateEnter);
+        GameEventManager.Instance.AddListener<WinStateExitEvent>(OnWinStateExit);
+        GameEventManager.Instance.AddListener<GameOverStateEnterEvent>(OnGameOverStateEnter);
+        GameEventManager.Instance.AddListener<GameOverStateExitEvent>(OnGameOverStateExit);
+        GameEventManager.Instance.AddListener<PauseStateEnterEvent>(OnPauseStateEnter);
+        GameEventManager.Instance.AddListener<PauseStateExitEvent>(OnPauseStateExit);
         GameEventManager.Instance.AddListener<SettingButtonClickEvent>(OnSettingsButtonClick);
         GameEventManager.Instance.AddListener<MenuButtonClickEvent>(OnMenuButtonClick);
         GameEventManager.Instance.AddListener<ExitButtonClickEvent>(OnExitButtonClick);
@@ -37,72 +36,74 @@ public class UIManager : MonoBehaviour
     private void OnDestroy()
     {
         InputManager.onJoystickOrKeyboardUse -= OnJoystickAndKeyboardUse;
-        PlayingState.onShowPlayingUI -= OnShowPlayingUI;
-        CountDownState.onShowCountDownUI -= OnShowCountDownUI;
-        EndState.onShowFinishUI -= OnShowFinishUI;
-        EndState.onShowTimeoutUI -= OnShowTimeoutUI;
-        WinState.onWinStateEnter -= OnWinStateEnter;
-        WinState.onWinSateExit -= OnWinStateExit;
-        GameOverState.onGameOverStateEnter -= OnGameOverStateEnter;
-        GameOverState.onGameOverSateExit -= OnGameOverStateExit;
-        PauseState.onPauseStateEnter -= OnPauseStateEnter;
-        PauseState.onPauseSateExit -= OnPauseStateExit;
-
+        GameEventManager.Instance.RemoveListener<PlayingShowUIEvent>(OnShowPlayingUI);
+        GameEventManager.Instance.RemoveListener<CountDownShowUIEvent>(OnShowCountDownUI);
+        GameEventManager.Instance.RemoveListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
+        GameEventManager.Instance.RemoveListener<EndStateShowTimeoutUIEvent>(OnShowTimeoutUI);
+        GameEventManager.Instance.RemoveListener<WinStateEnterEvent>(OnWinStateEnter);
+        GameEventManager.Instance.RemoveListener<WinStateExitEvent>(OnWinStateExit);
+        GameEventManager.Instance.RemoveListener<GameOverStateEnterEvent>(OnGameOverStateEnter);
+        GameEventManager.Instance.RemoveListener<GameOverStateExitEvent>(OnGameOverStateExit);
+        GameEventManager.Instance.RemoveListener<PauseStateEnterEvent>(OnPauseStateEnter);
+        GameEventManager.Instance.RemoveListener<PauseStateExitEvent>(OnPauseStateExit);
         GameEventManager.Instance.RemoveListener<SettingButtonClickEvent>(OnSettingsButtonClick);
         GameEventManager.Instance.RemoveListener<MenuButtonClickEvent>(OnMenuButtonClick);
         GameEventManager.Instance.RemoveListener<ExitButtonClickEvent>(OnExitButtonClick);
     }
 
-    private void OnShowPlayingUI(bool value)
+    private void OnShowPlayingUI(GameEvent gameEvent)
     {
-        playingUI.SetActive(value);
+        PlayingShowUIEvent showUIEvent = gameEvent as PlayingShowUIEvent;
+
+        playingUI.SetActive(showUIEvent.show);
     }
 
-    private void OnShowCountDownUI(bool value)
+    private void OnShowCountDownUI(GameEvent gameEvent)
     {
-        countDownUI.SetActive(value);
+        CountDownShowUIEvent showUIEvent = gameEvent as CountDownShowUIEvent;
+        countDownUI.SetActive(showUIEvent.show);
     }
 
-
-
-    private void OnShowFinishUI(bool value)
-    { 
-        finishUI.SetActive(value);
+    private void OnShowFinishUI(GameEvent gameEvent)
+    {
+        EndStateShowFinishUIEvent showUIEvent = gameEvent as EndStateShowFinishUIEvent;
+        finishUI.SetActive(showUIEvent.show);
     }
 
-    private void OnShowTimeoutUI(bool value)
-    { 
-        timeoutUI.SetActive(value);
+    private void OnShowTimeoutUI(GameEvent gameEvent)
+    {
+        EndStateShowTimeoutUIEvent showUIEvent = gameEvent as EndStateShowTimeoutUIEvent;
+        timeoutUI.SetActive(showUIEvent.show);
     }
 
-    private void OnPauseStateEnter()
+    private void OnPauseStateEnter(GameEvent gameEvent)
     {
         pausePanel.SetActive(true);
         settingsPanel.SetActive(false);
     }
 
-    private void OnPauseStateExit()
+    private void OnPauseStateExit(GameEvent gameEvent)
     {
         pausePanel.SetActive(false);
         settingsPanel.SetActive(false);
     }
 
-    private void OnWinStateEnter()
+    private void OnWinStateEnter(GameEvent gameEvent)
     {
         winPanel.SetActive(true);
     }
 
-    private void OnWinStateExit()
+    private void OnWinStateExit(GameEvent gameEvent)
     {
         winPanel.SetActive(false);
     }
 
-    private void OnGameOverStateEnter()
+    private void OnGameOverStateEnter(GameEvent gameEvent)
     {
         gameOverPanel.SetActive(true);
     }
 
-    private void OnGameOverStateExit()
+    private void OnGameOverStateExit(GameEvent gameEvent)
     {
         gameOverPanel.SetActive(false);
     }

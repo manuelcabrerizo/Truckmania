@@ -9,9 +9,124 @@ public abstract class GameEvent
     }
 }
 
+// Button Click Events
 public class ResumeButtonClickEvent : GameEvent { }
 public class NextButtonClickEvent : GameEvent { }
 public class ResetButtonClickEvent : GameEvent { }
 public class ExitButtonClickEvent : GameEvent { }
 public class MenuButtonClickEvent : GameEvent { }
 public class SettingButtonClickEvent : GameEvent { }
+
+// Count Down State Events
+public class CountDownStateEnterEvent : GameEvent { }
+public class CountDownStateExitEvent : GameEvent { }
+public class CountDownShowUIEvent : GameEvent 
+{
+    public bool show;
+    public CountDownShowUIEvent(bool show)
+    {
+        this.show = show;
+    }
+}
+public class CountDownChangeEvent : GameEvent
+{
+    public int countDown;
+    public CountDownChangeEvent(int countDown)
+    {
+        this.countDown = countDown;
+    }
+}
+
+// End State Events
+public class EndStateEnterEvent : GameEvent { }
+public class EndStateShowFinishUIEvent : GameEvent 
+{
+    public bool show;
+    public EndStateShowFinishUIEvent(bool show)
+    { 
+        this.show = show;
+    }
+}
+public class EndStateShowTimeoutUIEvent : GameEvent 
+{
+    public bool show;
+    public EndStateShowTimeoutUIEvent(bool show)
+    {
+        this.show = show;
+    }
+}
+
+// GameOver State Events
+public class GameOverStateEnterEvent : GameEvent { }
+public class GameOverStateExitEvent : GameEvent { }
+
+// Pause State Events
+public class PauseStateEnterEvent : GameEvent { }
+public class PauseStateExitEvent : GameEvent { }
+
+// Playing State Events
+public class PlayingShowUIEvent : GameEvent
+{
+    public bool show;
+    public PlayingShowUIEvent(bool show)
+    { 
+        this.show = show;
+    }
+}
+
+public class UpdateCoinPickTextEvent : GameEvent
+{
+    public int coinCount;
+    public int coinSpawn;
+    public UpdateCoinPickTextEvent(int coinCount, int coinSpawn)
+    {
+        this.coinCount = coinCount;
+        this.coinSpawn = coinSpawn;
+    }
+}
+
+public class UpdateEnemyKillTextEvent : GameEvent
+{
+    public int enemyCount;
+    public int enemySpawn;
+    public UpdateEnemyKillTextEvent(int enemyCount, int enemySpawn)
+    {
+        this.enemyCount = enemyCount;
+        this.enemySpawn = enemySpawn;
+    }
+}
+
+public class UpdateTimeTextEvent : GameEvent
+{
+    public int seconds;
+    public UpdateTimeTextEvent(int seconds)
+    {
+        this.seconds = seconds;
+    }
+}
+
+// Win State Events
+public class WinStateEnterEvent : GameEvent { }
+public class WinStateExitEvent : GameEvent { }
+
+public class CurrentTimeSetEvent : GameEvent
+{
+    public string text;
+    public int seconds;
+    public CurrentTimeSetEvent(string text, int seconds)
+    {
+        this.text = text;
+        this.seconds = seconds;
+    }
+}
+
+public class BestTimeSetEvent : GameEvent
+{
+    public string text;
+    public int seconds;
+    public BestTimeSetEvent(string text, int seconds)
+    {
+        this.text = text;
+        this.seconds = seconds;
+    }
+}

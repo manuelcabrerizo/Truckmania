@@ -51,16 +51,16 @@ public class PlayerData
 
     public void Initialize()
     {
-        CountDownState.onCountDownEnter += OnCountDownEnter;
-        CountDownState.onCountDownExit += OnCountDownExit;
+        GameEventManager.Instance.AddListener<CountDownStateEnterEvent>(OnCountDownEnter);
+        GameEventManager.Instance.AddListener<CountDownStateExitEvent>(OnCountDownExit);
         ToxicBarrilProjectile.onBarrilPickUp += OnBarrilPickUp;
         CameraMovement.onCameraCreated += OnCameraCreated;
     }
 
     public void Destroy()
     {
-        CountDownState.onCountDownEnter -= OnCountDownEnter;
-        CountDownState.onCountDownExit -= OnCountDownExit;
+        GameEventManager.Instance.RemoveListener<CountDownStateEnterEvent>(OnCountDownEnter);
+        GameEventManager.Instance.RemoveListener<CountDownStateExitEvent>(OnCountDownExit);
         ToxicBarrilProjectile.onBarrilPickUp -= OnBarrilPickUp;
         CameraMovement.onCameraCreated -= OnCameraCreated;
 
@@ -195,12 +195,12 @@ public class PlayerData
         this.cameraMovement = cameraMovement;
     }
 
-    public void OnCountDownEnter()
+    public void OnCountDownEnter(GameEvent gameEvent)
     {
         isCoundown = true;
     }
 
-    public void OnCountDownExit()
+    public void OnCountDownExit(GameEvent gameEvent)
     {
         isCoundown = false;
     }

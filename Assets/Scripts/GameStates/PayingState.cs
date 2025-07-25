@@ -4,11 +4,6 @@ using UnityEngine;
 
 class PlayingState : State<GameManager>
 {
-    public static event Action<bool> onShowPlayingUI;
-    public static event Action<int, int> onUpdateCoinPickText;
-    public static event Action<int, int> onUpdateEnemyKillText;
-    public static event Action<int> onUpdateTimeText;
-
     private int roundTime;
     private float timer;
     private float timerScale = 1.0f;
@@ -33,15 +28,16 @@ class PlayingState : State<GameManager>
         owner.coinsCollectedCount = 0;
         owner.enemiesKillCount = 0;
 
-        onShowPlayingUI?.Invoke(true);
-        onUpdateTimeText?.Invoke(owner.seconds);
-        onUpdateCoinPickText?.Invoke(owner.coinsCollectedCount, owner.Coins.Count);
-        onUpdateEnemyKillText?.Invoke(owner.enemiesKillCount, owner.Enemies.Count);
+        GameEventManager.Instance.TriggerEvent(new PlayingShowUIEvent(true));
+        GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
+        GameEventManager.Instance.TriggerEvent(new UpdateCoinPickTextEvent(owner.coinsCollectedCount, owner.Coins.Count));
+        GameEventManager.Instance.TriggerEvent(new UpdateEnemyKillTextEvent(owner.enemiesKillCount, owner.Enemies.Count));
     }
 
     public override void OnExit()
     {
-        onShowPlayingUI?.Invoke(false);
+        GameEventManager.Instance.TriggerEvent(new PlayingShowUIEvent(false));
+
         EndTrigger.onEndTriggerHit -= OnEndTriggerHit;
         Coin.onCoinPick -= OnCoinPick;
         Enemy.onEnemyKill -= OnEnemyKill;
@@ -58,7 +54,8 @@ class PlayingState : State<GameManager>
         {
             timer = 0;
             owner.seconds--;
-            onUpdateTimeText?.Invoke(owner.seconds);
+            GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
+
         }
 
         if (owner.seconds == 0)
@@ -71,7 +68,7 @@ class PlayingState : State<GameManager>
     {
         owner.seconds = Math.Max(owner.seconds - 20, 0);
         timer = 0;
-        onUpdateTimeText?.Invoke(owner.seconds);
+        GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
     }
 
     private void OnEndTriggerHit()
@@ -82,13 +79,13 @@ class PlayingState : State<GameManager>
     private void OnCoinPick(Coin coin)
     {
         owner.coinsCollectedCount++;
-        onUpdateCoinPickText?.Invoke(owner.coinsCollectedCount, owner.Coins.Count);
+        GameEventManager.Instance.TriggerEvent(new UpdateCoinPickTextEvent(owner.coinsCollectedCount, owner.Coins.Count));
     }
 
     private void OnEnemyKill(Enemy enemy)
     {
         owner.enemiesKillCount++;
-        onUpdateEnemyKillText?.Invoke(owner.enemiesKillCount, owner.Enemies.Count);
+        GameEventManager.Instance.TriggerEvent(new UpdateEnemyKillTextEvent(owner.enemiesKillCount, owner.Enemies.Count));
     }
 
     private void OnWinCheat()

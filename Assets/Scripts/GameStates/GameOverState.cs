@@ -2,22 +2,19 @@ using System;
 
 class GameOverState : State<GameManager>
 {
-    public static event Action onGameOverStateEnter;
-    public static event Action onGameOverSateExit;
-
     public GameOverState(GameManager gameManager)
         : base(gameManager) { }
 
     public override void OnEnter()
     {
         GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
-        onGameOverStateEnter?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new GameOverStateEnterEvent());
         AudioManager.onPauseAll?.Invoke();
     }
 
     public override void OnExit()
     {
-        onGameOverSateExit?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new GameOverStateExitEvent());
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
         AudioManager.onResumeAll?.Invoke();
     }

@@ -1,14 +1,7 @@
-using System;
 using UnityEngine;
 
 class CountDownState : State<GameManager>
 {
-    public static event Action onCountDownEnter;
-    public static event Action onCountDownExit;
-
-    public static event Action<bool> onShowCountDownUI;
-    public static event Action<float> onCountDownChange;
-
     private float timer = 0;
     private int secondCount = 0;
     private int timeToWait = 3;
@@ -18,9 +11,10 @@ class CountDownState : State<GameManager>
 
     public override void OnEnter()
     {
-        onCountDownEnter?.Invoke();
-        onShowCountDownUI?.Invoke(true);
-        onCountDownChange?.Invoke(timeToWait);
+        GameEventManager.Instance.TriggerEvent(new CountDownStateEnterEvent());
+        GameEventManager.Instance.TriggerEvent(new CountDownShowUIEvent(true));
+        GameEventManager.Instance.TriggerEvent(new CountDownChangeEvent(timeToWait));
+
         timer = 0;
         secondCount = 0;
 
@@ -44,8 +38,8 @@ class CountDownState : State<GameManager>
     {
         timer = 0;
         secondCount = 0;
-        onShowCountDownUI?.Invoke(false);
-        onCountDownExit?.Invoke();
+        GameEventManager.Instance.TriggerEvent(new CountDownShowUIEvent(false));
+        GameEventManager.Instance.TriggerEvent(new CountDownStateExitEvent());
     }
 
     public override void OnUpdate()
@@ -54,7 +48,7 @@ class CountDownState : State<GameManager>
         {
             AudioManager.onPlayClip?.Invoke(owner.Clips.countDown);
             secondCount++;
-            onCountDownChange?.Invoke(timeToWait - secondCount);
+            GameEventManager.Instance.TriggerEvent(new CountDownChangeEvent(timeToWait - secondCount));
             timer -= 1.0f;
         }
         timer += Time.deltaTime;

@@ -25,7 +25,7 @@ public class CameraMovement : MonoBehaviour
     {
         InputManager.onLockCamera += OnLockCamera;
         Bigfoot.onBigfootKill += OnBigfootKill;
-        EndState.onEnter += OnEnterEndState;
+        GameEventManager.Instance.AddListener<EndStateEnterEvent>(OnEnterEndState);
 
         back = -target.transform.forward;
         back.y = 0.0f;
@@ -40,7 +40,7 @@ public class CameraMovement : MonoBehaviour
     {
         InputManager.onLockCamera -= OnLockCamera;
         Bigfoot.onBigfootKill -= OnBigfootKill;
-        EndState.onEnter -= OnEnterEndState;
+        GameEventManager.Instance.RemoveListener<EndStateEnterEvent>(OnEnterEndState);
     }
 
     private void Start()
@@ -249,7 +249,7 @@ public class CameraMovement : MonoBehaviour
         LockTargetLost(enemy.gameObject);
     }
 
-    private void OnEnterEndState()
+    private void OnEnterEndState(GameEvent gameEvent)
     {
         isEnable = false;
     }
