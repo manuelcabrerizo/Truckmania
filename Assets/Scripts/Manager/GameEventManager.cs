@@ -20,6 +20,11 @@ public class GameEventManager
 
     private Dictionary<Type, EventListenerList> eventListeners = new Dictionary<Type, EventListenerList>();
 
+    public void Update()
+    { 
+        
+    }
+
     public bool AddListener<Type>(EventListener listener) where Type : GameEvent
     {
         if (!eventListeners.ContainsKey(typeof(Type)))

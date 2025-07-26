@@ -3,15 +3,22 @@ using UnityEngine;
 public class CameraLockTarget : MonoBehaviour
 {
     [SerializeField] private CameraData cameraData;
-    [SerializeField] private Player target;
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private LayerMask enemyMask;
-    private bool isEnable = true;
+
+    private Player target;
+    private bool isEnable;
     private GameObject lockTarget = null;
 
     private void Awake()
     {
-        isEnable = true;
+        isEnable = false;
+        GameEventManager.Instance.AddListener<PlayerCreatedEvent>(OnPlayerCreated);
+    }
+
+    private void OnDestroy()
+    {
+        GameEventManager.Instance.RemoveListener<PlayerCreatedEvent>(OnPlayerCreated);
     }
 
     private void FixedUpdate()
@@ -22,6 +29,14 @@ public class CameraLockTarget : MonoBehaviour
         }
 
         LockToTarget();
+    }
+
+
+    private void OnPlayerCreated(GameEvent gameEvent)
+    {
+        PlayerCreatedEvent playerCreatedEvent = (PlayerCreatedEvent)gameEvent;
+        target = playerCreatedEvent.player;
+        isEnable = true;
     }
 
     private void LockToTarget()
@@ -62,15 +77,12 @@ public class CameraLockTarget : MonoBehaviour
             }
             if (minIndex >= 0)
             {
+                transform.position = target.transform.position;
                 lockTarget = colliders[minIndex].gameObject;
                 return true;
             }
-            return false;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public void Unlock()

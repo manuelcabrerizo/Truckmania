@@ -3,21 +3,21 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private CameraData cameraData;
-    [SerializeField] private Player target;
     [SerializeField] private LayerMask collisionMask;
 
+    private Player target;
     private Vector3 back;
     private bool isEnable;
 
-
     private void Awake()
     {
-        isEnable = true;
-        back = -target.transform.forward;
-        back.y = 0.0f;
-        back.Normalize();
-        transform.position = target.transform.position + (back + Vector3.up * 0.3f) * cameraData.distance;
-        transform.LookAt(target.transform.position, Vector3.up);
+        isEnable = false;
+        GameEventManager.Instance.AddListener<PlayerCreatedEvent>(OnPlayerCreated);
+    }
+
+    private void OnDestroy()
+    {
+        GameEventManager.Instance.RemoveListener<PlayerCreatedEvent>(OnPlayerCreated);
     }
 
     private void FixedUpdate()
@@ -27,6 +27,19 @@ public class CameraFollow : MonoBehaviour
             return;
         }
         AlignToTarget();
+    }
+
+    private void OnPlayerCreated(GameEvent gameEvent)
+    {
+        PlayerCreatedEvent playerCreatedEvent = (PlayerCreatedEvent)gameEvent;
+        target = playerCreatedEvent.player;
+
+        isEnable = true;
+        back = -target.transform.forward;
+        back.y = 0.0f;
+        back.Normalize();
+        transform.position = target.transform.position + (back + Vector3.up * 0.3f) * cameraData.distance;
+        transform.LookAt(target.transform.position, Vector3.up);
     }
 
     private void AlignToTarget()
