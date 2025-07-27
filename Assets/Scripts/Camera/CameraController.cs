@@ -5,9 +5,9 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private CameraFollow cameraFollow;
     private CinemachineVirtualCamera vCameraFolow;
-
     [SerializeField] private CameraLockTarget cameraLockTarget;
     private CinemachineVirtualCamera vCameraLockTarget;
+    private PostEffectController postEffectController;
 
     private bool isLock = false;
 
@@ -16,11 +16,17 @@ public class CameraController : MonoBehaviour
         GameEventManager.Instance.AddListener<LockCameraEvent>(OnLockCamera);
         GameEventManager.Instance.AddListener<BigfootKillEvent>(OnBigfootKill);
         GameEventManager.Instance.AddListener<EndStateEnterEvent>(OnEnterEndState);
+        GameEventManager.Instance.AddListener<WaterHitEnterEvent>(OnWaterHitEnter);
+        GameEventManager.Instance.AddListener<WaterHitExitEvent>(OnWaterHitExit);
+
+
         isLock = false;
         vCameraFolow = cameraFollow.GetComponent<CinemachineVirtualCamera>();
         vCameraLockTarget = cameraLockTarget.GetComponent<CinemachineVirtualCamera>();
         vCameraFolow.Priority = 20;
         vCameraLockTarget.Priority = 10;
+
+        postEffectController = GetComponent<PostEffectController>();
     }
 
     private void OnDestroy()
@@ -28,6 +34,8 @@ public class CameraController : MonoBehaviour
         GameEventManager.Instance.RemoveListener<LockCameraEvent>(OnLockCamera);
         GameEventManager.Instance.RemoveListener<BigfootKillEvent>(OnBigfootKill);
         GameEventManager.Instance.RemoveListener<EndStateEnterEvent>(OnEnterEndState);
+        GameEventManager.Instance.RemoveListener<WaterHitEnterEvent>(OnWaterHitEnter);
+        GameEventManager.Instance.RemoveListener<WaterHitExitEvent>(OnWaterHitExit);
     }
 
     private void Start()
@@ -93,5 +101,15 @@ public class CameraController : MonoBehaviour
         cameraFollow.SetEnable(false);
         cameraLockTarget.SetEnable(false);
         UnlockCamera();
+    }
+
+    private void OnWaterHitEnter(GameEvent gameEvent)
+    {
+        postEffectController.SetIsOnWater(true);
+    }
+
+    private void OnWaterHitExit(GameEvent gameEvent)
+    {
+        postEffectController.SetIsOnWater(false);
     }
 }

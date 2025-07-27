@@ -260,6 +260,10 @@ public class PlayerRestartEvent : PlayerEvent
 
 public class EndTriggerHitEvent : GameEvent { }
 
+public class WaterHitEnterEvent : GameEvent { }
+public class WaterHitExitEvent : GameEvent { }
+
+
 // Input Events
 public class PauseEvent : GameEvent { }
 public class LockCameraEvent : GameEvent { }

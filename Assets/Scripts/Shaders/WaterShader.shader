@@ -1,3 +1,6 @@
+// Shader make using this tutorial
+// https://roystan.net/articles/toon-water/
+
 Shader "Unlit/WaterShader"
 {
     Properties
@@ -79,20 +82,14 @@ Shader "Unlit/WaterShader"
 				float depthDifference = existingDepthLinear - i.screenPosition.w;
 				float waterDepthDifference01 = saturate(depthDifference / _DepthMaxDistance);
 				float4 waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference01);
-
 				float2 distortSample = (tex2D(_SurfaceDistortion, i.distortUV).xy * 2 - 1) * _SurfaceDistortionAmount;
-
 				float2 noiseUV = float2((i.noiseUv.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x,
 										(i.noiseUv.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y);
 				float surfaceNoiseSample = tex2D(_SurfaceNoise, noiseUV).r;
-
 				float foamDepthDifference01 = saturate(depthDifference / _FoamDistance);
 				float surfaceNoiseCutoff = foamDepthDifference01 * _SurfaceNoiseCutoff;
-
 				float surfaceNoise = surfaceNoiseSample > surfaceNoiseCutoff ? 1 : 0;
-
 				return lerp(waterColor, _FoamColor, surfaceNoise);
-
             }
             ENDCG
         }
