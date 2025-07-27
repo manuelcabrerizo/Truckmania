@@ -59,6 +59,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        // REMOVE !!!!
+        GameEventManager.Instance.Update();
+        // REMOVE !!!!
+
+
         fsm.Update();
     }
 

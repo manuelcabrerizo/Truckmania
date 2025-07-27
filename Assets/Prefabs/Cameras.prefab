@@ -142,7 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraData: {fileID: 11400000, guid: 248fd1dc52eb63747b945f1c7f67a8a9, type: 2}
-  target: {fileID: 0}
   collisionMask:
     serializedVersion: 2
     m_Bits: 2112
@@ -198,6 +197,7 @@ GameObject:
   - component: {fileID: 4083748151422223874}
   - component: {fileID: 6033484279405518576}
   - component: {fileID: 7220180969972611268}
+  - component: {fileID: 2067336662482113830}
   - component: {fileID: 260681896638027600}
   m_Layer: 0
   m_Name: Main Camera
@@ -308,6 +308,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   postEffectShader: {fileID: 4800000, guid: 9897de4454f5cf84ab04176bea1208b5, type: 3}
   postEffectMaterial: {fileID: 2100000, guid: 0994fbe325fb08f4292a526e355d67b0, type: 2}
+--- !u!114 &2067336662482113830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2987390077355476414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a1f491c40a48944a8e95652e0333f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depthTextureMode: 1
 --- !u!114 &260681896638027600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,7 +531,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraData: {fileID: 11400000, guid: 248fd1dc52eb63747b945f1c7f67a8a9, type: 2}
-  target: {fileID: 0}
   collisionMask:
     serializedVersion: 2
     m_Bits: 2112

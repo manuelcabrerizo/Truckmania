@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DarckBack Material 1
-  m_Shader: {fileID: 4800000, guid: e557a2d27914ffe4cae619dcd92f4239, type: 3}
+  m_Name: WaterMaterial
+  m_Shader: {fileID: 4800000, guid: ba8b7c15e871bb748979802a93319c75, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,15 +23,7 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BorderTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cubemap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -51,23 +43,11 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EmissiveTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 525e1a6f9e673554c8f6c49ea83fa445, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MarkerTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NoiseTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -79,54 +59,41 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ReflectionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+    - _SurfaceDistortion:
+        m_Texture: {fileID: 2800000, guid: 71b5e2863b1b8204b87337b241eadfa8, type: 3}
+        m_Scale: {x: 0.05, y: 0.05}
         m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+    - _SurfaceNoise:
+        m_Texture: {fileID: 2800000, guid: 4723152008396f845bbea03d341b32e7, type: 3}
+        m_Scale: {x: 0.05, y: 0.05}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 1
-    - _BorderTexScale: 1
-    - _BorderThickness: 0.25
     - _BumpScale: 1
-    - _CustomDepthOffset: 0
     - _Cutoff: 0.5
+    - _DepthMaxDistance: 2.59
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _ExcludedShades: 3
-    - _FlatShading: 0
+    - _FoamDistance: 0.67
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HorizontalScale: 10
-    - _MarkerHeight: 0.75
-    - _MarkerPosition: 0
-    - _MarkerTexScale: 1
-    - _MarkerThickness: 0.25
-    - _MarkerWidth: 0.5
-    - _Metallic: 1
+    - _Metallic: 0
     - _Mode: 0
-    - _ObjectDithering: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Shades: 7
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SurfaceDistortionAmount: 0.27
+    - _SurfaceNoiseCutoff: 0.648
     - _UVSec: 0
-    - _VertialScale: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CubemapColor: {r: 0, g: 0, b: 0, a: 0}
-    - _EdgeColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _DepthGradientDeep: {r: 0.023495909, g: 0.4528302, b: 0.2411865, a: 0.749}
+    - _DepthGradientShallow: {r: 0.48277166, g: 0.9339623, b: 0.39208794, a: 0.725}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MarkerTint: {r: 0, g: 0, b: 0, a: 0}
-    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _Tinit: {r: 1, g: 0, b: 0, a: 1}
-    - _Tint: {r: 0, g: 0, b: 0, a: 1}
+    - _FoamColor: {r: 0.56637764, g: 0.8867924, b: 0.51450694, a: 1}
+    - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}
   m_BuildTextureStacks: []
