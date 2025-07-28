@@ -35,7 +35,6 @@ Shader "Custom/FeebackShader"
             float fresnel = saturate(dot(n, v));
 
             float4 col = tex2D(_MainTex, IN.uv_MainTex);
-            //col.rgb *= 3.0f;
             col.rgb *= _Color.rgb;
             col.rgb += _Tint.rgb * (1.0f - fresnel);
 

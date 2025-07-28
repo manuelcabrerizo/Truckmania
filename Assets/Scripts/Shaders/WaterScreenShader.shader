@@ -6,6 +6,8 @@ Shader "Custom/WaterScreen"
         _Dimension ("Dimension", Float) = 8.0
 		_SurfaceNoise("Surface Noise", 2D) = "white" {}
 		_SurfaceNoiseStrength("Surface Strength", Float) = 0.1
+		_Intesity ("Intesity", float) = 1.0
+
     }
     SubShader
     {
@@ -45,6 +47,7 @@ Shader "Custom/WaterScreen"
 			sampler2D _SurfaceNoise;
 			float4 _SurfaceNoise_ST;
 			float _SurfaceNoiseStrength;
+			float _Intesity;
 
             fixed4 frag (v2f i) : SV_Target
             {             
@@ -54,9 +57,10 @@ Shader "Custom/WaterScreen"
 				surfaceNoiseSample = saturate(surfaceNoiseSample);
 				surfaceNoiseSample -= 0.5f;
 				surfaceNoiseSample *= _SurfaceNoiseStrength;
+				fixed4 originalCol = tex2D(_MainTex, i.uv);
                 fixed4 col = tex2D(_MainTex, i.uv + surfaceNoiseSample);
 				col.g *= 1.5;
-                return col;
+                return lerp(originalCol, col, _Intesity);
             }
             ENDCG
         }

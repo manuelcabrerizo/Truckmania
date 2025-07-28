@@ -21,6 +21,9 @@ class WinState : State<GameManager>
             bestTime = PlayerPrefs.GetInt(KeyName);
         }
 
+        GameEventManager.Instance.TriggerEvent(WinStateEnterEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PauseAllSoundEvent.GetEvent());
+
         GameEventManager.Instance.TriggerEvent(CurrentTimeSetEvent.GetEvent("Current Time: ", currentTime));
         if (currentTime < bestTime)
         {
@@ -33,8 +36,7 @@ class WinState : State<GameManager>
         }
         PlayerPrefs.SetInt(KeyName, bestTime);
 
-        GameEventManager.Instance.TriggerEvent(WinStateEnterEvent.GetEvent());
-        GameEventManager.Instance.TriggerEvent(PauseAllSoundEvent.GetEvent());
+
     }
 
     public override void OnExit()

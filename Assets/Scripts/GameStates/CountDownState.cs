@@ -15,6 +15,10 @@ class CountDownState : State<GameManager>
         GameEventManager.Instance.TriggerEvent(CountDownShowUIEvent.GetEvent(true));
         GameEventManager.Instance.TriggerEvent(CountDownChangeEvent.GetEvent(timeToWait));
 
+        int currentLevel = LevelManager.Instance.GetCurrentLevel() + 1;
+        int levelCount = LevelManager.Instance.GetLevelCount();
+        GameEventManager.Instance.TriggerEvent(DiscordUpdateStateEvent.GetEvent("Level " + currentLevel + " of " + levelCount));
+
         timer = 0;
         secondCount = 0;
 

@@ -3,9 +3,14 @@
 public class BigfootHitState : State<Bigfoot>
 {
     private float time = 0.0f;
+    private float colorDec = 0.0f;
 
     public BigfootHitState(Bigfoot bigfoot)
-        : base(bigfoot) { }
+        : base(bigfoot)
+    {
+        int lifeCount = bigfoot.GetMaxLife();
+        colorDec = 1.0f / (float)lifeCount;
+    }
 
     public override void OnEnter()
     {
@@ -16,12 +21,17 @@ public class BigfootHitState : State<Bigfoot>
 
     public override void OnExit()
     {
+        Color color = owner.Color;
+        color.g -= colorDec;
+        color.b -= colorDec;
+        owner.Color = color;
+        owner.SkinnedMeshRenderer.material.SetColor("_Color", owner.Color);
         owner.SkinnedMeshRenderer.material.SetColor("_Tint", Color.black);
     }
 
     public override void OnUpdate()
     {
-        owner.SkinnedMeshRenderer.material.SetColor("_Tint", Color.Lerp(Color.black, Color.red, Mathf.Sin(time * 40)));
+        owner.SkinnedMeshRenderer.material.SetColor("_Tint", Color.Lerp(Color.black, Color.green, Mathf.Sin(time * 40)));
         if (time >= 4.0f)
         {
             owner.SetIdleState();

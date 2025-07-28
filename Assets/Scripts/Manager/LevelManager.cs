@@ -66,4 +66,9 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
         index = -1;
         return error;
     }
+
+    public int GetLevelCount()
+    { 
+        return levels.levelsData.Count;
+    }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PostEffectController : MonoBehaviour
@@ -40,7 +41,41 @@ public class PostEffectController : MonoBehaviour
     }
 
     public void SetIsOnWater(bool value)
-    { 
-        isOnWater = value;
+    {
+        StopAllCoroutines();
+        if (value)
+        {
+            StartCoroutine(EnterWaterAnimation(0.75f));
+        }
+        else
+        {
+            StartCoroutine(ExitWaterAnimation(3.0f));
+        }
+    }
+
+    private IEnumerator EnterWaterAnimation(float duration)
+    {
+        isOnWater = true;
+        float time = 0;
+        while (time < duration)
+        {
+            postEffectMaterial1.SetFloat("_Intesity", (time/duration));
+            yield return new WaitForEndOfFrame();
+            time += Time.deltaTime;
+        }
+        postEffectMaterial1.SetFloat("_Intesity", 1.0f);
+    }
+
+    private IEnumerator ExitWaterAnimation(float duration)
+    {
+        float time = 0;
+        while (time < duration)
+        {
+            postEffectMaterial1.SetFloat("_Intesity", 1.0f - (time/duration));
+            yield return new WaitForEndOfFrame();
+            time += Time.deltaTime;
+        }
+        postEffectMaterial1.SetFloat("_Intesity", 0.0f);
+        isOnWater = false;
     }
 }

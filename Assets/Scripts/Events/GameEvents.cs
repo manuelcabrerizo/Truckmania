@@ -333,3 +333,13 @@ public class PlayAudioClip3DEvent : StaticGameEvent<PlayAudioClip3DEvent>
         return staticGameEvent;
     }
 }
+
+public class DiscordUpdateStateEvent : StaticGameEvent<DiscordUpdateStateEvent>
+{
+    public string state;
+    public static DiscordUpdateStateEvent GetEvent(string state)
+    { 
+        staticGameEvent.state = state;
+        return staticGameEvent;
+    }
+}

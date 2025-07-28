@@ -43,4 +43,14 @@ public class Enemy : MonoBehaviour, IDamagable
             GameEventManager.Instance.TriggerEvent(EnemyKillEvent.GetEvent());
         }
     }
+
+    public int GetLife()
+    {
+        return life;
+    }
+
+    public int GetMaxLife()
+    {
+        return maxLife;
+    }
 }

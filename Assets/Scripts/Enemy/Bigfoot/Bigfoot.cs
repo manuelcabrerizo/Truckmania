@@ -15,6 +15,8 @@ public class Bigfoot : Enemy
     private BigfootHitState hitState = null;
     private Animator animator;
     private Collider collision;
+    private Color color = Color.white;
+
 
     public Transform Hand => hand;
     public Transform Target => target;
@@ -28,6 +30,11 @@ public class Bigfoot : Enemy
     public Animator Animator => animator;
     public SkinnedMeshRenderer SkinnedMeshRenderer => skinnedMeshRenderer;
     public SoundClipsSO Clips => clips;
+    public Color Color 
+    { 
+        get { return color; }
+        set { color = value; } 
+    }
 
     protected override void OnAwaken()
     {
@@ -48,7 +55,10 @@ public class Bigfoot : Enemy
 
     protected override void OnDestroyed()
     {
+        color = Color.white;
         SkinnedMeshRenderer.material.SetColor("_Tint", Color.black);
+        SkinnedMeshRenderer.material.SetColor("_Color", Color.white);
+
         stateMachine.Clear();
     }
 
@@ -73,6 +83,9 @@ public class Bigfoot : Enemy
     public override void Restart()
     {
         base.Restart();
+        color = Color.white;
+        SkinnedMeshRenderer.material.SetColor("_Tint", Color.black);
+        SkinnedMeshRenderer.material.SetColor("_Color", Color.white);
         collision.enabled = true;
         animator.enabled = true;
         stateMachine.ChangeState(idleState);

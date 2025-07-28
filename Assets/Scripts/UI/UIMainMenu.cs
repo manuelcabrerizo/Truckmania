@@ -28,6 +28,11 @@ public class UIMainMenu : MonoBehaviour
         GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
+    private void Start()
+    {
+        GameEventManager.Instance.TriggerEvent(DiscordUpdateStateEvent.GetEvent("Main Menu"));
+    }
+
     private void OnPlayButtonClick()
     {
         LevelManager.Instance.LoadFirstLevel();
