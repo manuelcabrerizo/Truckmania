@@ -27,15 +27,15 @@ class PlayingState : State<GameManager>
         owner.coinsCollectedCount = 0;
         owner.enemiesKillCount = 0;
 
-        GameEventManager.Instance.TriggerEvent(new PlayingShowUIEvent(true));
-        GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
-        GameEventManager.Instance.TriggerEvent(new UpdateCoinPickTextEvent(owner.coinsCollectedCount, owner.Coins.Count));
-        GameEventManager.Instance.TriggerEvent(new UpdateEnemyKillTextEvent(owner.enemiesKillCount, owner.Enemies.Count));
+        GameEventManager.Instance.TriggerEvent(UpdateTimeTextEvent.GetEvent(owner.seconds));
+        GameEventManager.Instance.TriggerEvent(PlayingShowUIEvent.GetEvent(true));
+        GameEventManager.Instance.TriggerEvent(UpdateCoinPickTextEvent.GetEvent(owner.coinsCollectedCount, owner.Coins.Count));
+        GameEventManager.Instance.TriggerEvent(UpdateEnemyKillTextEvent.GetEvent(owner.enemiesKillCount, owner.Enemies.Count));
     }
 
     public override void OnExit()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayingShowUIEvent(false));
+        GameEventManager.Instance.TriggerEvent(PlayingShowUIEvent.GetEvent(false));
 
         GameEventManager.Instance.RemoveListener<EndTriggerHitEvent>(OnEndTriggerHit);
         GameEventManager.Instance.RemoveListener<CoinPickEvent>(OnCoinPick);
@@ -53,8 +53,7 @@ class PlayingState : State<GameManager>
         {
             timer = 0;
             owner.seconds--;
-            GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
-
+            GameEventManager.Instance.TriggerEvent(UpdateTimeTextEvent.GetEvent(owner.seconds));
         }
 
         if (owner.seconds == 0)
@@ -67,7 +66,7 @@ class PlayingState : State<GameManager>
     {
         owner.seconds = Math.Max(owner.seconds - 20, 0);
         timer = 0;
-        GameEventManager.Instance.TriggerEvent(new UpdateTimeTextEvent(owner.seconds));
+        GameEventManager.Instance.TriggerEvent(UpdateTimeTextEvent.GetEvent(owner.seconds));
     }
 
     private void OnEndTriggerHit(GameEvent gameEvent)
@@ -78,13 +77,13 @@ class PlayingState : State<GameManager>
     private void OnCoinPick(GameEvent gameEvent)
     {
         owner.coinsCollectedCount++;
-        GameEventManager.Instance.TriggerEvent(new UpdateCoinPickTextEvent(owner.coinsCollectedCount, owner.Coins.Count));
+        GameEventManager.Instance.TriggerEvent(UpdateCoinPickTextEvent.GetEvent(owner.coinsCollectedCount, owner.Coins.Count));
     }
 
     private void OnEnemyKill(GameEvent gameEvent)
     {
         owner.enemiesKillCount++;
-        GameEventManager.Instance.TriggerEvent(new UpdateEnemyKillTextEvent(owner.enemiesKillCount, owner.Enemies.Count));
+        GameEventManager.Instance.TriggerEvent(UpdateEnemyKillTextEvent.GetEvent(owner.enemiesKillCount, owner.Enemies.Count));
     }
 
     private void OnWinCheat(GameEvent gameEvent)

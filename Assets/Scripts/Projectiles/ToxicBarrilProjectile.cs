@@ -40,7 +40,7 @@ public class ToxicBarrilProjectile : BarrilProjectile, IPickable
             collision.enabled = false;
             capsuleCollider.radius = 1.0f;
             body.useGravity = false;         
-            GameEventManager.Instance.TriggerEvent(new ToxicBarrilPickEvent(this));
+            GameEventManager.Instance.TriggerEvent(ToxicBarrilPickEvent.GetEvent(this));
         }
     }
 

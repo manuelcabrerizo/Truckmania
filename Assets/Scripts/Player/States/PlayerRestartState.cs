@@ -11,13 +11,13 @@ public class PlayerRestartState : State<Player>
     public override void OnEnter()
     {
         GameEventManager.Instance.AddListener<PlayerRestartEvent>(OnResetCar);
-        GameEventManager.Instance.TriggerEvent(new ShowResetTextEvent(true));
+        GameEventManager.Instance.TriggerEvent(ShowResetTextEvent.GetEvent(true));
     }
 
     public override void OnExit()
     {
         GameEventManager.Instance.RemoveListener<PlayerRestartEvent>(OnResetCar);
-        GameEventManager.Instance.TriggerEvent(new ShowResetTextEvent(false));
+        GameEventManager.Instance.TriggerEvent(ShowResetTextEvent.GetEvent(false));
         PlayerData data = owner.Data;
         data.wasDrifting = false;
     }

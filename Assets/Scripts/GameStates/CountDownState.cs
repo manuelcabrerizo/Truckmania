@@ -11,9 +11,9 @@ class CountDownState : State<GameManager>
 
     public override void OnEnter()
     {
-        GameEventManager.Instance.TriggerEvent(new CountDownStateEnterEvent());
-        GameEventManager.Instance.TriggerEvent(new CountDownShowUIEvent(true));
-        GameEventManager.Instance.TriggerEvent(new CountDownChangeEvent(timeToWait));
+        GameEventManager.Instance.TriggerEvent(CountDownStateEnterEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(CountDownShowUIEvent.GetEvent(true));
+        GameEventManager.Instance.TriggerEvent(CountDownChangeEvent.GetEvent(timeToWait));
 
         timer = 0;
         secondCount = 0;
@@ -38,17 +38,17 @@ class CountDownState : State<GameManager>
     {
         timer = 0;
         secondCount = 0;
-        GameEventManager.Instance.TriggerEvent(new CountDownShowUIEvent(false));
-        GameEventManager.Instance.TriggerEvent(new CountDownStateExitEvent());
+        GameEventManager.Instance.TriggerEvent(CountDownShowUIEvent.GetEvent(false));
+        GameEventManager.Instance.TriggerEvent(CountDownStateExitEvent.GetEvent());
     }
 
     public override void OnUpdate()
     {
         if(timer >= 1.0f)
         {
-            GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(owner.Clips.countDown));
+            GameEventManager.Instance.TriggerEvent(PlayAudioClipEvent.GetEvent(owner.Clips.countDown));
             secondCount++;
-            GameEventManager.Instance.TriggerEvent(new CountDownChangeEvent(timeToWait - secondCount));
+            GameEventManager.Instance.TriggerEvent(CountDownChangeEvent.GetEvent(timeToWait - secondCount));
             timer -= 1.0f;
         }
         timer += Time.deltaTime;

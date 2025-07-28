@@ -14,7 +14,7 @@ public class Box : MonoBehaviour
         body = GetComponent<Rigidbody>();
         startPosition = transform.position;
         startRotation = transform.rotation;
-        GameEventManager.Instance.TriggerEvent(new BoxSpawnEvent(this));
+        GameEventManager.Instance.TriggerEvent(BoxSpawnEvent.GetEvent(this));
     }
 
     public void Restart()
@@ -29,7 +29,7 @@ public class Box : MonoBehaviour
     {
         if (Utils.CheckCollisionLayer(collision.gameObject, playerLayer))
         {
-            GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(clips.box));
+            GameEventManager.Instance.TriggerEvent(PlayAudioClipEvent.GetEvent(clips.box));
         }
     }
 }

@@ -13,7 +13,7 @@ public class Coin : MonoBehaviour, IPickable
 
     private void Start()
     {
-        GameEventManager.Instance.TriggerEvent(new CoinSpawnEvent(this));
+        GameEventManager.Instance.TriggerEvent(CoinSpawnEvent.GetEvent(this));
         transform.Rotate(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
     }
     private void Update()
@@ -31,7 +31,7 @@ public class Coin : MonoBehaviour, IPickable
     {
         meshRenderer.enabled = false;
         collision.enabled = false;
-        GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(clips.coin));
-        GameEventManager.Instance.TriggerEvent(new CoinPickEvent());
+        GameEventManager.Instance.TriggerEvent(PlayAudioClipEvent.GetEvent(clips.coin));
+        GameEventManager.Instance.TriggerEvent(CoinPickEvent.GetEvent());
     }
 }

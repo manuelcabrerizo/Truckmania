@@ -113,17 +113,17 @@ public class UISettings : MonoBehaviour
 
     private void OnBackButtonClick()
     {
-        GameEventManager.Instance.TriggerEvent(new SettingBackButtonClickEvent());
+        GameEventManager.Instance.TriggerEvent(SettingBackButtonClickEvent.GetEvent());
     }
 
     private void OnSfxSliderChange(float value)
     {
-        GameEventManager.Instance.TriggerEvent(new SfxSliderChangeEvent(value));
+        GameEventManager.Instance.TriggerEvent(SfxSliderChangeEvent.GetEvent(value));
     }
 
     private void OnMusicSliderChange(float value)
     {
-        GameEventManager.Instance.TriggerEvent(new MusicSliderChangeEvent(value));
+        GameEventManager.Instance.TriggerEvent(MusicSliderChangeEvent.GetEvent(value));
     }
 
     private void OnSetResolution(int index)

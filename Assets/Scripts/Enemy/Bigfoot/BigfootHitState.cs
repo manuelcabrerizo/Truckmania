@@ -11,7 +11,7 @@ public class BigfootHitState : State<Bigfoot>
     {
         time = 0.0f;
         owner.Animator.SetTrigger("Hit");
-        GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(owner.Clips.mounsterHit, owner.transform.position, 100, 400));
+        GameEventManager.Instance.TriggerEvent(PlayAudioClip3DEvent.GetEvent(owner.Clips.mounsterHit, owner.transform.position, 100, 400));
     }
 
     public override void OnExit()

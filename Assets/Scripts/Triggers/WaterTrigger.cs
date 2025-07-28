@@ -8,7 +8,7 @@ public class WaterTrigger : MonoBehaviour
     {
         if (Utils.CheckCollisionLayer(other.gameObject, playerMask))
         {
-            GameEventManager.Instance.TriggerEvent(new WaterHitEnterEvent());
+            GameEventManager.Instance.TriggerEvent(WaterHitEnterEvent.GetEvent());
         }
     }
 
@@ -16,7 +16,7 @@ public class WaterTrigger : MonoBehaviour
     {
         if (Utils.CheckCollisionLayer(other.gameObject, playerMask))
         {
-            GameEventManager.Instance.TriggerEvent(new WaterHitExitEvent());
+            GameEventManager.Instance.TriggerEvent(WaterHitExitEvent.GetEvent());
         }
     }
 }

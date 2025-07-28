@@ -52,7 +52,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         if (context.started)
         {
             player.SetGodMode();
-            GameEventManager.Instance.TriggerEvent(new GodModeCheatEvent());
+            GameEventManager.Instance.TriggerEvent(GodModeCheatEvent.GetEvent());
         }
     }
 
@@ -82,7 +82,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 #endif
         if (context.started)
         {
-            GameEventManager.Instance.TriggerEvent(new PauseEvent());
+            GameEventManager.Instance.TriggerEvent(PauseEvent.GetEvent());
         }
     }
 
@@ -98,7 +98,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            GameEventManager.Instance.TriggerEvent(new LockCameraEvent());
+            GameEventManager.Instance.TriggerEvent(LockCameraEvent.GetEvent());
         }
     }
 
@@ -106,7 +106,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            GameEventManager.Instance.TriggerEvent(new WinCheatEvent());
+            GameEventManager.Instance.TriggerEvent(WinCheatEvent.GetEvent());
         }
     }
 
@@ -114,7 +114,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            GameEventManager.Instance.TriggerEvent(new LoseCheatEvent());
+            GameEventManager.Instance.TriggerEvent(LoseCheatEvent.GetEvent());
         }
     }
 
@@ -124,7 +124,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         {
             if (JoystickOrKeyboardUse == false)
             {
-                GameEventManager.Instance.TriggerEvent(new JoystickOrKeyboardUseEvent());
+                GameEventManager.Instance.TriggerEvent(JoystickOrKeyboardUseEvent.GetEvent());
                 JoystickOrKeyboardUse = true;
             }
         }
@@ -136,7 +136,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         {
             if (JoystickOrKeyboardUse == false)
             {
-                GameEventManager.Instance.TriggerEvent(new JoystickOrKeyboardUseEvent());
+                GameEventManager.Instance.TriggerEvent(JoystickOrKeyboardUseEvent.GetEvent());
                 JoystickOrKeyboardUse = true;
             }
         }

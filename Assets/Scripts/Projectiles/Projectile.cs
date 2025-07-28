@@ -14,6 +14,6 @@ public class Projectile : MonoBehaviour, IPooleable
 
     public void SendReleaseEvent()
     {
-        GameEventManager.Instance.TriggerEvent(new ProjectileReleaseEvent(this));
+        GameEventManager.Instance.TriggerEvent(ProjectileReleaseEvent.GetEvent(this));
     }
 }

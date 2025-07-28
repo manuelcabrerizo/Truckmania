@@ -26,7 +26,7 @@ public class BigfootIdleState : State<Bigfoot>
         timer += Time.deltaTime;
         if (timer >= timeToRoar)
         {
-            GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(owner.Clips.mounsterIdle, owner.transform.position, 100, 200));
+            GameEventManager.Instance.TriggerEvent(PlayAudioClip3DEvent.GetEvent(owner.Clips.mounsterIdle, owner.transform.position, 100, 200));
             timer = 0.0f;
             timeToRoar = Random.Range(4.0f, 10.0f);
         }

@@ -9,7 +9,7 @@ public class EndTrigger : MonoBehaviour
     {
         if (Utils.CheckCollisionLayer(other.gameObject, playerMask))
         {
-            GameEventManager.Instance.TriggerEvent(new EndTriggerHitEvent());
+            GameEventManager.Instance.TriggerEvent(EndTriggerHitEvent.GetEvent());
         }
     }
 }

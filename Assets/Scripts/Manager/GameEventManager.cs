@@ -4,37 +4,9 @@ using UnityEngine;
 using EventListener = System.Action<GameEvent>;
 using EventListenerList = System.Collections.Generic.List<System.Action<GameEvent>>;
 
-public class GameEventManager
+public class GameEventManager : Singleton
 {
-    private static GameEventManager instance = null;
-    public static GameEventManager Instance
-    {
-        get 
-        {
-            if (instance == null)
-            { 
-                instance = new GameEventManager();
-            }
-            return instance;
-        }
-    }
-
     private Dictionary<Type, EventListenerList> eventListeners = new Dictionary<Type, EventListenerList>();
-
-    public void Update()
-    {
-        int maxCount = 0;
-        foreach (EventListenerList list in eventListeners.Values)
-        {
-            if (list.Count > maxCount)
-            { 
-                maxCount = list.Count;
-            }
-        }
-
-        Debug.Log("Max Count: " + maxCount);
-    }
-
     public bool AddListener<Type>(EventListener listener) where Type : GameEvent
     {
         if (!eventListeners.ContainsKey(typeof(Type)))

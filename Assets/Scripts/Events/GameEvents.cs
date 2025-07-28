@@ -1,303 +1,335 @@
 using UnityEngine;
 
-public abstract class GameEvent
+public abstract class GameEvent {}
+
+public abstract class StaticGameEvent<EventType> : GameEvent where EventType : class, new() 
 {
-    protected float timeStamp;
-    public GameEvent()
+    protected static EventType staticGameEvent = new EventType();
+
+    public static EventType GetEvent()
     {
-        this.timeStamp = Time.time;
+        return staticGameEvent;
     }
 }
 
 // Button UI Events
-public class ResumeButtonClickEvent : GameEvent { }
-public class NextButtonClickEvent : GameEvent { }
-public class ResetButtonClickEvent : GameEvent { }
-public class ExitButtonClickEvent : GameEvent { }
-public class MenuButtonClickEvent : GameEvent { }
-public class SettingButtonClickEvent : GameEvent { }
-public class SettingBackButtonClickEvent : GameEvent { }
-public class MusicSliderChangeEvent : GameEvent
+public class ResumeButtonClickEvent : StaticGameEvent<ResumeButtonClickEvent> { }
+public class NextButtonClickEvent : StaticGameEvent<NextButtonClickEvent> { }
+public class ResetButtonClickEvent : StaticGameEvent<ResetButtonClickEvent> { }
+public class ExitButtonClickEvent : StaticGameEvent<ExitButtonClickEvent> { }
+public class MenuButtonClickEvent : StaticGameEvent<MenuButtonClickEvent> { }
+public class SettingButtonClickEvent : StaticGameEvent<SettingButtonClickEvent> { }
+public class SettingBackButtonClickEvent : StaticGameEvent<SettingBackButtonClickEvent> { }
+public class MusicSliderChangeEvent : StaticGameEvent<MusicSliderChangeEvent>
 {
     public float value;
-    public MusicSliderChangeEvent(float value)
-    { 
-        this.value = value;
+    public static MusicSliderChangeEvent GetEvent(float value)
+    {
+        staticGameEvent.value = value;
+        return staticGameEvent;
     }
 }
-public class SfxSliderChangeEvent : GameEvent
+public class SfxSliderChangeEvent : StaticGameEvent<SfxSliderChangeEvent>
 {
     public float value;
-    public SfxSliderChangeEvent(float value)
+    public static SfxSliderChangeEvent GetEvent(float value)
     {
-        this.value = value;
+        staticGameEvent.value = value;
+        return staticGameEvent;
     }
 }
 
 // Count Down State Events
-public class CountDownStateEnterEvent : GameEvent { }
-public class CountDownStateExitEvent : GameEvent { }
-public class CountDownShowUIEvent : GameEvent 
+public class CountDownStateEnterEvent : StaticGameEvent<CountDownStateEnterEvent> { }
+public class CountDownStateExitEvent : StaticGameEvent<CountDownStateExitEvent> { }
+public class CountDownShowUIEvent : StaticGameEvent<CountDownShowUIEvent> 
 {
     public bool show;
-    public CountDownShowUIEvent(bool show)
+    public static CountDownShowUIEvent GetEvent(bool show)
     {
-        this.show = show;
+        staticGameEvent.show = show;
+        return staticGameEvent;
     }
 }
-public class CountDownChangeEvent : GameEvent
+public class CountDownChangeEvent : StaticGameEvent<CountDownChangeEvent>
 {
     public int countDown;
-    public CountDownChangeEvent(int countDown)
+    public static CountDownChangeEvent GetEvent(int countDown)
     {
-        this.countDown = countDown;
+        staticGameEvent.countDown = countDown;
+        return staticGameEvent;
     }
 }
 
 // End State Events
-public class EndStateEnterEvent : GameEvent { }
-public class EndStateShowFinishUIEvent : GameEvent 
+public class EndStateEnterEvent : StaticGameEvent<EndStateEnterEvent> { }
+public class EndStateShowFinishUIEvent : StaticGameEvent<EndStateShowFinishUIEvent>
 {
     public bool show;
-    public EndStateShowFinishUIEvent(bool show)
-    { 
-        this.show = show;
+    public static EndStateShowFinishUIEvent GetEvent(bool show)
+    {
+        staticGameEvent.show = show;
+        return staticGameEvent;
     }
 }
-public class EndStateShowTimeoutUIEvent : GameEvent 
+public class EndStateShowTimeoutUIEvent : StaticGameEvent<EndStateShowTimeoutUIEvent> 
 {
     public bool show;
-    public EndStateShowTimeoutUIEvent(bool show)
+    public static EndStateShowTimeoutUIEvent GetEvent(bool show)
     {
-        this.show = show;
+        staticGameEvent.show = show;
+        return staticGameEvent;
     }
 }
 
 // GameOver State Events
-public class GameOverStateEnterEvent : GameEvent { }
-public class GameOverStateExitEvent : GameEvent { }
+public class GameOverStateEnterEvent : StaticGameEvent<GameOverStateEnterEvent> { }
+public class GameOverStateExitEvent : StaticGameEvent<GameOverStateExitEvent> { }
 
 // Pause State Events
-public class PauseStateEnterEvent : GameEvent { }
-public class PauseStateExitEvent : GameEvent { }
+public class PauseStateEnterEvent : StaticGameEvent<PauseStateEnterEvent> { }
+public class PauseStateExitEvent : StaticGameEvent<PauseStateExitEvent> { }
 
 // Playing State Events
-public class PlayingShowUIEvent : GameEvent
+public class PlayingShowUIEvent : StaticGameEvent<PlayingShowUIEvent>
 {
     public bool show;
-    public PlayingShowUIEvent(bool show)
-    { 
-        this.show = show;
+    public static PlayingShowUIEvent GetEvent(bool show)
+    {
+        staticGameEvent.show = show;
+        return staticGameEvent;
     }
 }
 
-public class UpdateCoinPickTextEvent : GameEvent
+public class UpdateCoinPickTextEvent : StaticGameEvent<UpdateCoinPickTextEvent>
 {
     public int coinCount;
     public int coinSpawn;
-    public UpdateCoinPickTextEvent(int coinCount, int coinSpawn)
+    public static UpdateCoinPickTextEvent GetEvent(int coinSount, int coinSpawn)
     {
-        this.coinCount = coinCount;
-        this.coinSpawn = coinSpawn;
+        staticGameEvent.coinCount = coinSount;
+        staticGameEvent.coinSpawn = coinSpawn;
+        return staticGameEvent;
     }
 }
 
-public class UpdateEnemyKillTextEvent : GameEvent
+public class UpdateEnemyKillTextEvent : StaticGameEvent<UpdateEnemyKillTextEvent>
 {
     public int enemyCount;
     public int enemySpawn;
-    public UpdateEnemyKillTextEvent(int enemyCount, int enemySpawn)
+    public static UpdateEnemyKillTextEvent GetEvent(int enemyCount, int enemySpawn)
     {
-        this.enemyCount = enemyCount;
-        this.enemySpawn = enemySpawn;
+        staticGameEvent.enemyCount = enemyCount;
+        staticGameEvent.enemySpawn = enemySpawn;
+        return staticGameEvent;
     }
 }
 
-public class UpdateTimeTextEvent : GameEvent
+public class UpdateTimeTextEvent : StaticGameEvent<UpdateTimeTextEvent>
 {
     public int seconds;
-    public UpdateTimeTextEvent(int seconds)
+    public static UpdateTimeTextEvent GetEvent(int seconds)
     {
-        this.seconds = seconds;
+        staticGameEvent.seconds = seconds;
+        return staticGameEvent;
     }
 }
 
-public class ShowResetTextEvent : GameEvent
+public class ShowResetTextEvent : StaticGameEvent<ShowResetTextEvent>
 {
     public bool show;
-    public ShowResetTextEvent(bool show) 
+    public static ShowResetTextEvent GetEvent(bool show)
     {
-        this.show = show;
+        staticGameEvent.show = show;
+        return staticGameEvent;
     }
 }
 
 // Win State Events
-public class WinStateEnterEvent : GameEvent { }
-public class WinStateExitEvent : GameEvent { }
+public class WinStateEnterEvent : StaticGameEvent<WinStateEnterEvent> { }
+public class WinStateExitEvent : StaticGameEvent<WinStateExitEvent> { }
 
-public class CurrentTimeSetEvent : GameEvent
+public class CurrentTimeSetEvent : StaticGameEvent<CurrentTimeSetEvent>
 {
     public string text;
     public int seconds;
-    public CurrentTimeSetEvent(string text, int seconds)
+    public static CurrentTimeSetEvent GetEvent(string text, int seconds)
     {
-        this.text = text;
-        this.seconds = seconds;
+        staticGameEvent.text = text;
+        staticGameEvent.seconds = seconds;
+        return staticGameEvent;
     }
 }
 
-public class BestTimeSetEvent : GameEvent
+public class BestTimeSetEvent : StaticGameEvent<BestTimeSetEvent>
 {
     public string text;
     public int seconds;
-    public BestTimeSetEvent(string text, int seconds)
+    public static BestTimeSetEvent GetEvent(string text, int seconds)
     {
-        this.text = text;
-        this.seconds = seconds;
+        staticGameEvent.text = text;
+        staticGameEvent.seconds = seconds;
+        return staticGameEvent;
     }
 }
 
 // Collectables Events
-public class CoinSpawnEvent : GameEvent
+public class CoinSpawnEvent : StaticGameEvent<CoinSpawnEvent>
 { 
     public Coin coin;
-    public CoinSpawnEvent(Coin coin) 
+    public static CoinSpawnEvent GetEvent(Coin coin)
     {
-        this.coin = coin;
+        staticGameEvent.coin = coin;
+        return staticGameEvent;
     }
 }
 
-public class CoinPickEvent : GameEvent {}
+public class CoinPickEvent : StaticGameEvent<CoinPickEvent> {}
 
-public class BoxSpawnEvent : GameEvent
+public class BoxSpawnEvent : StaticGameEvent<BoxSpawnEvent>
 { 
     public Box box;
-    public BoxSpawnEvent(Box box) 
+    public static BoxSpawnEvent GetEvent(Box box)
     {
-        this.box = box;
+        staticGameEvent.box = box;
+        return staticGameEvent;
     }
 }
 
 // Enemy Events
-public class EnemySpawnEvent : GameEvent 
+public class EnemySpawnEvent : StaticGameEvent<EnemySpawnEvent> 
 {
     public Enemy enemy;
-    public EnemySpawnEvent(Enemy enemy)
+    public static EnemySpawnEvent GetEvent(Enemy enemy)
     {
-        this.enemy = enemy;
+        staticGameEvent.enemy = enemy;
+        return staticGameEvent;
     }
 }
 
-public class EnemyKillEvent : GameEvent {}
+public class EnemyKillEvent : StaticGameEvent<EnemyKillEvent> {}
 
 // Bigfoot Events
-public class BigfootKillEvent : GameEvent 
+public class BigfootKillEvent : StaticGameEvent<BigfootKillEvent> 
 {
     public Enemy enemy;
-    public BigfootKillEvent(Enemy enemy)
+    public static BigfootKillEvent GetEvent(Enemy enemy)
     {
-        this.enemy = enemy;
+        staticGameEvent.enemy = enemy;
+        return staticGameEvent;
     }
 }
 
 // Camera Events
-public class CameraCreatedEvent : GameEvent
+public class CameraCreatedEvent : StaticGameEvent<CameraCreatedEvent>
 {
     public CameraController cameraController;
-    public CameraCreatedEvent(CameraController cameraController)
+    public static CameraCreatedEvent GetEvent(CameraController cameraController)
     {
-        this.cameraController = cameraController;
+        staticGameEvent.cameraController = cameraController;
+        return staticGameEvent;
     }
 }
-public class TargetLockEvent : GameEvent { };
-public class TargetUnlockEvent : GameEvent { };
+public class TargetLockEvent : StaticGameEvent<TargetLockEvent> { };
+public class TargetUnlockEvent : StaticGameEvent<TargetUnlockEvent> { };
 
 // Projectiles Events
-public class ProjectileReleaseEvent : GameEvent 
+public class ProjectileReleaseEvent : StaticGameEvent<ProjectileReleaseEvent> 
 {
     public Projectile projectile;
-    public ProjectileReleaseEvent(Projectile projectile)
+    public static ProjectileReleaseEvent GetEvent(Projectile projectile)
     {
-        this.projectile = projectile;
+        staticGameEvent.projectile = projectile;
+        return staticGameEvent;
     }
 };
 
-public class ToxicBarrilPickEvent : GameEvent
+public class ToxicBarrilPickEvent : StaticGameEvent<ToxicBarrilPickEvent>
 {
     public ToxicBarrilProjectile barril;
-    public ToxicBarrilPickEvent(ToxicBarrilProjectile barril)
-    {
-        this.barril = barril;
+    public static ToxicBarrilPickEvent GetEvent(ToxicBarrilProjectile barril)
+    { 
+        staticGameEvent.barril = barril;
+        return staticGameEvent;
     }
 }
 
 // Player Events
-public abstract class PlayerEvent : GameEvent
-{ 
+
+
+public class PlayerCreatedEvent : StaticGameEvent<PlayerCreatedEvent> 
+{
     public Player player;
-    public PlayerEvent(Player player)
+
+    public static PlayerCreatedEvent GetEvent(Player player)
     {
-        this.player = player;
+        staticGameEvent.player = player;
+        return staticGameEvent;
     }
 }
-
-public class PlayerCreatedEvent : PlayerEvent
+public class PlayerShootEvent : StaticGameEvent<PlayerShootEvent>
 {
-    public PlayerCreatedEvent(Player player) 
-        : base(player) { }
-}
-public class PlayerHitEvent : GameEvent { }
-public class PlayerShootEvent : PlayerEvent
-{
-    public PlayerShootEvent(Player player) 
-        : base(player) { }
-}
-public class PlayerRestartEvent : PlayerEvent
-{
-    public PlayerRestartEvent(Player player)
-        : base(player) { }
-}
+    public Player player;
 
-public class EndTriggerHitEvent : GameEvent { }
+    public static PlayerShootEvent GetEvent(Player player)
+    {
+        staticGameEvent.player = player;
+        return staticGameEvent;
+    }
+}
+public class PlayerRestartEvent : StaticGameEvent<PlayerRestartEvent> 
+{
+    public Player player;
 
-public class WaterHitEnterEvent : GameEvent { }
-public class WaterHitExitEvent : GameEvent { }
+    public static PlayerRestartEvent GetEvent(Player player)
+    {
+        staticGameEvent.player = player;
+        return staticGameEvent;
+    }
+}
+public class PlayerHitEvent : StaticGameEvent<PlayerHitEvent> { }
+
+
+public class EndTriggerHitEvent : StaticGameEvent<EndTriggerHitEvent> { }
+public class WaterHitEnterEvent : StaticGameEvent<WaterHitEnterEvent> { }
+public class WaterHitExitEvent : StaticGameEvent<WaterHitExitEvent> { }
 
 
 // Input Events
-public class PauseEvent : GameEvent { }
-public class LockCameraEvent : GameEvent { }
-public class WinCheatEvent : GameEvent { }
-public class LoseCheatEvent : GameEvent { }
-public class GodModeCheatEvent : GameEvent { }
-public class JoystickOrKeyboardUseEvent : GameEvent { }
+public class PauseEvent : StaticGameEvent<PauseEvent> { }
+public class LockCameraEvent : StaticGameEvent<LockCameraEvent> { }
+public class WinCheatEvent : StaticGameEvent<WinCheatEvent> { }
+public class LoseCheatEvent : StaticGameEvent<LoseCheatEvent> { }
+public class GodModeCheatEvent : StaticGameEvent<GodModeCheatEvent> { }
+public class JoystickOrKeyboardUseEvent : StaticGameEvent<JoystickOrKeyboardUseEvent> { }
 
 // Audio Events
-public class PauseAllSoundEvent : GameEvent { }
-public class ResumeAllSoundEvent : GameEvent { }
-public class PlayMusicEvent : GameEvent { }
-public class StopMusicEvent : GameEvent { }
-public class PauseMusicEvent : GameEvent { }
-public class PlayAudioClipEvent : GameEvent
+public class PauseAllSoundEvent : StaticGameEvent<PauseAllSoundEvent> { }
+public class ResumeAllSoundEvent : StaticGameEvent<ResumeAllSoundEvent> { }
+public class PlayMusicEvent : StaticGameEvent<PlayMusicEvent> { }
+public class StopMusicEvent : StaticGameEvent<StopMusicEvent> { }
+public class PauseMusicEvent : StaticGameEvent<PauseMusicEvent> { }
+public class PlayAudioClipEvent : StaticGameEvent<PlayAudioClipEvent>
 { 
     public AudioClip audioClip;
-    public PlayAudioClipEvent(AudioClip audioClip)
+    public static PlayAudioClipEvent GetEvent(AudioClip audioClip)
     {
-        this.audioClip = audioClip;
+        staticGameEvent.audioClip = audioClip;
+        return staticGameEvent;
     }
 }
-public class PlayAudioClip3DEvent : GameEvent
+public class PlayAudioClip3DEvent : StaticGameEvent<PlayAudioClip3DEvent>
 {
     public AudioClip audioClip;
     public Vector3 position;
     public float min;
     public float max;
-
-    public PlayAudioClip3DEvent(AudioClip audioClip, Vector3 position, float min, float max)
+    public static PlayAudioClip3DEvent GetEvent(AudioClip audioClip, Vector3 position, float min, float max)
     {
-        this.audioClip = audioClip;
-        this.position = position;
-        this.min = min;
-        this.max = max;
+        staticGameEvent.audioClip = audioClip;
+        staticGameEvent.position = position;
+        staticGameEvent.min = min;
+        staticGameEvent.max = max;
+        return staticGameEvent;
     }
 }

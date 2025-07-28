@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        GameEventManager.Instance.TriggerEvent(new CameraCreatedEvent(this));
+        GameEventManager.Instance.TriggerEvent(CameraCreatedEvent.GetEvent(this));
     }
 
     private void OnLockCamera(GameEvent gameEvent)
@@ -77,7 +77,7 @@ public class CameraController : MonoBehaviour
         {
             vCameraFolow.Priority = 10;
             vCameraLockTarget.Priority = 20;
-            GameEventManager.Instance.TriggerEvent(new TargetLockEvent());
+            GameEventManager.Instance.TriggerEvent(TargetLockEvent.GetEvent());
         }
     }
 
@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
         vCameraFolow.Priority = 20;
         vCameraLockTarget.Priority = 10;
         cameraLockTarget.Unlock();
-        GameEventManager.Instance.TriggerEvent(new TargetUnlockEvent());
+        GameEventManager.Instance.TriggerEvent(TargetUnlockEvent.GetEvent());
     }
 
     private void OnBigfootKill(GameEvent gameEvent)

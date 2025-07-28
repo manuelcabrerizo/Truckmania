@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Bigfoot : Enemy
@@ -98,7 +97,7 @@ public class Bigfoot : Enemy
 
     public void StartRoar()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayAudioClip3DEvent(clips.mounsterAttack, transform.position, 100, 400));
+        GameEventManager.Instance.TriggerEvent(PlayAudioClip3DEvent.GetEvent(clips.mounsterAttack, transform.position, 100, 400));
     }
 
     public void Kill()
@@ -106,7 +105,7 @@ public class Bigfoot : Enemy
         collision.enabled = false;
         animator.enabled = false;
         deadState.SetDead();
-        GameEventManager.Instance.TriggerEvent(new BigfootKillEvent(this));
+        GameEventManager.Instance.TriggerEvent(BigfootKillEvent.GetEvent(this));
     }
 
     public void HitAnimationEnd()

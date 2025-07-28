@@ -8,23 +8,23 @@ public class EndState : State<GameManager>
 
     public override void OnEnter()
     {
-        GameEventManager.Instance.TriggerEvent(new EndStateEnterEvent());
+        GameEventManager.Instance.TriggerEvent(EndStateEnterEvent.GetEvent());
         owner.StartCoroutine(WaitSeconds(5.0f));
 
         if (owner.seconds > 0)
         {
-            GameEventManager.Instance.TriggerEvent(new EndStateShowFinishUIEvent(true));
+            GameEventManager.Instance.TriggerEvent(EndStateShowFinishUIEvent.GetEvent(true));
         }
         else
         {
-            GameEventManager.Instance.TriggerEvent(new EndStateShowTimeoutUIEvent(true));
+            GameEventManager.Instance.TriggerEvent(EndStateShowTimeoutUIEvent.GetEvent(true));
         }
     }
 
     public override void OnExit()
     {
-        GameEventManager.Instance.TriggerEvent(new EndStateShowFinishUIEvent(false));
-        GameEventManager.Instance.TriggerEvent(new EndStateShowTimeoutUIEvent(false));
+        GameEventManager.Instance.TriggerEvent(EndStateShowFinishUIEvent.GetEvent(false));
+        GameEventManager.Instance.TriggerEvent(EndStateShowTimeoutUIEvent.GetEvent(false));
     }
 
     IEnumerator WaitSeconds(float seconds)

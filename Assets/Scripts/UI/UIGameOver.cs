@@ -37,17 +37,17 @@ public class UIGameOver : MonoBehaviour
 
     private void OnExitButtonClick()
     {
-        GameEventManager.Instance.TriggerEvent(new ExitButtonClickEvent());
+        GameEventManager.Instance.TriggerEvent(ExitButtonClickEvent.GetEvent());
     }
 
     private void OnMenuButtonClick()
     {
-        GameEventManager.Instance.TriggerEvent(new MenuButtonClickEvent());
+        GameEventManager.Instance.TriggerEvent(MenuButtonClickEvent.GetEvent());
     }
 
     private void OnResetButtonClick()
     {
-        GameEventManager.Instance.TriggerEvent(new ResetButtonClickEvent());
+        GameEventManager.Instance.TriggerEvent(ResetButtonClickEvent.GetEvent());
     }
 
     private void OnJoystickAndKeyboardUse(GameEvent gameEvent)

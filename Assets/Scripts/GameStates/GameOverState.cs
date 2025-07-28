@@ -6,15 +6,15 @@ class GameOverState : State<GameManager>
     public override void OnEnter()
     {
         GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
-        GameEventManager.Instance.TriggerEvent(new GameOverStateEnterEvent());
-        GameEventManager.Instance.TriggerEvent(new PauseAllSoundEvent());
+        GameEventManager.Instance.TriggerEvent(GameOverStateEnterEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PauseAllSoundEvent.GetEvent());
     }
 
     public override void OnExit()
     {
-        GameEventManager.Instance.TriggerEvent(new GameOverStateExitEvent());
+        GameEventManager.Instance.TriggerEvent(GameOverStateExitEvent.GetEvent());
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);
-        GameEventManager.Instance.TriggerEvent(new ResumeAllSoundEvent());
+        GameEventManager.Instance.TriggerEvent(ResumeAllSoundEvent.GetEvent());
     }
 
     private void OnResetButtonClick(GameEvent gameEvent)

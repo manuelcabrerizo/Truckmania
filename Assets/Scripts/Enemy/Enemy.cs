@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     private void Start()
     {
-        GameEventManager.Instance.TriggerEvent(new EnemySpawnEvent(this));
+        GameEventManager.Instance.TriggerEvent(EnemySpawnEvent.GetEvent(this));
         OnStart();
     }
 
@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamagable
         life = Mathf.Max(life - amount, 0);
         if (life == 0)
         {
-            GameEventManager.Instance.TriggerEvent(new EnemyKillEvent());
+            GameEventManager.Instance.TriggerEvent(EnemyKillEvent.GetEvent());
         }
     }
 }

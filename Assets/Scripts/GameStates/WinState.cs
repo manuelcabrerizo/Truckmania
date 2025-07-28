@@ -21,26 +21,26 @@ class WinState : State<GameManager>
             bestTime = PlayerPrefs.GetInt(KeyName);
         }
 
-        GameEventManager.Instance.TriggerEvent(new CurrentTimeSetEvent("Current Time: ", currentTime));
+        GameEventManager.Instance.TriggerEvent(CurrentTimeSetEvent.GetEvent("Current Time: ", currentTime));
         if (currentTime < bestTime)
         {
             bestTime = currentTime;
-            GameEventManager.Instance.TriggerEvent(new BestTimeSetEvent("New Best Time: ", bestTime));
+            GameEventManager.Instance.TriggerEvent(BestTimeSetEvent.GetEvent("New Best Time: ", bestTime));
         }
         else
         {
-            GameEventManager.Instance.TriggerEvent(new BestTimeSetEvent("Best Time: ", bestTime));
+            GameEventManager.Instance.TriggerEvent(BestTimeSetEvent.GetEvent("Best Time: ", bestTime));
         }
         PlayerPrefs.SetInt(KeyName, bestTime);
 
-        GameEventManager.Instance.TriggerEvent(new WinStateEnterEvent());
-        GameEventManager.Instance.TriggerEvent(new PauseAllSoundEvent());
+        GameEventManager.Instance.TriggerEvent(WinStateEnterEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PauseAllSoundEvent.GetEvent());
     }
 
     public override void OnExit()
     {
-        GameEventManager.Instance.TriggerEvent(new WinStateExitEvent());
-        GameEventManager.Instance.TriggerEvent(new ResumeAllSoundEvent());
+        GameEventManager.Instance.TriggerEvent(WinStateExitEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(ResumeAllSoundEvent.GetEvent());
 
         GameEventManager.Instance.RemoveListener<NextButtonClickEvent>(OnNextButtonClick);
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);

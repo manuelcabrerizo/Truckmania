@@ -59,35 +59,30 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // REMOVE !!!!
-        GameEventManager.Instance.Update();
-        // REMOVE !!!!
-
-
         fsm.Update();
     }
 
     public void SetPlayingState()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayMusicEvent());
+        GameEventManager.Instance.TriggerEvent(PlayMusicEvent.GetEvent());
         fsm.ChangeState(playingState);
     }
 
     public void SetCountDownState()
     {
-        GameEventManager.Instance.TriggerEvent(new StopMusicEvent());
+        GameEventManager.Instance.TriggerEvent(StopMusicEvent.GetEvent());
         fsm.ChangeState(countDownState);
     }
 
     public void SetGameOverState()
     {
-        GameEventManager.Instance.TriggerEvent(new StopMusicEvent());
+        GameEventManager.Instance.TriggerEvent(StopMusicEvent.GetEvent());
         fsm.ChangeState(gameOverState);
     }
 
     public void SetWinState()
     {
-        GameEventManager.Instance.TriggerEvent(new StopMusicEvent());
+        GameEventManager.Instance.TriggerEvent(StopMusicEvent.GetEvent());
         fsm.ChangeState(winState);
     }
 
@@ -100,19 +95,19 @@ public class GameManager : MonoBehaviour
     {
         if (fsm.PeekState() == playingState)
         {
-            GameEventManager.Instance.TriggerEvent(new PauseMusicEvent());
+            GameEventManager.Instance.TriggerEvent(PauseMusicEvent.GetEvent());
             fsm.PushState(pauseState);
         }
         else if (fsm.PeekState() == pauseState)
         {
-            GameEventManager.Instance.TriggerEvent(new PlayMusicEvent());
+            GameEventManager.Instance.TriggerEvent(PlayMusicEvent.GetEvent());
             fsm.PopState();
         }
     }
 
     public void ResumeGame()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayMusicEvent());
+        GameEventManager.Instance.TriggerEvent(PlayMusicEvent.GetEvent());
         fsm.PopState();
     }
 

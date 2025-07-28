@@ -49,7 +49,7 @@ public class Player : MonoBehaviour, IDamagable
 
     private void Start()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayerCreatedEvent(this));
+        GameEventManager.Instance.TriggerEvent(PlayerCreatedEvent.GetEvent(this));
     }
 
     private void Update()
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour, IDamagable
         IPickable pickable = null;
         if (other.gameObject.TryGetComponent<IPickable>(out pickable))
         {
-            GameEventManager.Instance.TriggerEvent(new PlayAudioClipEvent(Data.clips.barrilPickup));
+            GameEventManager.Instance.TriggerEvent(PlayAudioClipEvent.GetEvent(Data.clips.barrilPickup));
             StartCoroutine(StartFeedbackAnimation(0.5f, Color.yellow));
             pickable.PickUp();
         }
@@ -167,12 +167,12 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Shoot()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayerShootEvent(this));
+        GameEventManager.Instance.TriggerEvent(PlayerShootEvent.GetEvent(this));
     }
 
     public void Restart()
     {
-        GameEventManager.Instance.TriggerEvent(new PlayerRestartEvent(this));
+        GameEventManager.Instance.TriggerEvent(PlayerRestartEvent.GetEvent(this));
     }
 
     public void SetGodMode()
@@ -196,7 +196,7 @@ public class Player : MonoBehaviour, IDamagable
         if (!Data.isGodModeCheatActive)
         {
             StartCoroutine(StartFeedbackAnimation(2.0f, Color.red));
-            GameEventManager.Instance.TriggerEvent(new PlayerHitEvent());
+            GameEventManager.Instance.TriggerEvent(PlayerHitEvent.GetEvent());
         }
     }
 
