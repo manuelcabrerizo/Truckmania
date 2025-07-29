@@ -8,6 +8,7 @@ public class UIMainMenu : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button controlsButton;
     [SerializeField] private Button creditsButton;
+    [SerializeField] private Button settingsButton;
     [SerializeField] private Button exitButton;
 
     private void Awake()
@@ -16,7 +17,7 @@ public class UIMainMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsButtonClick);
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
-        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        settingsButton.onClick.AddListener(OnSettingsButtonClick);
     }
 
     private void OnDestroy()
@@ -25,12 +26,23 @@ public class UIMainMenu : MonoBehaviour
         controlsButton.onClick.RemoveListener(OnControlsButtonClick);
         creditsButton.onClick.RemoveListener(OnCreditsButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
-        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        settingsButton.onClick.RemoveListener(OnSettingsButtonClick);
     }
 
     private void Start()
     {
         GameEventManager.Instance.TriggerEvent(DiscordUpdateStateEvent.GetEvent("Main Menu"));
+    }
+
+    private void OnEnable()
+    {
+        GameEventManager.Instance.AddListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
+        OnJoystickAndKeyboardUse(null);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.Instance.RemoveListener<JoystickOrKeyboardUseEvent>(OnJoystickAndKeyboardUse);
     }
 
     private void OnPlayButtonClick()
@@ -46,6 +58,11 @@ public class UIMainMenu : MonoBehaviour
     private void OnCreditsButtonClick()
     {
         SceneManager.LoadScene("Credits");
+    }
+
+    private void OnSettingsButtonClick()
+    {
+        GameEventManager.Instance.TriggerEvent(SettingButtonClickEvent.GetEvent());
     }
 
     private void OnExitButtonClick()

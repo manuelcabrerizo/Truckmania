@@ -24,34 +24,40 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 
     public void OnAccelerate(InputAction.CallbackContext context)
     {
-        player.Data.accel = context.ReadValue<float>();
+        if (player)
+            player.Data.accel = context.ReadValue<float>();
     }
 
     public void OnBreak(InputAction.CallbackContext context)
     {
-        player.Data.breaking = context.ReadValue<float>();
+        if(player)
+            player.Data.breaking = context.ReadValue<float>();
     }
 
     public void OnSteer(InputAction.CallbackContext context)
     {
-        player.Data.steer = context.ReadValue<float>();
+        if (player)
+            player.Data.steer = context.ReadValue<float>();
     }
 
     public void OnFlip(InputAction.CallbackContext context)
     {
-        player.Data.flip = context.ReadValue<float>();
+        if (player)
+            player.Data.flip = context.ReadValue<float>();
     }
 
     public void OnSideFlip(InputAction.CallbackContext context)
     {
-        player.Data.sideFlip = context.ReadValue<float>();
+        if (player)
+            player.Data.sideFlip = context.ReadValue<float>();
     }
 
     public void OnGodModeCheat(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            player.SetGodMode();
+            if (player)
+                player.SetGodMode();
             GameEventManager.Instance.TriggerEvent(GodModeCheatEvent.GetEvent());
         }
     }
@@ -60,7 +66,8 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            player.SetNoclipMode();
+            if (player)
+                player.SetNoclipMode();
         }
     }
 
@@ -68,7 +75,8 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            player.Shoot();
+            if (player)
+                player.Shoot();
         }
     }
 
@@ -90,7 +98,8 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     {
         if (context.started)
         {
-            player.Restart();
+            if (player)
+                player.Restart();
         }
     }
 

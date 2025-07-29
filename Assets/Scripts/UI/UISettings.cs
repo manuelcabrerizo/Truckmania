@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,11 +18,6 @@ public class UISettings : MonoBehaviour
     [SerializeField] private TMP_Dropdown frameRateDropdown;
     [SerializeField] private Toggle vsyncToggle;
 
-    private const string currentResolutionIndexID = "CurrentResolutionIndex";
-    private const string fullScreenToggleID = "FullScreenToggle";
-    private const string currentFrameRateIndexID = "CurrentFrameRateIndex";
-    private const string vsyncToggleID = "VsyncToggle";
-
     private List<Resolution> resolutions;
     private List<string> resolutionOptions;
     private List<string> frameRatesOptions;
@@ -37,20 +33,23 @@ public class UISettings : MonoBehaviour
         vsyncToggle.onValueChanged.AddListener(OnVsyncChange);
 
         // Set saved resolution
-        (List<string>, List<Resolution>) resolutionTuple  = GetResolutions();
-        resolutionOptions = resolutionTuple.Item1;
-        resolutions = resolutionTuple.Item2;
+        resolutionOptions = ConfigurationManager.GetResolutionsOptions();
+        resolutions = ConfigurationManager.GetResolutions();
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(resolutionOptions);
         resolutionDropdown.value = GetCurrentResolution();
         resolutionDropdown.RefreshShownValue();
+        Resolution resolution = resolutions[resolutionDropdown.value];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 
         // Set saved fullscreen value
-        if (!PlayerPrefs.HasKey(fullScreenToggleID))
+        if (!PlayerPrefs.HasKey(ConfigurationManager.FullScreenToggleID))
         {
-            PlayerPrefs.SetInt(fullScreenToggleID, Screen.fullScreen ? 1 : 0);
+            PlayerPrefs.SetInt(ConfigurationManager.FullScreenToggleID, Screen.fullScreen ? 1 : 0);
         }
-        fullScreenToggle.isOn = PlayerPrefs.GetInt(fullScreenToggleID) == 1;
+        bool isFullScreen = PlayerPrefs.GetInt(ConfigurationManager.FullScreenToggleID) == 1;
+        fullScreenToggle.isOn = isFullScreen;
+        Screen.fullScreen = isFullScreen;
 
         // Set saved Max FPS
         frameRatesOptions = new List<string>();
@@ -72,16 +71,16 @@ public class UISettings : MonoBehaviour
         Application.targetFrameRate = settingsData.MaxFrameRates[frameRateIndex];
 
         // Set saved Vsync value
-        if (!PlayerPrefs.HasKey(vsyncToggleID))
+        if (!PlayerPrefs.HasKey(ConfigurationManager.VsyncToggleID))
         {
             // cap to one, in case where VSyncCount > 1
             int vSyncCount = Math.Min(QualitySettings.vSyncCount, 1);
-            PlayerPrefs.SetInt(vsyncToggleID, vSyncCount);
+            PlayerPrefs.SetInt(ConfigurationManager.VsyncToggleID, vSyncCount);
         }
-        int vsyncCount = PlayerPrefs.GetInt(vsyncToggleID);
+        int vsyncCount = PlayerPrefs.GetInt(ConfigurationManager.VsyncToggleID);
         QualitySettings.vSyncCount = vsyncCount;
         vsyncToggle.isOn = vsyncCount == 1;
-        frameRateDropdown.enabled = vsyncCount == 0;
+        frameRateDropdown.interactable = vsyncCount == 0;
     }
     private void Start()
     {
@@ -128,55 +127,37 @@ public class UISettings : MonoBehaviour
 
     private void OnSetResolution(int index)
     {
-        PlayerPrefs.SetInt(currentResolutionIndexID, index);
+        PlayerPrefs.SetInt(ConfigurationManager.CurrentResolutionIndexID, index);
         Resolution resolution = resolutions[index];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     private void OnFullscreenChange(bool value)
-    { 
+    {
+        PlayerPrefs.SetInt(ConfigurationManager.FullScreenToggleID, value ? 1 : 0);
         Screen.fullScreen = value;
-        PlayerPrefs.SetInt(fullScreenToggleID, Screen.fullScreen ? 1 : 0);
     }
 
     private void OnFrameRateChange(int index)
     {
-        PlayerPrefs.SetInt(currentFrameRateIndexID, index);
+        PlayerPrefs.SetInt(ConfigurationManager.CurrentFrameRateIndexID, index);
         int frameRate = settingsData.MaxFrameRates[index];
         Application.targetFrameRate = frameRate;
     }
 
     private void OnVsyncChange(bool value)
     {
-        PlayerPrefs.SetInt(vsyncToggleID, value ? 1 : 0);
+        PlayerPrefs.SetInt(ConfigurationManager.VsyncToggleID, value ? 1 : 0);
         QualitySettings.vSyncCount = value ? 1 : 0;
-        frameRateDropdown.enabled = !value;
-    }
-
-    private (List<string>, List<Resolution>) GetResolutions()
-    {
-        List<Resolution> resolutions = new List<Resolution>();
-        List <string> resolutionOptions = new List<string>();
-        for (int i = 0; i < Screen.resolutions.Length; i++)
-        {
-            Resolution resolution = Screen.resolutions[i];
-
-            string option = resolution.width + " x " + resolution.height;
-            if (!resolutionOptions.Contains(option))
-            {
-                resolutions.Add(resolution);
-                resolutionOptions.Add(option);
-            }
-        }
-        return (resolutionOptions, resolutions);
+        frameRateDropdown.interactable = !value;
     }
 
     private int GetCurrentResolution()
     {
         int currentResolutionIndex = 0;
-        if (PlayerPrefs.HasKey(currentResolutionIndexID))
+        if (PlayerPrefs.HasKey(ConfigurationManager.CurrentResolutionIndexID))
         {
-            currentResolutionIndex = PlayerPrefs.GetInt(currentResolutionIndexID);
+            currentResolutionIndex = PlayerPrefs.GetInt(ConfigurationManager.CurrentResolutionIndexID);
         }
         else
         {
@@ -186,7 +167,7 @@ public class UISettings : MonoBehaviour
                     resolutions[i].height == Screen.currentResolution.height)
                 {
                     currentResolutionIndex = i;
-                    PlayerPrefs.SetInt(currentResolutionIndexID, currentResolutionIndex);
+                    PlayerPrefs.SetInt(ConfigurationManager.CurrentResolutionIndexID, currentResolutionIndex);
                 }
             }
         }
@@ -196,9 +177,9 @@ public class UISettings : MonoBehaviour
     private int GetCurrentFrameRateIndex()
     {
         int currentFrameRateIndex = 0;
-        if (PlayerPrefs.HasKey(currentFrameRateIndexID))
+        if (PlayerPrefs.HasKey(ConfigurationManager.CurrentFrameRateIndexID))
         {
-            currentFrameRateIndex = PlayerPrefs.GetInt(currentFrameRateIndexID);
+            currentFrameRateIndex = PlayerPrefs.GetInt(ConfigurationManager.CurrentFrameRateIndexID);
         }
         else
         {
@@ -207,7 +188,7 @@ public class UISettings : MonoBehaviour
                 if (settingsData.MaxFrameRates[i] == Application.targetFrameRate)
                 {
                     currentFrameRateIndex = i;
-                    PlayerPrefs.SetInt(currentFrameRateIndexID, currentFrameRateIndex);
+                    PlayerPrefs.SetInt(ConfigurationManager.CurrentFrameRateIndexID, currentFrameRateIndex);
                 }
             }
         }

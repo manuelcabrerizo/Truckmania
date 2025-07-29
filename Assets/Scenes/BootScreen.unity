@@ -283,8 +283,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4282908416
+  m_fontColor: {r: 0, g: 1, b: 0.2784314, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -477,8 +477,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 3eec9f32be1e6bf47bda671da81edca7, type: 3}
+  m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -508,7 +508,6 @@ GameObject:
   - component: {fileID: 1706756398}
   - component: {fileID: 1706756397}
   - component: {fileID: 1706756396}
-  - component: {fileID: 1706756400}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -599,18 +598,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1706756400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706756395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0313cb2e44c8584b8bc1eb1f2e1c2fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1706756401
 MonoBehaviour:
   m_ObjectHideFlags: 0
