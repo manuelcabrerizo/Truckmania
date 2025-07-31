@@ -1492,6 +1492,7 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 512
+  clips: {fileID: 11400000, guid: e47dcf20b69162b44bc45b1701cfb47e, type: 2}
 --- !u!1 &7638213086424340921
 GameObject:
   m_ObjectHideFlags: 0

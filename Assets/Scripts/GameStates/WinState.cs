@@ -22,7 +22,7 @@ class WinState : State<GameManager>
         }
 
         GameEventManager.Instance.TriggerEvent(WinStateEnterEvent.GetEvent());
-        GameEventManager.Instance.TriggerEvent(PauseAllSoundEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PauseEngineSoundEvent.GetEvent());
 
         GameEventManager.Instance.TriggerEvent(CurrentTimeSetEvent.GetEvent("Current Time: ", currentTime));
         if (currentTime < bestTime)
@@ -42,7 +42,7 @@ class WinState : State<GameManager>
     public override void OnExit()
     {
         GameEventManager.Instance.TriggerEvent(WinStateExitEvent.GetEvent());
-        GameEventManager.Instance.TriggerEvent(ResumeAllSoundEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PlayEngineSoundEvent.GetEvent());
 
         GameEventManager.Instance.RemoveListener<NextButtonClickEvent>(OnNextButtonClick);
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);

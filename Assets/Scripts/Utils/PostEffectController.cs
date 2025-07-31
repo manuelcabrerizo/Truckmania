@@ -9,6 +9,11 @@ public class PostEffectController : MonoBehaviour
     [SerializeField] private Shader postEffectShader1;
     [SerializeField] private Material postEffectMaterial1;
 
+
+    private float waterInteisty = 0;
+    [SerializeField] private float incSpeed = 1.0f;
+    [SerializeField] private float decSpeed = 1.0f / 3.0f;
+
     private bool isOnWater = false;
 
     private void Awake()
@@ -45,37 +50,37 @@ public class PostEffectController : MonoBehaviour
         StopAllCoroutines();
         if (value)
         {
-            StartCoroutine(EnterWaterAnimation(0.75f));
+            StartCoroutine(EnterWaterAnimation());
         }
         else
         {
-            StartCoroutine(ExitWaterAnimation(3.0f));
+            StartCoroutine(ExitWaterAnimation());
         }
     }
 
-    private IEnumerator EnterWaterAnimation(float duration)
+    private IEnumerator EnterWaterAnimation()
     {
         isOnWater = true;
-        float time = 0;
-        while (time < duration)
+        while (waterInteisty < 1.0f)
         {
-            postEffectMaterial1.SetFloat("_Intesity", (time/duration));
+            waterInteisty += incSpeed * Time.deltaTime;
+            postEffectMaterial1.SetFloat("_Intesity", waterInteisty);
             yield return new WaitForEndOfFrame();
-            time += Time.deltaTime;
         }
-        postEffectMaterial1.SetFloat("_Intesity", 1.0f);
+        waterInteisty = 1.0f;
+        postEffectMaterial1.SetFloat("_Intesity", waterInteisty);
     }
 
-    private IEnumerator ExitWaterAnimation(float duration)
+    private IEnumerator ExitWaterAnimation()
     {
-        float time = 0;
-        while (time < duration)
+        while (waterInteisty > 0.0f)
         {
-            postEffectMaterial1.SetFloat("_Intesity", 1.0f - (time/duration));
+            waterInteisty -= decSpeed * Time.deltaTime;
+            postEffectMaterial1.SetFloat("_Intesity", waterInteisty);
             yield return new WaitForEndOfFrame();
-            time += Time.deltaTime;
         }
-        postEffectMaterial1.SetFloat("_Intesity", 0.0f);
+        waterInteisty = 0.0f;
+        postEffectMaterial1.SetFloat("_Intesity", waterInteisty);
         isOnWater = false;
     }
 }

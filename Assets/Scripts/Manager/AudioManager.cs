@@ -21,8 +21,6 @@ public class AudioManager : MonoBehaviour
     {
         GameEventManager.Instance.AddListener<MusicSliderChangeEvent>(OnMusicSliderChange);
         GameEventManager.Instance.AddListener<SfxSliderChangeEvent>(OnSfxSliderChange);
-        GameEventManager.Instance.AddListener<PauseAllSoundEvent>(PauseAll);
-        GameEventManager.Instance.AddListener<ResumeAllSoundEvent>(ResumeAll);
         GameEventManager.Instance.AddListener<PlayMusicEvent>(PlayMusic);
         GameEventManager.Instance.AddListener<StopMusicEvent>(StopMusic);
         GameEventManager.Instance.AddListener<PauseMusicEvent>(PauseMusic);
@@ -46,8 +44,6 @@ public class AudioManager : MonoBehaviour
     {
         GameEventManager.Instance.RemoveListener<MusicSliderChangeEvent>(OnMusicSliderChange);
         GameEventManager.Instance.RemoveListener<SfxSliderChangeEvent>(OnSfxSliderChange);
-        GameEventManager.Instance.RemoveListener<PauseAllSoundEvent>(PauseAll);
-        GameEventManager.Instance.RemoveListener<ResumeAllSoundEvent>(ResumeAll);
         GameEventManager.Instance.RemoveListener<PlayMusicEvent>(PlayMusic);
         GameEventManager.Instance.RemoveListener<StopMusicEvent>(StopMusic);
         GameEventManager.Instance.RemoveListener<PauseMusicEvent>(PauseMusic);
@@ -98,16 +94,6 @@ public class AudioManager : MonoBehaviour
         audioSource.clip = playClipEvent.audioClip;
         audioSource.Play();
         StartCoroutine(ReleaseAudioSourceIfFinish(audioSource));
-    }
-
-    private void PauseAll(GameEvent gameEvent)
-    {
-        mixer.SetFloat("MasterVolume", -80);
-    }
-
-    private void ResumeAll(GameEvent gameEvent)
-    {
-        mixer.SetFloat("MasterVolume", 0);
     }
 
     private void OnSfxSliderChange(GameEvent gameEvent)

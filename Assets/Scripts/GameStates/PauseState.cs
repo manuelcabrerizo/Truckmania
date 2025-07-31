@@ -10,14 +10,14 @@ public class PauseState : State<GameManager>
         GameEventManager.Instance.AddListener<ResetButtonClickEvent>(OnResetButtonClick);
         Time.timeScale = 0.0f;
         GameEventManager.Instance.TriggerEvent(PauseStateEnterEvent.GetEvent());
-        GameEventManager.Instance.TriggerEvent(PauseAllSoundEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PauseEngineSoundEvent.GetEvent());
     }
 
     public override void OnExit()
     {
         Time.timeScale = 1.0f;
         GameEventManager.Instance.TriggerEvent(PauseStateExitEvent.GetEvent());
-        GameEventManager.Instance.TriggerEvent(ResumeAllSoundEvent.GetEvent());
+        GameEventManager.Instance.TriggerEvent(PlayEngineSoundEvent.GetEvent());
 
         GameEventManager.Instance.RemoveListener<ResumeButtonClickEvent>(OnResumeButtonClick);
         GameEventManager.Instance.RemoveListener<ResetButtonClickEvent>(OnResetButtonClick);

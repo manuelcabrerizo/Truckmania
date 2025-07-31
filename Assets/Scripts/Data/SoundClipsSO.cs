@@ -21,4 +21,7 @@ public class SoundClipsSO : ScriptableObject
 
     public AudioClip countDown;
     public AudioClip reset;
+
+    public AudioClip select;
+    public AudioClip water;
 }

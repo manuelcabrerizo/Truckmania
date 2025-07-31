@@ -31,10 +31,16 @@ public class Player : MonoBehaviour, IDamagable
         additiveStateMachine = new StateMachine();
 
         InitializeStates();
+
+        GameEventManager.Instance.AddListener<PlayEngineSoundEvent>(PlayEngineSound);
+        GameEventManager.Instance.AddListener<PauseEngineSoundEvent>(PauseEngineSound);
     }
 
     private void OnDestroy()
     {
+        GameEventManager.Instance.RemoveListener<PlayEngineSoundEvent>(PlayEngineSound);
+        GameEventManager.Instance.RemoveListener<PauseEngineSoundEvent>(PauseEngineSound);
+
         StopAllCoroutines();
         foreach (Material mat in Data.materials)
         {
@@ -216,5 +222,15 @@ public class Player : MonoBehaviour, IDamagable
         {
             mat.SetColor("_Tint", Color.black);
         }
+    }
+
+    private void PlayEngineSound(GameEvent gameEvent)
+    {
+        Data.engineSound.Play();
+    }
+
+    private void PauseEngineSound(GameEvent gameEvent)
+    {
+        Data.engineSound.Pause();
     }
 }

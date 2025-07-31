@@ -307,11 +307,11 @@ public class KeyboardUseEvent : StaticGameEvent<KeyboardUseEvent> { }
 public class ResetInputEvent : StaticGameEvent<ResetInputEvent> { }
 
 // Audio Events
-public class PauseAllSoundEvent : StaticGameEvent<PauseAllSoundEvent> { }
-public class ResumeAllSoundEvent : StaticGameEvent<ResumeAllSoundEvent> { }
 public class PlayMusicEvent : StaticGameEvent<PlayMusicEvent> { }
 public class StopMusicEvent : StaticGameEvent<StopMusicEvent> { }
 public class PauseMusicEvent : StaticGameEvent<PauseMusicEvent> { }
+public class PlayEngineSoundEvent : StaticGameEvent<PlayEngineSoundEvent> { }
+public class PauseEngineSoundEvent : StaticGameEvent<PauseEngineSoundEvent> { }
 public class PlayAudioClipEvent : StaticGameEvent<PlayAudioClipEvent>
 { 
     public AudioClip audioClip;
