@@ -8,6 +8,8 @@ public class UIPlaying : MonoBehaviour
     [SerializeField] private TextMeshProUGUI enemyCountText;
     [SerializeField] private TextMeshProUGUI pressRToRestartText;
     [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private GameObject rKeyImage;
+    [SerializeField] private GameObject bButtonImage;
 
     private void Awake()
     {
@@ -15,6 +17,9 @@ public class UIPlaying : MonoBehaviour
         GameEventManager.Instance.AddListener<UpdateEnemyKillTextEvent>(OnUpdateEnemyKillText);
         GameEventManager.Instance.AddListener<UpdateTimeTextEvent>(OnUpdateTimeText);
         GameEventManager.Instance.AddListener<ShowResetTextEvent>(OnShowResetText);
+        GameEventManager.Instance.AddListener<KeyboardUseEvent>(OnKeyboardUse);
+        GameEventManager.Instance.AddListener<JoystickUseEvent>(OnJoystickUse);
+        GameEventManager.Instance.TriggerEvent(ResetInputEvent.GetEvent());
     }
 
     private void OnDestroy()
@@ -23,6 +28,8 @@ public class UIPlaying : MonoBehaviour
         GameEventManager.Instance.RemoveListener<UpdateEnemyKillTextEvent>(OnUpdateEnemyKillText);
         GameEventManager.Instance.RemoveListener<UpdateTimeTextEvent>(OnUpdateTimeText);
         GameEventManager.Instance.RemoveListener<ShowResetTextEvent>(OnShowResetText);
+        GameEventManager.Instance.RemoveListener<KeyboardUseEvent>(OnKeyboardUse);
+        GameEventManager.Instance.RemoveListener<JoystickUseEvent>(OnJoystickUse);
     }
 
     private void Start()
@@ -53,5 +60,17 @@ public class UIPlaying : MonoBehaviour
         UpdateTimeTextEvent e = (UpdateTimeTextEvent)gameEvent;
         TimeSpan timeSpan = TimeSpan.FromSeconds(e.seconds);
         timeText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+    }
+
+    private void OnKeyboardUse(GameEvent gameEvent)
+    { 
+        rKeyImage.gameObject.SetActive(true);
+        bButtonImage.gameObject.SetActive(false);
+    }
+
+    private void OnJoystickUse(GameEvent gameEvent)
+    {
+        rKeyImage.gameObject.SetActive(false);
+        bButtonImage.gameObject.SetActive(true);
     }
 }

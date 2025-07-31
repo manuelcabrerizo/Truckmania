@@ -302,6 +302,9 @@ public class WinCheatEvent : StaticGameEvent<WinCheatEvent> { }
 public class LoseCheatEvent : StaticGameEvent<LoseCheatEvent> { }
 public class GodModeCheatEvent : StaticGameEvent<GodModeCheatEvent> { }
 public class JoystickOrKeyboardUseEvent : StaticGameEvent<JoystickOrKeyboardUseEvent> { }
+public class JoystickUseEvent : StaticGameEvent<JoystickUseEvent> { }
+public class KeyboardUseEvent : StaticGameEvent<KeyboardUseEvent> { }
+public class ResetInputEvent : StaticGameEvent<ResetInputEvent> { }
 
 // Audio Events
 public class PauseAllSoundEvent : StaticGameEvent<PauseAllSoundEvent> { }

@@ -308,6 +308,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   postEffectShader: {fileID: 4800000, guid: 9897de4454f5cf84ab04176bea1208b5, type: 3}
   postEffectMaterial: {fileID: 2100000, guid: 0994fbe325fb08f4292a526e355d67b0, type: 2}
+  postEffectShader1: {fileID: 0}
+  postEffectMaterial1: {fileID: 0}
 --- !u!114 &2067336662482113830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,7 +339,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 0
   m_BlendUpdateMethod: 0
   m_DefaultBlend:
     m_Style: 1

@@ -11,6 +11,8 @@ class CountDownState : State<GameManager>
 
     public override void OnEnter()
     {
+        ProjectileSpawner.Instance.Clear<ExplosiveBarrilProjectile>();
+
         GameEventManager.Instance.TriggerEvent(CountDownStateEnterEvent.GetEvent());
         GameEventManager.Instance.TriggerEvent(CountDownShowUIEvent.GetEvent(true));
         GameEventManager.Instance.TriggerEvent(CountDownChangeEvent.GetEvent(timeToWait));
