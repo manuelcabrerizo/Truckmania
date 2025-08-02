@@ -58,8 +58,15 @@ public class DiscordPlugin : MonoBehaviour
 
     private IEnumerator Updater()
     {
-        discord.GetActivityManager().UpdateActivity(activity, result => { });
-        discord.RunCallbacks();
+        try
+        {
+            discord.GetActivityManager().UpdateActivity(activity, result => { });
+            discord.RunCallbacks();
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("Discord not found: " + ex.Message);
+        }
 
         yield return new WaitForEndOfFrame();
         StartCoroutine(Updater());

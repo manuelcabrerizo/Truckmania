@@ -13,6 +13,8 @@ public class EndState : State<GameManager>
 
         if (owner.seconds > 0)
         {
+            int currentLevel = LevelManager.Instance.GetCurrentLevel();
+            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent((AchivementType)currentLevel));
             GameEventManager.Instance.TriggerEvent(EndStateShowFinishUIEvent.GetEvent(true));
         }
         else

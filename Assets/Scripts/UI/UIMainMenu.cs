@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIMainMenu : MonoBehaviour
 {
     [SerializeField] private Button playButton;
+    [SerializeField] private Button achivementsButton;
     [SerializeField] private Button controlsButton;
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button settingsButton;
@@ -14,6 +15,7 @@ public class UIMainMenu : MonoBehaviour
     private void Awake()
     {
         playButton.onClick.AddListener(OnPlayButtonClick);
+        achivementsButton.onClick.AddListener(OnAchivementButtonClick);
         controlsButton.onClick.AddListener(OnControlsButtonClick);
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
@@ -23,6 +25,7 @@ public class UIMainMenu : MonoBehaviour
     private void OnDestroy()
     {
         playButton.onClick.RemoveListener(OnPlayButtonClick);
+        achivementsButton.onClick.RemoveListener(OnAchivementButtonClick);
         controlsButton.onClick.RemoveListener(OnControlsButtonClick);
         creditsButton.onClick.RemoveListener(OnCreditsButtonClick);
         exitButton.onClick.RemoveListener(OnExitButtonClick);
@@ -48,6 +51,10 @@ public class UIMainMenu : MonoBehaviour
     private void OnPlayButtonClick()
     {
         LevelManager.Instance.LoadFirstLevel();
+    }
+    private void OnAchivementButtonClick()
+    {
+        GameEventManager.Instance.TriggerEvent(AchivementButtonClickEvent.GetEvent());
     }
 
     private void OnControlsButtonClick()

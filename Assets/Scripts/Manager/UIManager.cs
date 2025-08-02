@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,9 +12,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject achivementPanel;
+    [SerializeField] private UIAchivement uiAchivement;
 
     private void Awake()
     {
+        GameEventManager.Instance.AddListener<ShowAchivementUnlockUIEvent>(OnShowAchivementUI);
         GameEventManager.Instance.AddListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.AddListener<CountDownShowUIEvent>(OnShowCountDownUI);
         GameEventManager.Instance.AddListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
@@ -32,6 +36,7 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameEventManager.Instance.RemoveListener<ShowAchivementUnlockUIEvent>(OnShowAchivementUI);
         GameEventManager.Instance.RemoveListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.RemoveListener<CountDownShowUIEvent>(OnShowCountDownUI);
         GameEventManager.Instance.RemoveListener<EndStateShowFinishUIEvent>(OnShowFinishUI);
@@ -46,6 +51,14 @@ public class UIManager : MonoBehaviour
         GameEventManager.Instance.RemoveListener<SettingBackButtonClickEvent>(OnSettingsBackButtonClick);
         GameEventManager.Instance.RemoveListener<MenuButtonClickEvent>(OnMenuButtonClick);
         GameEventManager.Instance.RemoveListener<ExitButtonClickEvent>(OnExitButtonClick);
+    }
+
+    private void OnShowAchivementUI(GameEvent gameEvent)
+    {
+        ShowAchivementUnlockUIEvent e = (ShowAchivementUnlockUIEvent)gameEvent;
+        uiAchivement.SetAchivement(e.achivement);
+        StopAllCoroutines();
+        StartCoroutine(StartAchivementPanelAnimation());
     }
 
     private void OnShowPlayingUI(GameEvent gameEvent)
@@ -130,5 +143,36 @@ public class UIManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    private IEnumerator StartAchivementPanelAnimation()
+    {
+        float speed = 200.0f;
+        achivementPanel.SetActive(true);
+        Vector3 startPosition = uiAchivement.transform.position;
+        Vector3 targetPosition = startPosition;
+        targetPosition.y -= 90.0f;
+
+        while (uiAchivement.transform.position.y > targetPosition.y)
+        {
+            Vector3 newPosition = uiAchivement.transform.position;
+            newPosition.y -= speed * Time.unscaledDeltaTime;
+            uiAchivement.transform.position = newPosition;
+            yield return new WaitForEndOfFrame();
+        }
+        uiAchivement.transform.position = targetPosition;
+        
+        yield return new WaitForSecondsRealtime(7.5f);
+        
+        while (uiAchivement.transform.position.y < startPosition.y)
+        {
+            Vector3 newPosition = uiAchivement.transform.position;
+            newPosition.y += speed * Time.unscaledDeltaTime;
+            uiAchivement.transform.position = newPosition;
+            yield return new WaitForEndOfFrame();
+        }
+        uiAchivement.transform.position = startPosition;
+
+        achivementPanel.SetActive(false);
     }
 }

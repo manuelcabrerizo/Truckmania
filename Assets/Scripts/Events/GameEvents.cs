@@ -20,6 +20,8 @@ public class ExitButtonClickEvent : StaticGameEvent<ExitButtonClickEvent> { }
 public class MenuButtonClickEvent : StaticGameEvent<MenuButtonClickEvent> { }
 public class SettingButtonClickEvent : StaticGameEvent<SettingButtonClickEvent> { }
 public class SettingBackButtonClickEvent : StaticGameEvent<SettingBackButtonClickEvent> { }
+public class AchivementButtonClickEvent : StaticGameEvent<AchivementButtonClickEvent> { }
+public class AchivementBackButtonClickEvent : StaticGameEvent<AchivementBackButtonClickEvent> { }
 public class MusicSliderChangeEvent : StaticGameEvent<MusicSliderChangeEvent>
 {
     public float value;
@@ -343,6 +345,26 @@ public class DiscordUpdateStateEvent : StaticGameEvent<DiscordUpdateStateEvent>
     public static DiscordUpdateStateEvent GetEvent(string state)
     { 
         staticGameEvent.state = state;
+        return staticGameEvent;
+    }
+}
+
+public class UnlockAchivementEvent : StaticGameEvent<UnlockAchivementEvent>
+{
+    public AchivementType type;
+    public static UnlockAchivementEvent GetEvent(AchivementType type)
+    { 
+        staticGameEvent.type = type;
+        return staticGameEvent;
+    }
+}
+
+public class ShowAchivementUnlockUIEvent : StaticGameEvent<ShowAchivementUnlockUIEvent>
+{
+    public Achivement achivement;
+    public static ShowAchivementUnlockUIEvent GetEvent(Achivement achivement)
+    {
+        staticGameEvent.achivement = achivement;
         return staticGameEvent;
     }
 }
