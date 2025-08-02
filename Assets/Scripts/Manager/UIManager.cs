@@ -15,8 +15,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject achivementPanel;
     [SerializeField] private UIAchivement uiAchivement;
 
+    private Animator animator;
+
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         GameEventManager.Instance.AddListener<ShowAchivementUnlockUIEvent>(OnShowAchivementUI);
         GameEventManager.Instance.AddListener<PlayingShowUIEvent>(OnShowPlayingUI);
         GameEventManager.Instance.AddListener<CountDownShowUIEvent>(OnShowCountDownUI);
@@ -147,32 +150,14 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator StartAchivementPanelAnimation()
     {
-        float speed = 200.0f;
         achivementPanel.SetActive(true);
-        Vector3 startPosition = uiAchivement.transform.position;
-        Vector3 targetPosition = startPosition;
-        targetPosition.y -= 90.0f;
-
-        while (uiAchivement.transform.position.y > targetPosition.y)
-        {
-            Vector3 newPosition = uiAchivement.transform.position;
-            newPosition.y -= speed * Time.unscaledDeltaTime;
-            uiAchivement.transform.position = newPosition;
-            yield return new WaitForEndOfFrame();
-        }
-        uiAchivement.transform.position = targetPosition;
-        
+        animator.SetBool("IsShow", true);
         yield return new WaitForSecondsRealtime(7.5f);
-        
-        while (uiAchivement.transform.position.y < startPosition.y)
-        {
-            Vector3 newPosition = uiAchivement.transform.position;
-            newPosition.y += speed * Time.unscaledDeltaTime;
-            uiAchivement.transform.position = newPosition;
-            yield return new WaitForEndOfFrame();
-        }
-        uiAchivement.transform.position = startPosition;
+        animator.SetBool("IsShow", false);
+    }
 
+    public void HideAnimationEnd()
+    {
         achivementPanel.SetActive(false);
     }
 }

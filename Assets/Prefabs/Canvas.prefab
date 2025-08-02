@@ -3831,6 +3831,7 @@ GameObject:
   - component: {fileID: 1452807373002550365}
   - component: {fileID: 8875042107008671496}
   - component: {fileID: 7300341039825935820}
+  - component: {fileID: 2260658452553082591}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3951,6 +3952,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!95 &2260658452553082591
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520398582925420094}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6dae3cc6ab8769f468b7e696c6343442, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2539215308640481014
 GameObject:
   m_ObjectHideFlags: 0
@@ -9985,6 +10007,7 @@ MonoBehaviour:
   image: {fileID: 3275817150053575428}
   tile: {fileID: 4607911721026225929}
   desc: {fileID: 3887623189867070713}
+  off: {fileID: 0}
 --- !u!1 &8145997967304748837
 GameObject:
   m_ObjectHideFlags: 0
@@ -10093,8 +10116,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.019958496}
-  m_SizeDelta: {x: 0, y: 0.040082157}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0.0000107735395}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8387552208662032189
 CanvasRenderer:
