@@ -31,7 +31,6 @@ public class PlayerFallState : State<Player>
 
         Vector3 localAngularVelocity = owner.transform.worldToLocalMatrix * data.body.angularVelocity;
         xRotation += (localAngularVelocity.x * Time.deltaTime) * Mathf.Rad2Deg;
-        Debug.Log(xRotation);
         if (xRotation < -270)
         {
             GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent(AchivementType.BACKFLIP));

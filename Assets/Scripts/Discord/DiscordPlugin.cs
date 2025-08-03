@@ -8,8 +8,9 @@ public class DiscordPlugin : MonoBehaviour
     private static DiscordPlugin instance = null;
 
     private const long clientId = 1399389665026510948;
-    private Discord.Discord discord;
+    private Discord.Discord discord = null;
     private Discord.Activity activity;
+    private float timer = 0;
 
 
     private void Awake()
@@ -35,6 +36,27 @@ public class DiscordPlugin : MonoBehaviour
 
     private void Start()
     {
+        if (discord == null)
+        {
+            TryToConnect();
+        }
+    }
+
+    private void Update()
+    {
+        if (discord == null)
+        {
+            timer += Time.deltaTime;
+            if (timer >= 1.0f)
+            {
+                TryToConnect();
+                timer = 0.0f;
+            }
+        }
+    }
+
+    private void TryToConnect()
+    {
         try
         {
             discord = new Discord.Discord(clientId, (UInt64)Discord.CreateFlags.NoRequireDiscord);
@@ -52,7 +74,7 @@ public class DiscordPlugin : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.Log("Discord not found: " + ex.Message);
+            discord = null;
         }
     }
 
@@ -65,7 +87,8 @@ public class DiscordPlugin : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.Log("Discord not found: " + ex.Message);
+            discord = null;
+            StopAllCoroutines();
         }
 
         yield return new WaitForEndOfFrame();
