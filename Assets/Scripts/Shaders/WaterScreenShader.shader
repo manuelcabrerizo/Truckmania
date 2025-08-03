@@ -59,7 +59,7 @@ Shader "Custom/WaterScreen"
 				surfaceNoiseSample *= _SurfaceNoiseStrength;
 				fixed4 originalCol = tex2D(_MainTex, i.uv);
                 fixed4 col = tex2D(_MainTex, i.uv + surfaceNoiseSample);
-				col.g *= 1.5;
+				col.g *= 2.0f;
                 return lerp(originalCol, col, _Intesity);
             }
             ENDCG
