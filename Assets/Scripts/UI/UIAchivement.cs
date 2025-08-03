@@ -10,8 +10,8 @@ public class UIAchivement : MonoBehaviour
     [SerializeField] private GameObject off;
 
     public void SetAchivement(Achivement achivement)
-    { 
-        //image = achivement.Image;
+    {
+        image.material = achivement.Image;
         tile.text = achivement.Name;
         desc.text = achivement.Desc;
         if (off != null)

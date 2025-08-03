@@ -16,36 +16,36 @@ MonoBehaviour:
   - <Type>k__BackingField: 0
     <Name>k__BackingField: Level 1
     <Desc>k__BackingField: You complete the level 1
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: 880b01b50d5b1ed4ab5f16af571905d8, type: 2}
   - <Type>k__BackingField: 1
     <Name>k__BackingField: Level 2
     <Desc>k__BackingField: You complete the level 2
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: ed1a9a78d2c1bba44b5d1ca9813aa3b5, type: 2}
   - <Type>k__BackingField: 2
     <Name>k__BackingField: Level 3
     <Desc>k__BackingField: You comlete the level 3
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: 3adc4f247b575a44d97cb5e013eb835f, type: 2}
   - <Type>k__BackingField: 5
     <Name>k__BackingField: Submarine
     <Desc>k__BackingField: You are not yellow, but its fine
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: 6847274cc4eabf84b8cf21f0ac784622, type: 2}
   - <Type>k__BackingField: 6
     <Name>k__BackingField: Monster Hunter
     <Desc>k__BackingField: You have killed 5 monsters
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: aab330eb08ae81443bfd3e62edbdaee0, type: 2}
   - <Type>k__BackingField: 7
     <Name>k__BackingField: Monster Slayer
     <Desc>k__BackingField: You have killed 10 monsters
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: bd37d4edaa55fa44db8e285001e639c8, type: 2}
   - <Type>k__BackingField: 8
     <Name>k__BackingField: Broke
     <Desc>k__BackingField: Alergic to the money
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: a3a07c0fa0ee5e64887b291d8e748b7a, type: 2}
   - <Type>k__BackingField: 3
     <Name>k__BackingField: Backflip
     <Desc>k__BackingField: Tony who?
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: e0de98ac16b02b744869aec51bcf5861, type: 2}
   - <Type>k__BackingField: 4
     <Name>k__BackingField: Doble Backflip
     <Desc>k__BackingField: Tony You!
-    <Image>k__BackingField: {fileID: 0}
+    <Image>k__BackingField: {fileID: 2100000, guid: 81f6454b45b561f469c5e1abb1cf2303, type: 2}
