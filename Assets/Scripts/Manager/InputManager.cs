@@ -1,17 +1,23 @@
 using System;
 using UnityEngine.InputSystem;
 
+public enum ControllerType
+{ 
+    KEYBOARD,
+    JOYSTICK
+}
+
 public class InputManager : MonoBehaviourSingleton<InputManager>
 {
-    private bool keyboardUse;
-    private bool joystickUse;
+    ControllerType currentControlerType = ControllerType.KEYBOARD;
+    ControllerType lastControllerType = ControllerType.KEYBOARD;
+    bool reset = false;
+
     private bool joystickOrKeyboardUse;
     private Player player = null;
 
     protected override void OnAwaken()
     {
-        keyboardUse = false;
-        joystickUse = false;
         joystickOrKeyboardUse = true;
         GameEventManager.Instance.AddListener<PlayerCreatedEvent>(OnPlayerCreated);
         GameEventManager.Instance.AddListener<ResetInputEvent>(OnReset);
@@ -23,6 +29,22 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
         GameEventManager.Instance.RemoveListener<ResetInputEvent>(OnReset);
     }
 
+    private void Update()
+    {
+        if (reset || (currentControlerType != lastControllerType))
+        {
+            if (currentControlerType == ControllerType.KEYBOARD)
+            {
+                GameEventManager.Instance.TriggerEvent(KeyboardUseEvent.GetEvent());
+            }
+            else if (currentControlerType == ControllerType.JOYSTICK)
+            {
+                GameEventManager.Instance.TriggerEvent(JoystickUseEvent.GetEvent());
+            }
+        }
+        lastControllerType = currentControlerType;
+    }
+
     private void OnPlayerCreated(GameEvent gameEvent)
     {
         PlayerCreatedEvent playerCreatedEvent = (PlayerCreatedEvent)gameEvent;
@@ -31,8 +53,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 
     private void OnReset(GameEvent gameEvent)
     {
-        keyboardUse = false;
-        joystickUse = false;
+        reset = true;
     }
 
     public void OnAccelerate(InputAction.CallbackContext context)
@@ -150,12 +171,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
                 joystickOrKeyboardUse = true;
             }
 
-            if (joystickUse == false)
-            {
-                GameEventManager.Instance.TriggerEvent(JoystickUseEvent.GetEvent());
-                joystickUse = true;
-                keyboardUse = false;
-            }
+            currentControlerType = ControllerType.JOYSTICK;
         }
     }
 
@@ -169,12 +185,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
                 joystickOrKeyboardUse = true;
             }
 
-            if (keyboardUse == false)
-            {
-                GameEventManager.Instance.TriggerEvent(KeyboardUseEvent.GetEvent());
-                keyboardUse = true;
-                joystickUse = false;
-            }
+            currentControlerType = ControllerType.KEYBOARD;
         }
     }
 
