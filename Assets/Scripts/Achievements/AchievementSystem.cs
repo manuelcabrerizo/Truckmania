@@ -6,7 +6,15 @@ public enum AchivementType
     // Level complete event should always be on top 
     LEVEL1_COMPLETE,
     LEVEL2_COMPLETE,
-    LEVEL3_COMPLETE
+    LEVEL3_COMPLETE,
+
+    BACKFLIP,
+    DOUBLE_BACKFLIP,
+    SUBMARINE,
+
+    MONSTER_HUNTER,
+    MONSTER_SLAYER,
+    BROKE
 }
 
 public class AchievementSystem : MonoBehaviour

@@ -13,13 +13,24 @@ public class EndState : State<GameManager>
 
         if (owner.seconds > 0)
         {
-            int currentLevel = LevelManager.Instance.GetCurrentLevel();
-            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent((AchivementType)currentLevel));
             GameEventManager.Instance.TriggerEvent(EndStateShowFinishUIEvent.GetEvent(true));
         }
         else
         {
             GameEventManager.Instance.TriggerEvent(EndStateShowTimeoutUIEvent.GetEvent(true));
+        }
+
+        if (IsWinner())
+        {
+            int currentLevel = LevelManager.Instance.GetCurrentLevel();
+            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent((AchivementType)currentLevel));
+        }
+        else
+        {
+            if (owner.coinsCollectedCount == 0)
+            {
+                GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent(AchivementType.BROKE));
+            }
         }
     }
 
@@ -32,7 +43,7 @@ public class EndState : State<GameManager>
     IEnumerator WaitSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        if (owner.coinsCollectedCount == owner.Coins.Count && owner.enemiesKillCount == owner.Enemies.Count && owner.seconds > 0)
+        if (IsWinner())
         {
             owner.SetWinState();
         }
@@ -40,5 +51,10 @@ public class EndState : State<GameManager>
         {
             owner.SetGameOverState();
         }
+    }
+
+    private bool IsWinner()
+    {
+        return owner.coinsCollectedCount == owner.Coins.Count && owner.enemiesKillCount == owner.Enemies.Count && owner.seconds > 0;
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerFallState : State<Player>
 {
+    private float xRotation = 0;
     public PlayerFallState(Player owner, Func<bool> enterCondition, Func<bool> exitCondition)
     : base(owner, enterCondition, exitCondition) { }
 
@@ -13,6 +14,7 @@ public class PlayerFallState : State<Player>
         {
             data.keepDrifting = true;
         }
+        xRotation = 0;
     }
 
     public override void OnExit()
@@ -26,6 +28,18 @@ public class PlayerFallState : State<Player>
         PlayerData data = owner.Data;
         float currentPitch = Mathf.Lerp(0.75f, 1.5f, Mathf.Abs(data.accel));
         data.engineSound.pitch = currentPitch;
+
+        Vector3 localAngularVelocity = owner.transform.worldToLocalMatrix * data.body.angularVelocity;
+        xRotation += (localAngularVelocity.x * Time.deltaTime) * Mathf.Rad2Deg;
+        Debug.Log(xRotation);
+        if (xRotation < -270)
+        {
+            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent(AchivementType.BACKFLIP));
+        }
+        if (xRotation < -630)
+        {
+            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent(AchivementType.DOUBLE_BACKFLIP));
+        }
     }
 
     public override void OnFixedUpdate()

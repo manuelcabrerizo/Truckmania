@@ -6,6 +6,7 @@ class PlayingState : State<GameManager>
     private int roundTime;
     private float timer;
     private float timerScale = 1.0f;
+    private int monsterKillCount = 0;
 
     public PlayingState(GameManager gameManager, int roundTime)
     : base(gameManager)
@@ -14,7 +15,14 @@ class PlayingState : State<GameManager>
     }
     
     public override void OnEnter()
-    {        
+    {
+        monsterKillCount = 0;
+        if (PlayerPrefs.HasKey("MonsterKill"))
+        {
+            monsterKillCount = PlayerPrefs.GetInt("MonsterKill");
+        }
+        PlayerPrefs.SetInt("MonsterKill", monsterKillCount);
+
         GameEventManager.Instance.AddListener<EndTriggerHitEvent>(OnEndTriggerHit);
         GameEventManager.Instance.AddListener<CoinPickEvent>(OnCoinPick);
         GameEventManager.Instance.AddListener<EnemyKillEvent>(OnEnemyKill);
@@ -35,6 +43,8 @@ class PlayingState : State<GameManager>
 
     public override void OnExit()
     {
+        PlayerPrefs.SetInt("MonsterKill", monsterKillCount);
+
         GameEventManager.Instance.TriggerEvent(PlayingShowUIEvent.GetEvent(false));
 
         GameEventManager.Instance.RemoveListener<EndTriggerHitEvent>(OnEndTriggerHit);
@@ -82,6 +92,16 @@ class PlayingState : State<GameManager>
 
     private void OnEnemyKill(GameEvent gameEvent)
     {
+        monsterKillCount++;
+        if (monsterKillCount == 5)
+        {
+            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent(AchivementType.MONSTER_HUNTER));
+        }
+        if (monsterKillCount == 10)
+        {
+            GameEventManager.Instance.TriggerEvent(UnlockAchivementEvent.GetEvent(AchivementType.MONSTER_SLAYER));
+        }
+
         owner.enemiesKillCount++;
         GameEventManager.Instance.TriggerEvent(UpdateEnemyKillTextEvent.GetEvent(owner.enemiesKillCount, owner.Enemies.Count));
     }

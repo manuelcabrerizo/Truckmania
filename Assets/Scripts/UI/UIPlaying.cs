@@ -46,7 +46,7 @@ public class UIPlaying : MonoBehaviour
     public void OnUpdateEnemyKillText(GameEvent gameEvent)
     {
         UpdateEnemyKillTextEvent e = (UpdateEnemyKillTextEvent)gameEvent;
-        enemyCountText.text = "You Kill " + e.enemyCount + " enemies of " + e.enemySpawn;
+        enemyCountText.text = "You Killed " + e.enemyCount + " enemies of " + e.enemySpawn;
     }
 
     private void OnShowResetText(GameEvent gameEvent)

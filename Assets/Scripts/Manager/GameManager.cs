@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     public List<Enemy> Enemies => enemies;
     public List<Box> Boxes => boxes;
 
-
     private void Awake()
     {
         GameEventManager.Instance.AddListener<PauseEvent>(PauseGame);

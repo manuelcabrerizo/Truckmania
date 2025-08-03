@@ -25,3 +25,27 @@ MonoBehaviour:
     <Name>k__BackingField: Level 3
     <Desc>k__BackingField: You comlete the level 3
     <Image>k__BackingField: {fileID: 0}
+  - <Type>k__BackingField: 5
+    <Name>k__BackingField: Submarine
+    <Desc>k__BackingField: You are not yellow, but its fine
+    <Image>k__BackingField: {fileID: 0}
+  - <Type>k__BackingField: 6
+    <Name>k__BackingField: Monster Hunter
+    <Desc>k__BackingField: You have killed 5 monsters
+    <Image>k__BackingField: {fileID: 0}
+  - <Type>k__BackingField: 7
+    <Name>k__BackingField: Monster Slayer
+    <Desc>k__BackingField: You have killed 10 monsters
+    <Image>k__BackingField: {fileID: 0}
+  - <Type>k__BackingField: 8
+    <Name>k__BackingField: Broke
+    <Desc>k__BackingField: Alergic to the money
+    <Image>k__BackingField: {fileID: 0}
+  - <Type>k__BackingField: 3
+    <Name>k__BackingField: Backflip
+    <Desc>k__BackingField: Tony who?
+    <Image>k__BackingField: {fileID: 0}
+  - <Type>k__BackingField: 4
+    <Name>k__BackingField: Doble Backflip
+    <Desc>k__BackingField: Tony You!
+    <Image>k__BackingField: {fileID: 0}
