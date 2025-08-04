@@ -6171,7 +6171,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Toggle
+  m_Text: VSync
 --- !u!1 &4582459938619456379
 GameObject:
   m_ObjectHideFlags: 0
