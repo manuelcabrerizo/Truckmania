@@ -41,6 +41,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
             {
                 GameEventManager.Instance.TriggerEvent(JoystickUseEvent.GetEvent());
             }
+            reset = false;
         }
         lastControllerType = currentControlerType;
     }
